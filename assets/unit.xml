@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:7706e924fd921d7dccdfd41f44e54e49$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="unit.png" width="64" height="128">
+    
+	<SubTexture name="iddle0"   x="2" y="2" width="28" height="28" oX="1" oY="0" oW="30" oH="30"/>
+	<SubTexture name="iddle1"   x="32" y="2" width="28" height="28" oX="1" oY="0" oW="30" oH="30"/>
+	<SubTexture name="walking0" x="2" y="32" width="28" height="28" oX="1" oY="0" oW="30" oH="30"/>
+    <SubTexture name="walking1" x="32" y="32" width="28" height="28" oX="1" oY="0" oW="30" oH="30"/>
+	<SubTexture name="walking2" x="2" y="62" width="28" height="28" oX="1" oY="0" oW="30" oH="30"/>
+</TextureAtlas>

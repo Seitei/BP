@@ -1,0 +1,235 @@
+package net
+{
+	import actions.Action;
+	
+	import events.NotifyEvent;
+	import events.NotifyStatusEvent;
+	
+	import flash.events.EventDispatcher;
+	import flash.net.Responder;
+	
+	import model.BackgroundVO;
+	import model.BuildingImprovementGoldVO;
+	import model.BuildingTowerUpgradeDamage1VO;
+	import model.BuildingTowerVO;
+	import model.BuildingUnitVO;
+	import model.BulletVO;
+	import model.EntityVO;
+	import model.HQVO;
+	import model.ShipVO;
+	import model.SkinClass;
+	import model.TileVO;
+	import model.UnitVO;
+	
+	public class NetConnect extends EventDispatcher
+	{
+		import flash.display.SimpleButton;
+		import flash.display.Sprite;
+		import flash.events.Event;
+		import flash.events.EventDispatcher;
+		import flash.events.NetStatusEvent;
+		import flash.events.StatusEvent;
+		import flash.geom.Point;
+		import flash.net.GroupSpecifier;
+		import flash.net.NetConnection;
+		import flash.net.NetGroup;
+		import flash.net.NetStream;
+		import flash.net.registerClassAlias;
+		import flash.utils.ByteArray;
+		import flash.utils.Dictionary;
+		import flash.utils.Timer;
+		import flash.utils.getTimer;
+		
+		registerClassAlias("Point", Point);
+		registerClassAlias("Action", Action);
+		registerClassAlias("EntityVO", EntityVO);
+		registerClassAlias("BuildingUnitVO", BuildingUnitVO);
+		registerClassAlias("Vector", Vector);
+		registerClassAlias("Point", Point);
+		registerClassAlias("Dictionary", Dictionary);
+		registerClassAlias("Array", Array);
+		registerClassAlias("BackgroundVO", BackgroundVO);
+		registerClassAlias("HQVO", HQVO);
+		registerClassAlias("TileVO", TileVO);
+		registerClassAlias("SkinClass", SkinClass);
+		registerClassAlias("Boolean", Boolean);
+		registerClassAlias("UnitVO", UnitVO);
+		registerClassAlias("BulletVO", BulletVO);
+		registerClassAlias("BuildingTowerVO", BuildingTowerVO);
+		registerClassAlias("BuildingTowerUpgradeDamage1VO", BuildingTowerUpgradeDamage1VO); 
+		registerClassAlias("ShipVO", ShipVO);
+		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);
+		
+		private const SERVER:String = "rtmfp://p2p.rtmfp.net/"; 
+		private const DEVKEY:String = "cde41fe05bb01817e82e5398-2ab5d983d09f"; 
+		private const NAME:String = "Artemix";
+		
+		private var _cirrusNc:NetConnection;
+		private var _amfphpNc:NetConnection;
+		
+		private var _connected:Boolean = false;
+		
+		private var _user:String;
+		private var _seq:int;
+		
+		private var _status:String;
+		private var _log:String;
+		
+		private var _sendStream:NetStream;
+		private var _receivingStream:NetStream;
+		
+		private var _res:Responder;
+		private static var _instance:NetConnect;
+		private var _receiving:Boolean;
+		private var _message:Object;
+		
+		public function NetConnect():void {
+		
+			_message = new Object();
+			_status = "waiting";
+			_cirrusNc = new NetConnection(); 
+			_cirrusNc.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus); 
+			_cirrusNc.connect( SERVER + DEVKEY );
+		}
+		
+		public function onResult(response:Object):void {
+			
+			//here we ask if there is another player waiting to connect to someone
+			if(response == "waiting") {
+				
+				//show waiting for players screen
+				
+				
+			}
+			
+			//if there is someone already waiting to play
+			else {
+				//start game
+				onPeerConnect(response[1]);
+				
+			}
+		}
+		
+		public function onFault(response:Object):void {
+			for (var i:* in response) {
+				trace(response[i]);
+			}
+		}
+		
+		private function onNetStatus(event:NetStatusEvent):void {
+			
+			switch(event.info.code) {
+				case "NetConnection.Connect.Success":
+					onCirrusConnect();
+					break;
+				case "NetStream.Play.Start":
+					break;
+				case "NetStream.Connect.Success":
+					if(!_connected){
+						_connected = true;
+						onPeerConnect(event.info.stream.farID);
+					}
+					break;
+				default:
+					break;
+			}
+			
+			_log = event.info.code; 
+			trace(_log);
+			sendStatus(_log);
+			
+		}
+		
+		public function send(player:int,action:int,data:Object=null):void {
+			_sendStream.send("handler", player, action, data);
+		}
+		
+		private function onCirrusConnect():void {
+			//connecting to amfphp
+			_amfphpNc = new NetConnection();
+			_amfphpNc.connect("http://localhost/Amfphp/");
+			//_amfphpNc.connect("http://tecnocort.com.ar/project/amfphp/Amfphp/");
+			_res = new Responder(onResult, onFault);
+			_amfphpNc.call("Rendezvous.match", _res, NAME, _cirrusNc.nearID);
+			
+			//defining the send stream
+			_sendStream = new NetStream(_cirrusNc, NetStream.DIRECT_CONNECTIONS);	
+			//_sendStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
+			_sendStream.client = this;
+			_sendStream.publish("data");
+		}
+		
+		private function onPeerConnect(farID:String):void {
+			
+			//defining the receiving stream
+			_receivingStream = new NetStream(_cirrusNc, farID);
+			//_receivingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
+			_receivingStream.client = this;
+			_receivingStream.play("data");
+			dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_NEIGHBOR_EVENT));
+		}
+		
+		public function sendPlayerMessage(message:String):void {
+			_message = new Object();
+			_message.message = message;
+			_message.type = "player";
+			_message.sequence = _seq++;
+			_sendStream.send("handler", _message);
+		}
+		
+		public function sendStatus(status:String):void {
+			dispatchEvent(new NotifyStatusEvent(NotifyStatusEvent.NOTIFY_STATUS, status));
+		}
+		
+		public function handler(message:Object):void {
+			if(message.type == "action")
+				dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_ACTION_EVENT, message.data));
+			if(message.type == "player")
+				dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_PLAYER_READY_EVENT));
+		}
+		
+		public function sendActionBuffer(data:Vector.<Action>):void {
+			
+			/*var byteArray:ByteArray;
+			byteArray = new ByteArray();
+			byteArray.writeObject(data);
+			byteArray.position = 0;
+			var object:Object = byteArray.readObject();*/ 
+			
+			_message = new Object();
+			_message.data = data;
+			_message.type = "action";
+			_message.sequence = _seq++;
+			_sendStream.send("handler", _message);
+		}
+		
+		
+		
+		public static function getInstance():NetConnect {
+			if(!_instance){
+				_instance = new NetConnect();
+			}
+			return _instance;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+}
