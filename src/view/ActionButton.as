@@ -1,7 +1,9 @@
 package view
 {
 	import model.ActionButtonVO;
+	
 	import starling.textures.Texture;
+	
 	import utils.ExtendedButton;
 	
 	public class ActionButton extends ExtendedButton
@@ -10,14 +12,16 @@ package view
 		private var _targetType:String;
 		private var _entityType:String;
 		private var _actionButtonsVO:Vector.<ActionButtonVO>;
+		private var _mouseCursorTexture:Texture;
 		
-		public function ActionButton(upState:Texture, actionType:String, entityType:String = "", targetType:String = null, actionButtonsVO:Vector.<ActionButtonVO> = null, text:String = "", downState:Texture = null)
+		public function ActionButton(upState:Texture, actionType:String, entityType:String = "", targetType:String = null, actionButtonsVO:Vector.<ActionButtonVO> = null, text:String = "", downState:Texture = null, hoverState:Texture = null, mouseCursorTexture:Texture = null)
 		{
 			_actionType = actionType;
 			_entityType = entityType;
 			_targetType = targetType;
 			_actionButtonsVO = actionButtonsVO;
-			super(upState, text, downState);
+			_mouseCursorTexture = mouseCursorTexture;
+			super(upState, text, downState, hoverState, mouseCursorTexture);
 		}
 	
 		
@@ -39,6 +43,10 @@ package view
 		public function get actionType():String
 		{
 			return _actionType;
+		}
+		
+		public function get mouseCursorTexture():Texture {
+			return _mouseCursorTexture;
 		}
 
 	}

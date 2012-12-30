@@ -1,5 +1,16 @@
 package view
 {
+	import events.ButtonClickedEvent;
+	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
+	import flash.ui.MouseCursorData;
+	
+	import model.ActionButtonVO;
+	
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -9,6 +20,7 @@ package view
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
+	import utils.ExtendedButton;
 	import utils.ResourceManager;
 	
 	public class ActionBar extends Sprite
@@ -71,14 +83,37 @@ package view
 		
 		private function initCannonButton():void {
 			
-			_myReadyButton = new Button(ResourceManager.getInstance().getTexture("button_ready_0_0"));
-			_myReadyButton.x = 700;
-			_myReadyButton.y = 2;
-			addChild(_myReadyButton);
-			_myReadyButton.addEventListener(TouchEvent.TOUCH, onTouch);
+			var spawner1Btn:ActionButton = new ActionButton(
+				ResourceManager.getInstance().getTexture("spawner1_up_btn"), 
+				"addEntity", 
+				"spawner1",
+				null,
+				null,
+				"",
+				ResourceManager.getInstance().getTexture("spawner1_down_btn"), 
+				ResourceManager.getInstance().getTexture("spawner1_hover_btn"),
+				ResourceManager.getInstance().getTexture("spawner1_mouse_btn")
+			);
+			
+			spawner1Btn.x = 3;
+			spawner1Btn.y = 80;
+			addChild(spawner1Btn);
+			spawner1Btn.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 		}
 	
+		
+		private function onTouch(e:TouchEvent):void {
+			
+			var touch:Touch = e.touches[0];
+			var ab:ActionButton = ActionButton(e.currentTarget);
+			if(touch.phase == "began"){
+					
+				dispatchEvent(new ButtonClickedEvent(ButtonClickedEvent.BUTTON_CLICKED_EVENT, new Point(touch.globalX, touch.globalY), ab.actionType, ab.entityType, ab.mouseCursorTexture ,true)); 
+			}
+		}
+		
+		
 		public function updateUITurnCountdown(count:int):void {
 			_turnCountdownTxt.text = String(count);	
 		}
@@ -157,19 +192,7 @@ package view
 			_myReadyButton.touchable = true;
 		}
 		
-		private function onTouch(e:TouchEvent):void {
-			var touch:Touch = e.touches[0];
-			if(touch.phase == "began"){
-				
-				if(_hesReady)
-					_myReadyButton.upState = ResourceManager.getInstance().getTexture("button_ready_1_1");
-				else
-					_myReadyButton.upState = ResourceManager.getInstance().getTexture("button_ready_1_0");
-				
-				_myReadyButton.touchable = false;
-				dispatchEvent(new Event("ReadyEvent", true));
-			}
-		}
+		
 	}
 	
 	

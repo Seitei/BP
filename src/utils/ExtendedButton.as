@@ -47,7 +47,7 @@ package utils
 		private var mTextDown:TextField;
 		
 		/** Creates a button with textures for up, hover and down state or text. */
-		public function ExtendedButton(upState:Texture, text:String="", downState:Texture=null, hoverState:Texture=null, textDown:TextField = null)
+		public function ExtendedButton(upState:Texture, text:String="", downState:Texture=null, hoverState:Texture=null, mouseTexture:Texture = null, textDown:TextField = null )
 		{
 			if (upState == null) throw new ArgumentError("Texture cannot be null");
 			
@@ -55,8 +55,6 @@ package utils
 			mDownState = downState ? downState : upState;
 			mHoverState = hoverState ? hoverState : mDownState;
 			mTextDown = textDown;
-			if(downState)
-				trace("dooowwwwwwwwwwn");
 			mBackground = new Image(upState);
 			mScaleWhenDown = downState ? 1.0 : 0.9;
 			mAlphaWhenDisabled = 0.5;

@@ -4,8 +4,11 @@ package view
 	
 	import actions.Action;
 	
+	import events.ButtonClickedEvent;
+	
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
@@ -19,6 +22,7 @@ package view
 	import model.EntityVO;
 	import model.UnitVO;
 	
+	import starling.core.Starling;
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -36,6 +40,13 @@ package view
 	
 	public class UI extends Sprite
 	{
+		private static var _instance:UI;
+		private static const DEFAULT:int = 0;
+		private static const WAITING_FOR_TARGET:int = 1;
+		private static const BOT:int = 1;
+		private static const TOP:int = 0;
+		
+		private var _clickedEntities:Vector.<EntityVO>
 		private var _broadcastSignal:BroadcastSignal;
 		private var _manager:Manager;
 		private var _stateTxt:TextField;
@@ -48,12 +59,6 @@ package view
 		private var _messageCount:int = 1;
 		private var _showingCountDown:Boolean;
 		/*private var _selectorPanel:SelectorPanel;*/
-		private var _clickedEntities:Vector.<EntityVO>
-		private static var _instance:UI;
-		private static const DEFAULT:int = 0;
-		private static const WAITING_FOR_TARGET:int = 1;
-		private static const BOT:int = 1;
-		private static const TOP:int = 0;
 		private var _status:int = DEFAULT;
 		private var _action:Action;
 		private var _gold:int;
@@ -63,6 +68,8 @@ package view
 		private var _statusArray:Array;
 		private var _showingEntityUI:Boolean = false;
 		private var _actionBar:ActionBar;
+		private var _mouseCursorImage:Image;
+		private var _actionIssued:
 		
 		public function UI(showDebugData:Boolean)
 		{
@@ -90,12 +97,37 @@ package view
 			_actionBar.gold = _gold;
 			_actionBar.goldIncome = _goldIncome;
 			addChild(_actionBar);
-			_actionBar.addEventListener("ReadyEvent", onReady);	
+			_actionBar.addEventListener(ButtonClickedEvent.BUTTON_CLICKED_EVENT, onButtonClicked);	
 		}
 		
-		private function onReady(e:Event):void {
-			_manager.sendPlayerReadyEvent();				
+		private function onButtonClicked(e:ButtonClickedEvent):void {
+			
+			//_manager.sendPlayerReadyEvent();
+			
+			//here we hide the mouse and show the ghost image of the entity we are going to place, if any
+			Mouse.hide();
+			_mouseCursorImage = new Image(e.mouseCursorTexture);
+			addChild(_mouseCursorImage);
+			
+			_mouseCursorImage.x = e.startingPosition.x;
+			_mouseCursorImage.y = e.startingPosition.y;
+			_mouseCursorImage.touchable = false;
+			_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
+			_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
+			
+			stage.addEventListener(TouchEvent.TOUCH, onMove);
 		}
+		
+		private function onMove(e:TouchEvent):void {
+			var touch:Touch = e.touches[0];
+			
+			if(touch.phase == "hover"){
+				
+				_mouseCursorImage.x = touch.globalX;		
+				_mouseCursorImage.y = touch.globalY;
+			}
+		}
+		
 		
 		public function set playerName(value:String):void
 		{
@@ -131,6 +163,7 @@ package view
 		
 		
 		private function showEntityUI(entitiesVector:Vector.<EntityVO>):void {
+			
 			
 			_showingEntityUI = true;
 			/*if(_selectorPanel)

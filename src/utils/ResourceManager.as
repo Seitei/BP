@@ -88,7 +88,17 @@ package utils
 		[Embed(source = "../assets/upgrade_armor_1.png")]
 		private static const UpgradeArmor1:Class;
 		
+		[Embed(source = "../assets/spawner1_down_btn.png")]
+		private static const Spawner1DownBtn:Class;
 		
+		[Embed(source = "../assets/spawner1_hover_btn.png")]
+		private static const Spawner1HoverBtn:Class;
+		
+		[Embed(source = "../assets/spawner1_up_btn.png")]
+		private static const Spawner1UpBtn:Class;
+		
+		[Embed(source = "../assets/spawner1_mouse_btn.png")]
+		private static const Spawner1MouseBtn:Class;
 
 		// XML //
 		
@@ -134,6 +144,10 @@ package utils
 			TextureAssets["building"] = Building;
 			TextureAssets["upgrade_damage_1"] = UpgradeDamage1;
 			TextureAssets["upgrade_armor_1"] = UpgradeArmor1;
+			TextureAssets["spawner1_up_btn"] = Spawner1UpBtn;
+			TextureAssets["spawner1_hover_btn"] = Spawner1HoverBtn;
+			TextureAssets["spawner1_down_btn"] = Spawner1DownBtn;
+			TextureAssets["spawner1_mouse_btn"] = Spawner1MouseBtn;
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
 			XMLAssets["tile"] = TileXML;
