@@ -34,9 +34,12 @@ package model
 			_playerName = value;
 		}
 		
-		public function makeEntity(player:String, type:String, position:Point):EntityVO {
+		public function makeEntity(player:String, type:String, position:Point = null):EntityVO {
 			
 			var entity:EntityVO;
+			//fix later when I know how to pass a point inside another class via the class alias net code.
+			if(!position) 
+				position = new Point();
 			
 			switch(type) {
 				case "hq":
@@ -66,6 +69,9 @@ package model
 				case "unit":
 					entity = new UnitVO(position.x, position.y);
 					break;
+				case "spawner1":
+					entity = new Spawner1VO(position.x, position.y);
+					break;
 				case "bullet":
 					entity = new BulletVO(position.x, position.y);
 					break;
@@ -76,6 +82,7 @@ package model
 			_counter ++;
 			entity.owner = player;
 			entity.id = playerName + entity.type + _counter;
+			entity.rotation = 45 * Math.PI / 180;
 			
 			if(entity is IBuildeable)
 				entity.status = UnitStatus.BUILDING;

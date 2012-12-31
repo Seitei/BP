@@ -15,8 +15,10 @@ package managers
 	
 	import interfaces.IBuyableEntity;
 	
+	import model.BackgroundVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
+	import model.ShipVO;
 	import model.SkinClass;
 	import model.WorldVO;
 	
@@ -52,7 +54,7 @@ package managers
 		private var _state:int = GameStatus.STOPPED;
 		private var _somethingToSend:Boolean;
 		private var _main:Main;
-		private var _entitiesClickedSignal:Signal;
+		private var _entityClickedSignal:Signal;
 		private var _playerName:String;
 		private var _imReady:Boolean;
 		private var _hesReady:Boolean;
@@ -75,8 +77,8 @@ package managers
 			_nc.addEventListener(NotifyEvent.NOTIFY_NEIGHBOR_EVENT, buildPlayersWorld);
 			_nc.addEventListener(NotifyStatusEvent.NOTIFY_STATUS, showStatus);
 			
-			_entitiesClickedSignal = new Signal(Array);
-			_entitiesClickedSignal.add(entityClickedSignalhandler);
+			_entityClickedSignal = new Signal(String);
+			_entityClickedSignal.add(entityClickedSignalhandler);
 			
 		}
 		
@@ -117,30 +119,26 @@ package managers
 			return _player.name;
 		}
 		
-		public function dispatchHandler(clickedEntities:Array, point:Point):void {
+		public function dispatchHandler(clickedEntityId:String):void {
 			if(_state == GameStatus.STOPPED)
-				_entitiesClickedSignal.dispatch(clickedEntities, point);
+				_entityClickedSignal.dispatch(clickedEntityId);
 		}
 		
-		private function entityClickedSignalhandler(array:Array, point:Point):void {
-			var entitiesVector:Vector.<EntityVO> = new Vector.<EntityVO>;
-			for each(var id:String in array){
-				var entity:EntityVO = WorldVO.getInstance().getEntity(id);
-				entitiesVector.push(entity);
-			}
-			UI.getInstance().entitiesClickedHandler(entitiesVector, point);
+		private function entityClickedSignalhandler(id:String):void {
+			var entity:EntityVO = WorldVO.getInstance().getEntity(id);
+			UI.getInstance().entityClickedHandler(entity);
 		}
 		
 		public function buildPlayersWorld(event:NotifyEvent = null):void {
 			
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
-			var bgEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, "background", new Point(350, 350));
+			var bgEntity:EntityVO = new BackgroundVO(350, 350);
 			var bg_action:Action = new Action("addEntity", bgEntity);
 			handler(bg_action);
 			
-			var shipEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, "ship", new Point(182.5, 700 - 182.5)); 
+			var shipEntity:EntityVO = new ShipVO(182.5, 700 - 182.5); 
 			var ship_action:Action = new Action("addEntity", shipEntity);
-				
+			shipEntity.owner = _playerName;
 			handler(ship_action);
 			
 			var shipConfigurationSlots:Array = new Array();
@@ -160,7 +158,7 @@ package managers
 						point.x = (j * (30 + 2))  + 30;
 						point.y = (j * (30 + 2))  + 28 + 10 * 40 + i * 64;
 						var tile:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
-						tile.rotation = 45 * Math.PI / 180;
+						//tile.rotation = 45 * Math.PI / 180;
 						var tile_action:Action = new Action("addEntity", tile);
 						handler(tile_action);
 					}

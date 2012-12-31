@@ -20,8 +20,6 @@ package model
 			//set what the entity has to show in the selector panel
 			initActionButtons();
 			
-			
-			
 		}
 		
 		private function initActionButtons():void {

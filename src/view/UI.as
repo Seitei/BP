@@ -5,6 +5,7 @@ package view
 	import actions.Action;
 	
 	import events.ButtonClickedEvent;
+	import events.SelectorPanelEvent;
 	
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -46,7 +47,7 @@ package view
 		private static const BOT:int = 1;
 		private static const TOP:int = 0;
 		
-		private var _clickedEntities:Vector.<EntityVO>
+		private var _clickedEntity:EntityVO;
 		private var _broadcastSignal:BroadcastSignal;
 		private var _manager:Manager;
 		private var _stateTxt:TextField;
@@ -58,7 +59,7 @@ package view
 		private var _state:int = GameStatus.STOPPED;
 		private var _messageCount:int = 1;
 		private var _showingCountDown:Boolean;
-		/*private var _selectorPanel:SelectorPanel;*/
+		private var _selectorPanel:SelectorPanel;
 		private var _status:int = DEFAULT;
 		private var _action:Action;
 		private var _gold:int;
@@ -69,7 +70,7 @@ package view
 		private var _showingEntityUI:Boolean = false;
 		private var _actionBar:ActionBar;
 		private var _mouseCursorImage:Image;
-		private var _actionIssued:
+		private var _actionIssued:Action;
 		
 		public function UI(showDebugData:Boolean)
 		{
@@ -104,25 +105,29 @@ package view
 			
 			//_manager.sendPlayerReadyEvent();
 			
-			//here we hide the mouse and show the ghost image of the entity we are going to place, if any
-			Mouse.hide();
-			_mouseCursorImage = new Image(e.mouseCursorTexture);
-			addChild(_mouseCursorImage);
+			//here we hide the mouse and show the ghost image of the entity if the button had a mouse cursor texture set
+			if(e.mouseCursorTexture) {
+				Mouse.hide();
+				_mouseCursorImage = new Image(e.mouseCursorTexture);
+				addChild(_mouseCursorImage);
+				
+				_mouseCursorImage.x = e.startingPosition.x;
+				_mouseCursorImage.y = e.startingPosition.y;
+				_mouseCursorImage.touchable = false;
+				_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
+				_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
+				stage.addEventListener(TouchEvent.TOUCH, onMove);
+			}
 			
-			_mouseCursorImage.x = e.startingPosition.x;
-			_mouseCursorImage.y = e.startingPosition.y;
-			_mouseCursorImage.touchable = false;
-			_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
-			_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
+			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, null);
+			_actionIssued = new Action(e.actionType, newEntity);
 			
-			stage.addEventListener(TouchEvent.TOUCH, onMove);
 		}
 		
 		private function onMove(e:TouchEvent):void {
 			var touch:Touch = e.touches[0];
 			
 			if(touch.phase == "hover"){
-				
 				_mouseCursorImage.x = touch.globalX;		
 				_mouseCursorImage.y = touch.globalY;
 			}
@@ -145,78 +150,46 @@ package view
 			_actionBar.goldIncome = value;
 		}
 		
-		public function entitiesClickedHandler(entitiesVector:Vector.<EntityVO>, point:Point):void {
+		public function entityClickedHandler(entity:EntityVO):void {
 			if(_status == WAITING_FOR_TARGET){
 				if(_action.entity is IUnitSpawner) {
-					IUnitSpawner(_action.entity).rallypoint = point; 
-					_action.target = point;
+					//IUnitSpawner(_action.entity).rallypoint = point; 
+					//_action.target = point;
 					dispatchSignal(_action);
 					//showRallyPoint(point);					
 					_status = DEFAULT;
 				}
 			}
 			else {
-				_clickedEntities = entitiesVector;
-				showEntityUI(entitiesVector);
+				_clickedEntity = entity;
+				if(_actionIssued) {
+					_actionIssued.entity.position = _clickedEntity.position;
+					
+					//restoring the mouse appearance
+					Mouse.show();
+					removeChild(_mouseCursorImage);
+					_mouseCursorImage.dispose();
+					
+					dispatchSignal(_actionIssued);
+					_actionIssued = null;
+				}
+				else {
+					showEntityUI(_clickedEntity);
+				}
 			}
 		}
 		
 		
-		private function showEntityUI(entitiesVector:Vector.<EntityVO>):void {
+		private function showEntityUI(entity:EntityVO):void {
 			
 			
 			_showingEntityUI = true;
 			/*if(_selectorPanel)
 				removeEntityUI();*/
-			
-			var sameType:String = entitiesVector[0].type;
-			var matchingActionButtons:Vector.<ActionButtonVO> = new Vector.<ActionButtonVO>;
-			
-			for each(var actionButton:ActionButtonVO in entitiesVector[0].actionButtons){
-				matchingActionButtons.push(actionButton);
-			}
-			
-			for each(var entity:EntityVO in entitiesVector) {
-				
-				if(entity.type != sameType)
-					sameType = "";
-				
-				//show the rallypoint for that entity
-				if(entity is IUnitSpawner){
-					if(IUnitSpawner(entity).rallypoint){
-						showRallyPoint(entity.position, IUnitSpawner(entity).rallypoint);
-					}
-				}
-				
-				//here we determine what set of action buttons we can show
-				//based on matching action buttons
-				var counter:int = 0;
-				var deleteArray:Array = new Array();
-				
-				for each(var actionButton1:ActionButtonVO in matchingActionButtons) {
-					if(entity.actionButtons.indexOf(actionButton1, 0) == -1)
-						deleteArray.push(actionButton1);								
-				}
-				for each(var actionButton2:ActionButtonVO in deleteArray)
-					deleteArray.splice(actionButton2, 1);
-			}	
-			
-			
-			//if all of the entity types are the same, we show the upgrade options
-			//if not,then we show the generic matching action buttons
-			if (sameType == "") {
-				
-			}
-			else {
-				
-			}
-				
-				
-				
-			/*_selectorPanel = new SelectorPanel(matchingActionButtons, entitiesVector[entitiesVector.length - 1].position);
-			/*_selectorPanel.addEventListener("selectorPanelEvent", onSelectorTouched);*/
-			/*_selectorPanel.x = entitiesVector[entitiesVector.length - 1].position.x; _selectorPanel.y = entitiesVector[entitiesVector.length - 1].position.y;
-			addChild(_selectorPanel);*/
+			_selectorPanel = new SelectorPanel(entity.actionButtons, entity.position);
+			_selectorPanel.addEventListener("selectorPanelEvent", onSelectorTouched);
+			_selectorPanel.x = entity.position.x; _selectorPanel.y = entity.position.y;
+			addChild(_selectorPanel);
 			
 		}
 		
@@ -252,40 +225,33 @@ package view
 			_actionBar.updateUITurnCountdown(count);
 		}
 			
-		/*private function onSelectorTouched(e:SelectorPanelEvent):void {
+		private function onSelectorTouched(e:SelectorPanelEvent):void {
 				
 				var action:Action;
 				
-				//if more than one entity was selected, we loop through the 
-				//entities array and build the actions/signals.
-				for each(var entity:EntityVO in _clickedEntities){
-					switch(e.actionType) {
-						case "addEntity":
-							var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, entity.position);
-							action = new Action(e.actionType, newEntity);
-							break;
-						case "sell":
-							action = new Action(e.actionType, entity);
-							break;
-						case "setRallypoint":
-							//TODO change mouse cursor to a custom one
-							_status = WAITING_FOR_TARGET;
-							//action = new Action(e.actionType, entity);
-							break;
-						case "upgrade":
-							var entity2:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, entity.position);
-							entity2.id = entity.id;
-							entity2.parentContainer = entity.parentContainer;
-							action = new Action(e.actionType, entity2);
-							
-							break;
-					}
-					dispatchSignal(action);
+				switch(e.actionType) {
+					case "addEntity":
+						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, _clickedEntity.position);
+						action = new Action(e.actionType, newEntity);
+						break;
+					case "sell":
+						action = new Action(e.actionType, _clickedEntity);
+						break;
+					case "setRallypoint":
+						//TODO change mouse cursor to a custom one
+						_status = WAITING_FOR_TARGET;
+						//action = new Action(e.actionType, entity);
+						break;
+					case "upgrade":
+						var entity2:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, _clickedEntity.position);
+						entity2.id = _clickedEntity.id;
+						entity2.parentContainer = _clickedEntity.parentContainer;
+						action = new Action(e.actionType, entity2);
+						break;
 				}
-			
-				
+			dispatchSignal(action);
 			removeEntityUI();
-		}*/
+		}
 		
 		private function dispatchSignal(action:Action):void {
 			if(action.type == "addEntity" && IBuyableEntity(action.entity).cost > _manager.getPlayerGold()) {
@@ -303,8 +269,8 @@ package view
 		public function removeEntityUI():void {
 			if(!_showingEntityUI) return;
 			
-			/*removeChild(_selectorPanel);
-			_selectorPanel.dispose();*/
+			removeChild(_selectorPanel);
+			_selectorPanel.dispose();
 
 			if(_rallypointContainer){
 				removeChild(_rallypointContainer);

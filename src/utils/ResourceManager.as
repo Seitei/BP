@@ -99,6 +99,9 @@ package utils
 		
 		[Embed(source = "../assets/spawner1_mouse_btn.png")]
 		private static const Spawner1MouseBtn:Class;
+		
+		[Embed(source = "../assets/spawner1.png")]
+		private static const Spawner1:Class;
 
 		// XML //
 		
@@ -148,6 +151,8 @@ package utils
 			TextureAssets["spawner1_hover_btn"] = Spawner1HoverBtn;
 			TextureAssets["spawner1_down_btn"] = Spawner1DownBtn;
 			TextureAssets["spawner1_mouse_btn"] = Spawner1MouseBtn;
+			TextureAssets["spawner1"] = Spawner1;
+			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
 			XMLAssets["tile"] = TileXML;

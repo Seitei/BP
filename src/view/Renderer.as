@@ -41,8 +41,7 @@ package view
 		private var _spriteEntityDic:Dictionary;
 		private var _playerName:String;
 		private var _stateChangeRelatedAnimationsDic:Dictionary;
-		private var _pressingShift:Boolean;
-		private var _clickedEntitiesArray:Array;
+		private var _clickedEntity:EntityVO;
 		
 		public function Renderer()
 		{
@@ -50,28 +49,6 @@ package view
 			_stateChangeRelatedAnimationsDic = new Dictionary();
 			_manager= Manager.getInstance();
 			_playerName = _manager.getPlayerName();
-			addEventListener(Event.ADDED_TO_STAGE, init);
-			_clickedEntitiesArray = new Array();
-		}
-		
-		private function init(e:Event):void {
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyPressed);
-		}
-		
-		private function onKeyPressed(e:KeyboardEvent):void {
-			if(e.shiftKey && !_pressingShift){
-				//set the multiselection mode to true
-				_pressingShift = true;
-				_clickedEntitiesArray = new Array();
-			}
-			
-			if(!e.shiftKey) {
-				//show the timon
-				_pressingShift = false;
-				_manager.dispatchHandler(_clickedEntitiesArray, new Point(400,400));
-				_clickedEntitiesArray = new Array();
-			}
 		}
 		
 		public function renderObject(entity:EntityVO):void {
@@ -184,16 +161,8 @@ package view
 				if(mcc.skinClass.animationsDic["selected"] == true)
 					playAnimation(mcc.id, "selected");
 				
-				//if we are pressing shift we keep the entities clicked in an array
-				if(!_pressingShift){
-					_clickedEntitiesArray.push(mcc.id);
-					_manager.dispatchHandler(_clickedEntitiesArray, new Point(beganTouch.globalX, beganTouch.globalY));
-					_clickedEntitiesArray = new Array();
-				}
-				else {
-					UI.getInstance().removeEntityUI();
-					_clickedEntitiesArray.push(mcc.id);
-				}
+				//UI.getInstance().removeEntityUI();
+				_manager.dispatchHandler(mcc.id);
 				
 			}
 		}
