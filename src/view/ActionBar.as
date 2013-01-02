@@ -1,6 +1,7 @@
 package view
 {
 	import events.ButtonClickedEvent;
+	import events.ButtonTriggeredEvent;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -39,6 +40,7 @@ package view
 		private var _timeTxt:TextField;
 		private var _turnCountdownTxt:TextField;
 		private var _hesReady:Boolean;
+		private var _buttonsVector:Vector.<ExtendedButton>;
 		
 		public function set goldIncome(value:int):void
 		{
@@ -67,18 +69,22 @@ package view
 			texture = ResourceManager.getInstance().getTexture("action_bar_bg");
 			var image:Image = new Image(texture);
 			addChild(image);
+			
+			//we store here the buttons, to have acess later when we disable/enable them.
+			_buttonsVector = new Vector.<ExtendedButton>;
+			
 			initGold();
 			initGoldIncome();
 			initHp();
 			initPlusSeparator();
 			initTurnCountdown();
-			buildMyReadyButton();
+			initReadyButton();
 			
 			//entities
 			
 			initCannonButton();
 			
-			
+			//enableButtons(false);
 		}
 		
 		private function initCannonButton():void {
@@ -96,21 +102,59 @@ package view
 			);
 			
 			spawner1Btn.x = 3;
-			spawner1Btn.y = 80;
+			spawner1Btn.y = 81;
 			addChild(spawner1Btn);
-			spawner1Btn.addEventListener(TouchEvent.TOUCH, onTouch);
-			
+			spawner1Btn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
+
+			_buttonsVector.push(spawner1Btn);
 		}
 	
+		/*public function updateReadyButton(state:String):void {
+			_hesReady = true;
+			_myReadyButton.upState = ResourceManager.getInstance().getTexture("button_ready_" + state);
+		}*/
 		
-		private function onTouch(e:TouchEvent):void {
+		private function initReadyButton():void {
+			var readyButton:ActionButton = new ActionButton(
+				ResourceManager.getInstance().getTexture("ready_up_btn"), 
+				"ready", 
+				"",
+				null,
+				null,
+				"",
+				ResourceManager.getInstance().getTexture("ready_up_btn"), 
+				ResourceManager.getInstance().getTexture("ready_up_btn"),
+				ResourceManager.getInstance().getTexture("ready_up_btn")
+			);
 			
-			var touch:Touch = e.touches[0];
-			var ab:ActionButton = ActionButton(e.currentTarget);
-			if(touch.phase == "began"){
-					
-				dispatchEvent(new ButtonClickedEvent(ButtonClickedEvent.BUTTON_CLICKED_EVENT, new Point(touch.globalX, touch.globalY), ab.actionType, ab.entityType, ab.mouseCursorTexture ,true)); 
+			readyButton.x = 3;
+			readyButton.y = 129;
+			addChild(readyButton);
+			readyButton.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onReadyButtonTouched);
+			
+			_buttonsVector.push(readyButton);
+		}
+		
+		//if its not your turn, the buttons are disabled
+		public function enableButtons(bool:Boolean):void {
+			for each(var button:ExtendedButton in _buttonsVector){
+				button.enabled = bool;
 			}
+		}
+		
+		
+		private function onReadyButtonTouched(e:ButtonTriggeredEvent):void {
+			
+			var ab:ActionButton = ActionButton(e.currentTarget);
+			dispatchEvent(new Event("ReadyEvent", true)); 
+		}
+		
+		
+		private function onEntityButtonTouched(e:ButtonTriggeredEvent):void {
+			
+			var ab:ActionButton = ActionButton(e.currentTarget);
+			dispatchEvent(new ButtonClickedEvent(ButtonClickedEvent.BUTTON_CLICKED_EVENT, e.clickedPosition, ab.actionType, ab.entityType, ab.mouseCursorTexture ,true)); 
+			
 		}
 		
 		
@@ -171,19 +215,6 @@ package view
 			_hpTxt.text = "";
 			_hpTxt.width = 100;
 			addChild(_hpTxt);
-		}
-		
-		public function updateReadyButton(state:String):void {
-			_hesReady = true;
-			_myReadyButton.upState = ResourceManager.getInstance().getTexture("button_ready_" + state);
-		}
-		
-		private function buildMyReadyButton():void {
-			_myReadyButton = new Button(ResourceManager.getInstance().getTexture("button_ready_0_0"));
-			_myReadyButton.x = 700;
-			_myReadyButton.y = 2;
-			addChild(_myReadyButton);
-			_myReadyButton.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
 		public function resetReadyButtons():void {

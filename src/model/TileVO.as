@@ -18,7 +18,8 @@ package model
 			skinClass.animationsDic["selected"] = true;
 			
 			//set what the entity has to show in the selector panel
-			initActionButtons();
+			//disabled for the moment
+			//initActionButtons();
 			
 		}
 		

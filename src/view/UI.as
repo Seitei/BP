@@ -98,12 +98,20 @@ package view
 			_actionBar.gold = _gold;
 			_actionBar.goldIncome = _goldIncome;
 			addChild(_actionBar);
-			_actionBar.addEventListener(ButtonClickedEvent.BUTTON_CLICKED_EVENT, onButtonClicked);	
+			_actionBar.addEventListener(ButtonClickedEvent.BUTTON_CLICKED_EVENT, onButtonClicked);
+			_actionBar.addEventListener("ReadyEvent", sendReadyEvent);
 		}
 		
+		public function sendReadyEvent(e:Event):void {
+			_manager.sendPlayerReadyEvent();
+		}
+		
+		public function enableButtons(bool:Boolean):void {
+			_actionBar.enableButtons(bool);	
+		}
+		
+		
 		private function onButtonClicked(e:ButtonClickedEvent):void {
-			
-			//_manager.sendPlayerReadyEvent();
 			
 			//here we hide the mouse and show the ghost image of the entity if the button had a mouse cursor texture set
 			if(e.mouseCursorTexture) {
@@ -320,6 +328,7 @@ package view
 			if(_state == GameStatus.COUNTDOWN_STOPPED && _showingEntityUI)
 				removeEntityUI();
 		}
+		
 		
 		public function resetUI():void {
 			_showingCountDown = false;

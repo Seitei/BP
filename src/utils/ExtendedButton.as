@@ -1,5 +1,8 @@
 package utils
 {
+	import events.ButtonTriggeredEvent;
+	
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
@@ -18,7 +21,7 @@ package utils
 	import starling.utils.VAlign;
 	
 	/** Dispatched when the user triggers the button. Bubbles. */
-	[Event(name="triggered", type="starling.events.Event")]
+	//[Event(name="triggered", type="starling.events.Event")]
 	
 	/**
 	 *  A custom button that extends the Button class that comes with Starling 
@@ -122,6 +125,9 @@ package utils
 		
 		private function onTouch(event:TouchEvent):void
 		{
+			if (!mEnabled)
+				return;
+			
 			var touch:Touch = event.getTouch(this);
 			var buttonRect:Rectangle = getBounds(stage);
 
@@ -199,7 +205,7 @@ package utils
 				}
 				
 				resetContents();
-				dispatchEventWith(Event.TRIGGERED, true);
+				dispatchEvent(new ButtonTriggeredEvent(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, new Point(touch.globalX, touch.globalY), true));
 			}
 		}
 		

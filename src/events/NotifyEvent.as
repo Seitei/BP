@@ -9,7 +9,6 @@ package events
 		public static const NOTIFY_ACTION_EVENT:String = "notifyActionEvent";
 		public static const NOTIFY_PLAYER_READY_EVENT:String = "notifyPlayerReadyEvent";
 		public static const NOTIFY_STATUS:String = "notifyStatus";
-		public static const NOTIFY_NEIGHBOR_EVENT:String = "notifyNeighborEvent";
 		private var _message:Vector.<Action>;
 		private var _connectionTimestamp:Number;
 		

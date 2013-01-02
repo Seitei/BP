@@ -3,6 +3,7 @@ package managers
 	import actions.Action;
 	
 	import events.NotifyEvent;
+	import events.NotifyNeighborConnectedEvent;
 	import events.NotifyStatusEvent;
 	
 	import flash.display.Bitmap;
@@ -72,9 +73,9 @@ package managers
 			
 			_main = Main.getInstance();
 			
-			_nc.addEventListener(NotifyEvent.NOTIFY_PLAYER_READY_EVENT, receivePlayerMessage);
+			_nc.addEventListener(NotifyEvent.NOTIFY_PLAYER_READY_EVENT, receiveReadyMessage);
 			_nc.addEventListener(NotifyEvent.NOTIFY_ACTION_EVENT, receiveActionMessage);
-			_nc.addEventListener(NotifyEvent.NOTIFY_NEIGHBOR_EVENT, buildPlayersWorld);
+			_nc.addEventListener(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, buildPlayersWorld);
 			_nc.addEventListener(NotifyStatusEvent.NOTIFY_STATUS, showStatus);
 			
 			_entityClickedSignal = new Signal(String);
@@ -129,9 +130,13 @@ package managers
 			UI.getInstance().entityClickedHandler(entity);
 		}
 		
-		public function buildPlayersWorld(event:NotifyEvent = null):void {
+		public function buildPlayersWorld(e:NotifyNeighborConnectedEvent = null):void {
 			
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
+			if(e.connectionOrder == "second"){
+				UI.getInstance().enableButtons(false);
+			}
+		
 			var bgEntity:EntityVO = new BackgroundVO(350, 350);
 			var bg_action:Action = new Action("addEntity", bgEntity);
 			handler(bg_action);
@@ -169,8 +174,6 @@ package managers
 			var timer:Timer = new Timer(200, 1);
 			timer.addEventListener(TimerEvent.TIMER, onTimer);
 			timer.start();
-				
-			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
 			
 			_main.startGame();
 		}
@@ -183,7 +186,8 @@ package managers
 			_imReady = true;
 			if(_hesReady)
 				advanceGameState();
-			_player.sendPlayerMessage(_playerName + "_placeReadyButton");
+			UI.getInstance().enableButtons(false);
+			_player.sendReadyMessage(_playerName + "_placeReadyButton");
 		}
 			
 		
@@ -204,8 +208,8 @@ package managers
 		
 		private function showStatus(e:NotifyStatusEvent):void {
 			//for fast layout tests
-			if(e.status.indexOf("NetConnection") != -1)
-				buildPlayersWorld();
+			/*if(e.status.indexOf("NetConnection") != -1)
+				buildPlayersWorld();*/
 			
 			_main.storeStatusData(e.status);
 		}
@@ -296,14 +300,14 @@ package managers
 			_gameManager.updatePlayersWorld(event.message);
 		}
 		
-		private function receivePlayerMessage(event:NotifyEvent):void {
+		private function receiveReadyMessage(event:NotifyEvent):void {
 			_hesReady = true;
-			/*if(_imReady){
+			if(_imReady){
 				advanceGameState();
-				UI.getInstance().updateReadyButton("1_1");
+				UI.getInstance().enableButtons(false);
 			}
 			else
-				UI.getInstance().updateReadyButton("0_1");*/
+				UI.getInstance().enableButtons(true);
 		}
 		
 		

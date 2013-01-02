@@ -61,18 +61,6 @@ package utils
 		[Embed(source = "../assets/bg_menu_bar.png")]
 		private static const BgMenuBar:Class;
 
-		[Embed(source = "../assets/button_ready_0_0.png")]
-		private static const ButtonReady0_0:Class;
-		
-		[Embed(source = "../assets/button_ready_1_0.png")]
-		private static const ButtonReady1_0:Class;
-		
-		[Embed(source = "../assets/button_ready_0_1.png")]
-		private static const ButtonReady0_1:Class;
-		
-		[Embed(source = "../assets/button_ready_1_1.png")]
-		private static const ButtonReady1_1:Class;
-		
 		[Embed(source = "../assets/ship.png")]
 		private static const Ship:Class;
 		
@@ -102,6 +90,9 @@ package utils
 		
 		[Embed(source = "../assets/spawner1.png")]
 		private static const Spawner1:Class;
+		
+		[Embed(source = "../assets/ready_up_btn.png")]
+		private static const ReadyUpBtn:Class;
 
 		// XML //
 		
@@ -138,10 +129,6 @@ package utils
 			TextureAssets["upgrade"] = Upgrade;
 			TextureAssets["tile"] = Tile;
 			TextureAssets["bg_menu_bar"] = BgMenuBar;
-			TextureAssets["button_ready_0_0"] = ButtonReady0_0;
-			TextureAssets["button_ready_0_1"] = ButtonReady0_1;
-			TextureAssets["button_ready_1_0"] = ButtonReady1_0;
-			TextureAssets["button_ready_1_1"] = ButtonReady1_1;
 			TextureAssets["ship"] = Ship;
 			TextureAssets["timon"] = Timon;
 			TextureAssets["building"] = Building;
@@ -151,6 +138,7 @@ package utils
 			TextureAssets["spawner1_hover_btn"] = Spawner1HoverBtn;
 			TextureAssets["spawner1_down_btn"] = Spawner1DownBtn;
 			TextureAssets["spawner1_mouse_btn"] = Spawner1MouseBtn;
+			TextureAssets["ready_up_btn"] = ReadyUpBtn;
 			TextureAssets["spawner1"] = Spawner1;
 			
 			// XMLS

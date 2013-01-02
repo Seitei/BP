@@ -3,6 +3,7 @@ package net
 	import actions.Action;
 	
 	import events.NotifyEvent;
+	import events.NotifyNeighborConnectedEvent;
 	import events.NotifyStatusEvent;
 	
 	import flash.events.EventDispatcher;
@@ -18,6 +19,7 @@ package net
 	import model.HQVO;
 	import model.ShipVO;
 	import model.SkinClass;
+	import model.Spawner1VO;
 	import model.TileVO;
 	import model.UnitVO;
 	
@@ -58,6 +60,7 @@ package net
 		registerClassAlias("BuildingTowerVO", BuildingTowerVO);
 		registerClassAlias("BuildingTowerUpgradeDamage1VO", BuildingTowerUpgradeDamage1VO); 
 		registerClassAlias("ShipVO", ShipVO);
+		registerClassAlias("Spawner1", Spawner1VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);
 		
 		private const SERVER:String = "rtmfp://p2p.rtmfp.net/"; 
@@ -99,13 +102,12 @@ package net
 				
 				//show waiting for players screen
 				
-				
 			}
 			
 			//if there is someone already waiting to play
 			else {
 				//start game
-				onPeerConnect(response[1]);
+				connectToPeer(response[1]);
 				
 			}
 		}
@@ -166,10 +168,20 @@ package net
 			//_receivingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
 			_receivingStream.client = this;
 			_receivingStream.play("data");
-			dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_NEIGHBOR_EVENT));
+			dispatchEvent(new NotifyNeighborConnectedEvent(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, "first"));
 		}
 		
-		public function sendPlayerMessage(message:String):void {
+		private function connectToPeer(farID:String):void {
+			
+			//defining the receiving stream
+			_receivingStream = new NetStream(_cirrusNc, farID);
+			//_receivingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
+			_receivingStream.client = this;
+			_receivingStream.play("data");
+			dispatchEvent(new NotifyNeighborConnectedEvent(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, "second"));
+		}
+		
+		public function sendReadyMessage(message:String):void {
 			_message = new Object();
 			_message.message = message;
 			_message.type = "player";

@@ -65,8 +65,8 @@ package
 			_buffer = new Vector.<Action>;
 		}
 		
-		public function sendPlayerMessage(message:String):void {
-			_nc.sendPlayerMessage(message);
+		public function sendReadyMessage(message:String):void {
+			_nc.sendReadyMessage(message);
 		}
 		
 		public function receiveMessage(buffer:Vector.<Action>):void {
