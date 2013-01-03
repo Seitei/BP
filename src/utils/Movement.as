@@ -41,5 +41,38 @@ package utils
 				return true;
 			}
 		}
+			
+		public static function moveInDirection(obj:Object, angle:int, speed:Number):void {
+				
+			obj.x += Math.cos(angle * (Math.PI / 180)) * speed;
+			obj.y += Math.sin(angle * (Math.PI / 180)) * speed;
+					
+			
+		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

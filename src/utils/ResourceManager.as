@@ -37,9 +37,6 @@ package utils
 		[Embed(source = "../assets/unit.png")]
 		private static const Unit:Class;
 		
-		[Embed(source = "../assets/bullet.png")]
-		private static const Bullet:Class;
-		
 		[Embed(source = "../assets/building_unit.png")]
 		private static const buildingUnit:Class;
 		
@@ -54,9 +51,6 @@ package utils
 		
 		[Embed(source = "../assets/tile.png")]
 		private static const Tile:Class;
-		
-		[Embed(source = "../assets/rallypoint.png")]
-		private static const Rallypoint:Class;
 		
 		[Embed(source = "../assets/bg_menu_bar.png")]
 		private static const BgMenuBar:Class;
@@ -93,6 +87,9 @@ package utils
 		
 		[Embed(source = "../assets/ready_up_btn.png")]
 		private static const ReadyUpBtn:Class;
+		
+		[Embed(source = "../assets/cannon_bullet.png")]
+		private static const CannonBullet:Class;
 
 		// XML //
 		
@@ -105,6 +102,9 @@ package utils
 		[Embed(source="../assets/building.xml", mimeType="application/octet-stream")]
 		public static const BuildingXML:Class;
 		
+		[Embed(source="../assets/cannon_bullet.xml", mimeType="application/octet-stream")]
+		public static const CannonBulletXML:Class;
+		
 		private var TextureAssets:Dictionary = new Dictionary();
 		private var XMLAssets:Dictionary = new Dictionary();
 		private var _textures:Dictionary = new Dictionary();
@@ -115,9 +115,7 @@ package utils
 			TextureAssets["background"] = Background;
 			TextureAssets["action_bar_bg"] = ActionBarBg;
 			TextureAssets["set_rallypoint"] = SetRallypoint;
-			TextureAssets["rallypoint"] = Rallypoint;
 			TextureAssets["unit"] = Unit;
-			TextureAssets["bullet"] = Bullet;
 			TextureAssets["building_unit"] = buildingUnit;
 			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
 			TextureAssets["building_tower"] = buildingTower;
@@ -140,9 +138,11 @@ package utils
 			TextureAssets["spawner1_mouse_btn"] = Spawner1MouseBtn;
 			TextureAssets["ready_up_btn"] = ReadyUpBtn;
 			TextureAssets["spawner1"] = Spawner1;
+			TextureAssets["cannon_bullet"] = CannonBullet;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
+			XMLAssets["cannon_bullet"] = CannonBulletXML;
 			XMLAssets["tile"] = TileXML;
 			XMLAssets["building"] = BuildingXML;
 			

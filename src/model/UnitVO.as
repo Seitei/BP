@@ -27,6 +27,7 @@ package model
 		private var _canSpawn:Boolean;
 		private var _targetRange:int;
 		private var _maxUnits:int;
+		private var _hasTarget:Boolean;
 		
 		public function UnitVO(x:int = 0, y:int = 0)
 		{
@@ -36,7 +37,7 @@ package model
 			speed = 0.5;
 			type = "unit";
 			spawnRate = 30;
-			skinClass = new SkinClass("unit");
+			skinClass = new SkinClass("unit", "iddle", true);
 			skinClass.animationsDic["iddle"] = true;
 			skinClass.animationsDic["walking"] = true;
 			_entityTypeSpawned = "bullet";
@@ -44,6 +45,16 @@ package model
 			hp = 250;
 		}
 		
+		public function get hasTarget():Boolean
+		{
+			return _hasTarget;
+		}
+
+		public function set hasTarget(value:Boolean):void
+		{
+			_hasTarget = value;
+		}
+
 		public function get maxUnits():int
 		{
 			return _maxUnits;

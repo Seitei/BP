@@ -135,22 +135,38 @@ package managers
 			
 			for each (var ent:EntityVO in entities) {
 				if(ent is IMovableEntity) {
-					if(!IMovableEntity(ent).positionDest.equals(ent.position)) {
-						Movement.moveToPoint(spriteEntities[ent.id], IMovableEntity(ent).positionDest, ent.speed, true); 
+					//if the entity has a defined target:
+					if(IMovableEntity(ent).hasTarget){
+						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {
+							Movement.moveToPoint(spriteEntities[ent.id], IMovableEntity(ent).positionDest, ent.speed, true); 
+							ent.position.x = spriteEntities[ent.id].x;
+							ent.position.y = spriteEntities[ent.id].y;
+							
+							if(ent.status == UnitStatus.IDDLE){
+								ent.status = UnitStatus.MOVING_TO_TARGET;
+								Main.getInstance().getRenderer().playAnimation(ent.id, "walking", true);
+							}
+						}
+						else {
+							if(ent.status == UnitStatus.MOVING_TO_TARGET){
+								ent.status = UnitStatus.IDDLE;
+								Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);
+							}
+						}		
+					}
+					//if not we move at 45 degrees:
+					else {
+						Movement.moveInDirection(spriteEntities[ent.id], -45, ent.speed); 
 						ent.position.x = spriteEntities[ent.id].x;
 						ent.position.y = spriteEntities[ent.id].y;
-						
-						if(ent.status == UnitStatus.IDDLE){
-							ent.status = UnitStatus.MOVING_TO_TARGET;
-							Main.getInstance().getRenderer().playAnimation(ent.id, "walking", true);
-						}
 					}
-					else {
-						if(ent.status == UnitStatus.MOVING_TO_TARGET){
-							ent.status = UnitStatus.IDDLE;
-							Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);
-						}
-					}		
+					
+					//if the bullets can go throught, we apply damage:
+					if(ent.position.y < 0 || ent.position.x > 700) {
+						removeEntity(ent);
+						Manager.getInstance().hp -= IAttack(ent).damage; 
+					}
+					
 				}
 				
 				//detect if another unit is in range

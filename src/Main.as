@@ -35,6 +35,7 @@ package
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			_renderer = Renderer.getInstance();
 			_ui = UI.getInstance(true);
+			_ui.visible = false;
 			_manager = Manager.getInstance();
 		}
 		

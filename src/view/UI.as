@@ -323,7 +323,7 @@ package view
 			}
 			
 			if(_state == GameStatus.STOPPED)
-				_actionBar.resetReadyButtons();
+				//_actionBar.resetReadyButtons();
 			
 			if(_state == GameStatus.COUNTDOWN_STOPPED && _showingEntityUI)
 				removeEntityUI();

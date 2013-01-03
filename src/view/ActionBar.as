@@ -169,9 +169,9 @@ package view
 		
 		private function initTurnCountdown():void {
 			_turnCountdownTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_turnCountdownTxt.x = 630;
+			_turnCountdownTxt.x = 3;
+			_turnCountdownTxt.y = 200;
 			_turnCountdownTxt.color = 0x00ADEE;
-			_turnCountdownTxt.y = -12;
 			_turnCountdownTxt.text = "";
 			_turnCountdownTxt.width = 100;
 			addChild(_turnCountdownTxt);
@@ -179,9 +179,9 @@ package view
 		
 		private function initGold():void {
 			_goldTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_goldTxt.x = 160;
+			_goldTxt.x = 3;
+			_goldTxt.y = 300;
 			_goldTxt.color = 0xF9E70E;
-			_goldTxt.y = -12;
 			_goldTxt.text = String(_gold);
 			_goldTxt.width = 100;
 			addChild(_goldTxt);
@@ -209,20 +209,13 @@ package view
 		
 		private function initHp():void {
 			_hpTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_hpTxt.x = 50;
+			_hpTxt.x = 3;
 			_hpTxt.color = 0xE20613;
-			_hpTxt.y = -12;
+			_hpTxt.y = 400;
 			_hpTxt.text = "";
 			_hpTxt.width = 100;
 			addChild(_hpTxt);
 		}
-		
-		public function resetReadyButtons():void {
-			_hesReady = false;
-			_myReadyButton.upState = ResourceManager.getInstance().getTexture("button_ready_0_0");
-			_myReadyButton.touchable = true;
-		}
-		
 		
 	}
 	

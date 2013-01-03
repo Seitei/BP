@@ -132,6 +132,7 @@ package managers
 		
 		public function buildPlayersWorld(e:NotifyNeighborConnectedEvent = null):void {
 			
+			UI.getInstance().visible = true;
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
 			if(e.connectionOrder == "second"){
 				UI.getInstance().enableButtons(false);
