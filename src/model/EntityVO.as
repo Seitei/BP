@@ -15,7 +15,7 @@ package model
 	{
 		private var _x:Number;
 		private var _y:Number;
-		protected var _position:Point;
+		private var _position:Point;
 		private var _skinClass:SkinClass;
 		private var _type:String = "";
 		private var _speed:Number;

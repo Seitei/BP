@@ -21,7 +21,7 @@ package model
 			position.x = x, position.y = y;
 			damage = 70;
 			type = "bullet";
-			speed = 1;
+			speed = 2;
 			skinClass = new SkinClass("cannon_bullet", "walking", true);
 			skinClass.animationsDic["walking"] = true;
 			forwardAngle = -45;

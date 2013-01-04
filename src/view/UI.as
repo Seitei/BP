@@ -21,6 +21,7 @@ package view
 	import model.ActionButtonVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
+	import model.TileVO;
 	import model.UnitVO;
 	
 	import starling.core.Starling;
@@ -30,6 +31,7 @@ package view
 	import starling.display.Sprite;
 	import starling.display.Stage;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.text.TextField;
@@ -72,6 +74,7 @@ package view
 		private var _mouseCursorImage:Image;
 		private var _actionIssued:Action;
 		private var _slotPlacementGuide:SlotPlacementGuide;
+		private var _pressingShift:Boolean;
 		
 		public function UI(showDebugData:Boolean)
 		{
@@ -82,9 +85,14 @@ package view
 			_statusArray = new Array();
 			_slotPlacementGuide = new SlotPlacementGuide();		
 			initActionbar();
-			
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 			if (showDebugData)
 				showDebugInfo();
+		}
+		
+		private function onAddedToStage(e:Event):void {
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyPressed);
 		}
 		
 		public function set hp(value:int):void
@@ -128,13 +136,9 @@ package view
 				stage.addEventListener(TouchEvent.TOUCH, onMove);
 			}
 			
-			//we show the slot placement guide if we are going to place a cannon:
-			addChild(_slotPlacementGuide);
-			/*_slotPlacementGuide.x = 350;
-			_slotPlacementGuide.y = 350;*/
-			
 			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, null);
 			_actionIssued = new Action(e.actionType, newEntity);
+			addChild(_slotPlacementGuide);
 			
 		}
 		
@@ -164,41 +168,69 @@ package view
 			_actionBar.goldIncome = value;
 		}
 		
-		public function entityClickedHandler(entity:EntityVO):void {
-			if(_status == WAITING_FOR_TARGET){
-				if(_action.entity is IUnitSpawner) {
-					//IUnitSpawner(_action.entity).rallypoint = point; 
-					//_action.target = point;
-					dispatchSignal(_action);
-					//showRallyPoint(point);					
-					_status = DEFAULT;
-				}
+		private function onKeyPressed(e:KeyboardEvent):void {
+			if(e.shiftKey && !_pressingShift){
+				_pressingShift = true;
+				//_clickedEntitiesArray = new Array();
 			}
-			else {
-				_clickedEntity = entity;
-				if(_actionIssued) {
-					_actionIssued.entity.position = _clickedEntity.position;
+			
+			if(!e.shiftKey) {
+				_pressingShift = false;
+				//_manager.dispatchHandler(_clickedEntitiesArray, new Point(400,400));
+				//_clickedEntitiesArray = new Array();
+			}
+		}
+		
+		public function entityClickedHandler(entity:EntityVO, operation:String):void {
+			if(operation == "click"){
 					
-					//restoring the mouse appearance
-					Mouse.show();
-					removeChild(_mouseCursorImage);
-					_mouseCursorImage.dispose();
-					
-					dispatchSignal(_actionIssued);
-					_actionIssued = null;
-					
-					removeChild(_slotPlacementGuide);
+				if(_status == WAITING_FOR_TARGET){
+					if(_action.entity is IUnitSpawner) {
+						//IUnitSpawner(_action.entity).rallypoint = point; 
+						//_action.target = point;
+						dispatchSignal(_action);
+						//showRallyPoint(point);					
+						_status = DEFAULT;
+					}
 				}
 				else {
-					showEntityUI(_clickedEntity);
+					_clickedEntity = entity;
+					if(_actionIssued) {
+
+						_actionIssued.entity.position = _clickedEntity.position.clone();
+						dispatchSignal(_actionIssued);
+						
+						if(_pressingShift){
+							var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.type, null);
+							_actionIssued = new Action(_actionIssued.type, newEntity);	
+						}
+						//if we are pressing shift then we can place the same unit in another slot
+						else{
+							//restoring the mouse appearance
+							Mouse.show();
+							removeChild(_mouseCursorImage);
+							_mouseCursorImage.dispose();
+							removeChild(_slotPlacementGuide);
+							_actionIssued = null;
+						}
+						
+					}
+					else {
+						showEntityUI(_clickedEntity);
+					}
 				}
+			}
+
+			if(operation == "hover"){
+				_slotPlacementGuide.turnOnOrOffRow(TileVO(entity).row, true);
+			}
+			if(operation == "hoverEnded"){
+				_slotPlacementGuide.turnOnOrOffRow(TileVO(entity).row, false);
 			}
 		}
 		
 		
 		private function showEntityUI(entity:EntityVO):void {
-			
-			
 			_showingEntityUI = true;
 			/*if(_selectorPanel)
 				removeEntityUI();*/
@@ -206,7 +238,6 @@ package view
 			_selectorPanel.addEventListener("selectorPanelEvent", onSelectorTouched);
 			_selectorPanel.x = entity.position.x; _selectorPanel.y = entity.position.y;
 			addChild(_selectorPanel);
-			
 		}
 		
 		 

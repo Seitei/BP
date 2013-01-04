@@ -29,6 +29,15 @@ package model
 		private var _maxUnits:int;
 		private var _hasTarget:Boolean;
 		private var _forwardAngle:int;
+		private var _spawningPoint:Point;
+		
+		public function set spawningPoint(value:Point):void {
+			_spawningPoint = value;	
+		}
+		
+		public function get spawningPoint():Point {
+			return _spawningPoint;
+		}
 		
 		public function UnitVO(x:int = 0, y:int = 0)
 		{

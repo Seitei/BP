@@ -30,6 +30,15 @@ package model
 		private var _targetRange:int;
 		private var _maxUnits:int;
 		private var _constructionTime:Number;
+		private var _spawningPoint:Point;
+		
+		public function set spawningPoint(value:Point):void {
+			_spawningPoint = value;	
+		}
+		
+		public function get spawningPoint():Point {
+			return _spawningPoint;
+		}
 		
 		public function BuildingTowerVO(x:int = 0, y:int = 0)
 		{
@@ -62,9 +71,6 @@ package model
 			var upgrade_armor_1:ActionButtonVO = new ActionButtonVO("upgrade_armor_1", "upgrade", "buildingTowerVOUpgradeArmor1");
 			
 			upgrade.actionButtons.push(upgrade_damage_1, upgrade_armor_1);
-			
-			
-			
 			actionButtons.push(sell, upgrade);
 		}
 		

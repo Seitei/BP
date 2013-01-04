@@ -105,6 +105,12 @@ package managers
 					action.entity.position.y = 700 - action.entity.position.y;
 					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
+					
+					if(action.entity is IUnitSpawner){
+						IUnitSpawner(action.entity).spawningPoint.x = -IUnitSpawner(action.entity).spawningPoint.x;
+						IUnitSpawner(action.entity).spawningPoint.y = -IUnitSpawner(action.entity).spawningPoint.y;
+					}
+					
 					if(action.entity is IUnitSpawner && IUnitSpawner(action.entity).rallypoint) {
 						IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 						IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;

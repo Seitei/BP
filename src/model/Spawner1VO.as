@@ -3,6 +3,7 @@ package model
 	import actions.Action;
 	
 	import flash.geom.Point;
+	import flash.net.registerClassAlias;
 	
 	import interfaces.IBuyableEntity;
 	import interfaces.IEntityVO;
@@ -27,24 +28,31 @@ package model
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
 		private var _inheritedForwardAngle:int;
+		private var _spawningPoint:Point;
 		
-		import flash.net.registerClassAlias;
+		public function set spawningPoint(value:Point):void {
+			_spawningPoint = value;	
+		}
+		
+		public function get spawningPoint():Point {
+			return _spawningPoint;
+		}		
 
 		public function Spawner1VO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
-			_rallypoint = new Point(_position.x, _position.y); 
+			_rallypoint = new Point(position.x, position.y); 
 			//TODO temporary fix
 			_rallypoint.y -= 40;
 			cost = 3;
 			canSpawn = true;
-			_spawnRate = 30;
+			_spawnRate = 60;
 			type = "spawner1";
 			speed = 0;
 			skinClass = new SkinClass("spawner1", "spawner1", false);
 			skinClass.animationsDic["spawner1"] = true;
 			hp = 500;
-			
+			_spawningPoint = new Point(18, -18);
 			//set what the entity has to show in the selector panel
 			initActionButtons();
 			
@@ -93,7 +101,7 @@ package model
 		}
 		
 		public function spawnUnit():void {
-			var entity:EntityVO = EntityFactoryVO.getInstance().makeEntity(this.owner, _entityTypeSpawned, new Point(position.x, position.y));
+			var entity:EntityVO = EntityFactoryVO.getInstance().makeEntity(this.owner, _entityTypeSpawned, new Point(position.x + _spawningPoint.x, position.y + _spawningPoint.y));
 			entity.forwardAngle += _inheritedForwardAngle;
 			entity.parentContainer = id;
 			IMovableEntity(entity).positionDest = _rallypoint;

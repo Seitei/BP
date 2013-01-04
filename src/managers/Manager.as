@@ -79,7 +79,7 @@ package managers
 			_nc.addEventListener(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, buildPlayersWorld);
 			_nc.addEventListener(NotifyStatusEvent.NOTIFY_STATUS, showStatus);
 			
-			_entityClickedSignal = new Signal(String);
+			_entityClickedSignal = new Signal(String, String);
 			_entityClickedSignal.add(entityClickedSignalhandler);
 			
 		}
@@ -121,14 +121,15 @@ package managers
 			return _player.name;
 		}
 		
-		public function dispatchHandler(clickedEntityId:String):void {
+		public function dispatchHandler(clickedEntityId:String, operation:String):void {
 			if(_state == GameStatus.STOPPED)
-				_entityClickedSignal.dispatch(clickedEntityId);
+				_entityClickedSignal.dispatch(clickedEntityId, operation);
 		}
 		
-		private function entityClickedSignalhandler(id:String):void {
+		private function entityClickedSignalhandler(id:String, operation:String):void {
 			var entity:EntityVO = WorldVO.getInstance().getEntity(id);
-			UI.getInstance().entityClickedHandler(entity);
+			UI.getInstance().entityClickedHandler(entity, operation);
+			
 		}
 		
 		public function buildPlayersWorld(e:NotifyNeighborConnectedEvent = null):void {
@@ -162,8 +163,8 @@ package managers
 					if(shipConfigurationSlots[i][j] == 1) {
 						
 						var point:Point = new Point();
-						point.x = (j * (30 + 2))  + 30;
-						point.y = (j * (30 + 2))  + 28 + 10 * 40 + i * 64;
+						point.x = (j * (30 + 2))  + 28;
+						point.y = (j * (30 + 2))  + 16 + 10 * 40 + i * 64;
 						var tile:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
 						TileVO(tile).row = j + i;
 						//tile.rotation = 45 * Math.PI / 180;

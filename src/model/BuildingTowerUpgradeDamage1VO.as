@@ -30,6 +30,15 @@ package model
 		private var _targetRange:int;
 		private var _maxUnits:int;
 		private var _constructionTime:Number;
+		private var _spawningPoint:Point;
+		
+		public function set spawningPoint(value:Point):void {
+			_spawningPoint = value;	
+		}
+		
+		public function get spawningPoint():Point {
+			return _spawningPoint;
+		}
 		
 		public function BuildingTowerUpgradeDamage1VO(x:int = 0, y:int = 0)
 		{

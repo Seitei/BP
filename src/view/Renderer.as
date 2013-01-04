@@ -76,12 +76,14 @@ package view
 				
 			mcc.x = entity.position.x; mcc.y = entity.position.y;
 			
-			if(entity.rotation)
-				mcc.rotation = entity.rotation; 
 			
 			addChild(mcc);
 			
 			mcc.pivotX = mcc.width/2; mcc.pivotY = mcc.height/2;
+
+			if(entity.rotation)
+				mcc.rotation = entity.rotation; 
+			
 			_spriteEntityDic[entity.id] = mcc;
 			
 			if(entity.owner == _playerName) {
@@ -98,6 +100,9 @@ package view
 			}
 			
 			mcc.setCurrentMovieClip(mcc.skinClass.originalMcc);
+			
+			var quad:Quad = new Quad(2, 2);
+			addChild(quad); quad.x = entity.position.x; quad.y = entity.position.y;
 		}
 		
 		public function pauseOrResumeAnimations():void {
@@ -150,13 +155,16 @@ package view
 				if(hoverTouch) {
 					
 					if(_hoveredEntity == null || mcc.id != _hoveredEntity.id) {
-						mcc.loop(false);
 						playAnimation(mcc.id, "hover");
-						_hoveredEntity = mcc;trace("hoooovvveeer");
-						_manager.dispatchHandler(mcc.id);
+						mcc.loop(false);
+						_hoveredEntity = mcc;
+						trace("hoooovvveeer");
+						_manager.dispatchHandler(mcc.id, "hover");
 					}
 				}
 				else {
+					_hoveredEntity = null;
+					_manager.dispatchHandler(mcc.id, "hoverEnded");
 					mcc.stop();
 				}
 			}
@@ -166,7 +174,7 @@ package view
 				if(mcc.skinClass.animationsDic["selected"] == true)
 					playAnimation(mcc.id, "selected");
 				
-				_manager.dispatchHandler(mcc.id);
+				_manager.dispatchHandler(mcc.id, "click");
 				
 			}
 		}

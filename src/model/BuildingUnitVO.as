@@ -14,6 +14,7 @@ package model
 	
 	import starling.core.Starling;
 	import starling.display.Sprite;
+	import flash.net.registerClassAlias;
 
 	public class BuildingUnitVO extends EntityVO implements IUnitSpawner, IBuyableEntity, ITargeteable
 	{
@@ -26,12 +27,20 @@ package model
 		private var _canSpawn:Boolean;
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
-		import flash.net.registerClassAlias;
+		private var _spawningPoint:Point;
+		
+		public function set spawningPoint(value:Point):void {
+			_spawningPoint = value;	
+		}
+		
+		public function get spawningPoint():Point {
+			return _spawningPoint;
+		}
 
 		public function BuildingUnitVO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
-			_rallypoint = new Point(_position.x, _position.y); 
+			_rallypoint = new Point(position.x, position.y); 
 			//TODO temporary fix
 			_rallypoint.y -= 40;
 			cost = 3;

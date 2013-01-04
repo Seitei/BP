@@ -14,5 +14,7 @@ package interfaces
 		function get maxUnits():int	
 		function set spawnRate(value:Number):void
 		function get spawnRate():Number
+		function set spawningPoint(value:Point):void
+		function get spawningPoint():Point
 	}
 }
