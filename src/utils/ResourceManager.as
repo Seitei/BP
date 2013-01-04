@@ -90,6 +90,15 @@ package utils
 		
 		[Embed(source = "../assets/cannon_bullet.png")]
 		private static const CannonBullet:Class;
+		
+		[Embed(source = "../assets/placement_slot_up.png")]
+		private static const PlacementSlotUp:Class;
+		
+		[Embed(source = "../assets/placement_slot_down.png")]
+		private static const PlacementSlotDown:Class;
+		
+		[Embed(source = "../assets/placement_slot_hover.png")]
+		private static const PlacementSlotHover:Class;
 
 		// XML //
 		
@@ -139,6 +148,9 @@ package utils
 			TextureAssets["ready_up_btn"] = ReadyUpBtn;
 			TextureAssets["spawner1"] = Spawner1;
 			TextureAssets["cannon_bullet"] = CannonBullet;
+			TextureAssets["placement_slot_up"] = PlacementSlotUp;
+			TextureAssets["placement_slot_down"] = PlacementSlotDown;
+			TextureAssets["placement_slot_hover"] = PlacementSlotHover;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;

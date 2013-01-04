@@ -28,6 +28,7 @@ package model
 		private var _targetRange:int;
 		private var _maxUnits:int;
 		private var _hasTarget:Boolean;
+		private var _forwardAngle:int;
 		
 		public function UnitVO(x:int = 0, y:int = 0)
 		{

@@ -102,7 +102,8 @@ package managers
 	
 				if(action.type == "addEntity" || action.type == "upgrade"){
 					action.entity.position.x = 700 - action.entity.position.x;
-					action.entity.position.y = 700 - action.entity.position.y; 
+					action.entity.position.y = 700 - action.entity.position.y;
+					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
 					if(action.entity is IUnitSpawner && IUnitSpawner(action.entity).rallypoint) {
 						IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
@@ -156,13 +157,13 @@ package managers
 					}
 					//if not we move at 45 degrees:
 					else {
-						Movement.moveInDirection(spriteEntities[ent.id], -45, ent.speed); 
+						Movement.moveInDirection(spriteEntities[ent.id], ent.forwardAngle, ent.speed); 
 						ent.position.x = spriteEntities[ent.id].x;
 						ent.position.y = spriteEntities[ent.id].y;
 					}
 					
 					//if the bullets can go throught, we apply damage:
-					if(ent.position.y < 0 || ent.position.x > 700) {
+					if(ent.position.y < 0 || ent.position.x > 700 || ent.position.y > 700 || ent.position.x < 0) {
 						removeEntity(ent);
 						Manager.getInstance().hp -= IAttack(ent).damage; 
 					}
@@ -170,7 +171,7 @@ package managers
 				}
 				
 				//detect if another unit is in range
-				if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
+				/*if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
 					IUnitSpawner(ent).canSpawn = false;
 					for each(var target:EntityVO in entities) {
 						if(target is ITargeteable && ent.owner != target.owner) {
@@ -184,29 +185,23 @@ package managers
 							}
 						}
 					}
-				}
+				}*/
 					
 				//detect collision
 				if(ent is IAttack) {
 					for each(var targetedEnt:EntityVO in entities) {
 						if(targetedEnt.owner != ent.owner && targetedEnt is ITargeteable) {
-							var rec:Rectangle = spriteEntities[ent.id].getBounds(spriteEntities[ent.id].parent);
+							if(Point.distance(ent.position, targetedEnt.position) < 20){
+							/*var rec:Rectangle = spriteEntities[ent.id].getBounds(spriteEntities[ent.id].parent);
 							var rec2:Rectangle = spriteEntities[targetedEnt.id].getBounds(spriteEntities[targetedEnt.id].parent);
-							if(rec.intersects(rec2)){
+							if(rec.intersects(rec2)){*/
 								
 								removeEntity(ent);
 								targetedEnt.hp -= IAttack(ent).damage;
 								
-								//if the HQ is getting damaged, then we pass the message to the manager
-								if(targetedEnt.type == "hq")
-									Manager.getInstance().hp = targetedEnt.hp; 
-										
-								if(targetedEnt.hp <= 0){
-									//end game if someone destroys the HQ
-									if(targetedEnt.type == "hq")
-										resetGame();
+								if(targetedEnt.hp <= 0)
 									removeEntity(targetedEnt);
-								}
+								
 							}
 						}
 					}

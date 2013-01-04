@@ -26,6 +26,8 @@ package model
 		private var _canSpawn:Boolean;
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
+		private var _inheritedForwardAngle:int;
+		
 		import flash.net.registerClassAlias;
 
 		public function Spawner1VO(x:int = 0, y:int = 0)
@@ -36,7 +38,7 @@ package model
 			_rallypoint.y -= 40;
 			cost = 3;
 			canSpawn = true;
-			spawnRate = 120;
+			_spawnRate = 30;
 			type = "spawner1";
 			speed = 0;
 			skinClass = new SkinClass("spawner1", "spawner1", false);
@@ -51,8 +53,11 @@ package model
 		private function initActionButtons():void {
 			
 			var sell:ActionButtonVO = new ActionButtonVO("sell", "sell");
-			
 			actionButtons.push(sell);
+		}
+		
+		public override function set forwardAngle(angle:int):void {
+			_inheritedForwardAngle = angle;
 		}
 		
 		public function get maxUnits():int
@@ -89,14 +94,12 @@ package model
 		
 		public function spawnUnit():void {
 			var entity:EntityVO = EntityFactoryVO.getInstance().makeEntity(this.owner, _entityTypeSpawned, new Point(position.x, position.y));
+			entity.forwardAngle += _inheritedForwardAngle;
 			entity.parentContainer = id;
 			IMovableEntity(entity).positionDest = _rallypoint;
 			var action:Action = new Action("addEntity", entity);
 			GameManager.getInstance().dispatchAction(action);
-			_currentUnits ++;
-			
-			if(_currentUnits == _maxUnits)
-				canSpawn = false;
+			//_currentUnits ++;
 		}
 		
 		public function advanceTime():void {

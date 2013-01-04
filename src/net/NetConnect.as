@@ -142,10 +142,6 @@ package net
 			
 		}
 		
-		public function send(player:int,action:int,data:Object=null):void {
-			_sendStream.send("handler", player, action, data);
-		}
-		
 		private function onCirrusConnect():void {
 			//connecting to amfphp
 			_amfphpNc = new NetConnection();
@@ -194,6 +190,12 @@ package net
 		}
 		
 		public function handler(message:Object):void {
+			
+			for each ( var action:Action in message.data) {
+				if(action.entity.type == "spawner1")
+					sendStatus("SPAWNER!");
+			}
+			
 			if(message.type == "action")
 				dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_ACTION_EVENT, message.data));
 			if(message.type == "player")
@@ -207,6 +209,11 @@ package net
 			byteArray.writeObject(data);
 			byteArray.position = 0;
 			var object:Object = byteArray.readObject();*/ 
+			
+			for each ( var action:Action in data) {
+			if(action.entity.type == "spawner1")
+				sendStatus("SPAWNER!");
+			}
 			
 			_message = new Object();
 			_message.data = data;

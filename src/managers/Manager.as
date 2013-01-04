@@ -21,6 +21,7 @@ package managers
 	import model.EntityVO;
 	import model.ShipVO;
 	import model.SkinClass;
+	import model.TileVO;
 	import model.WorldVO;
 	
 	import net.NetConnect;
@@ -164,6 +165,7 @@ package managers
 						point.x = (j * (30 + 2))  + 30;
 						point.y = (j * (30 + 2))  + 28 + 10 * 40 + i * 64;
 						var tile:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
+						TileVO(tile).row = j + i;
 						//tile.rotation = 45 * Math.PI / 180;
 						var tile_action:Action = new Action("addEntity", tile);
 						handler(tile_action);

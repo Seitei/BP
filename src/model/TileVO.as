@@ -8,6 +8,8 @@ package model
 
 	public class TileVO extends EntityVO
 	{
+		private var _row:int;
+		
 		public function TileVO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
@@ -23,6 +25,16 @@ package model
 			
 		}
 		
+		public function get row():int
+		{
+			return _row;
+		}
+
+		public function set row(value:int):void
+		{
+			_row = value;
+		}
+
 		private function initActionButtons():void {
 
 			var main_selector_units:ActionButtonVO = new ActionButtonVO("main_selector_units", "container");

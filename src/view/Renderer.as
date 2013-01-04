@@ -41,7 +41,7 @@ package view
 		private var _spriteEntityDic:Dictionary;
 		private var _playerName:String;
 		private var _stateChangeRelatedAnimationsDic:Dictionary;
-		private var _clickedEntity:EntityVO;
+		private var _hoveredEntity:MovieClipContainer;
 		
 		public function Renderer()
 		{
@@ -148,11 +148,16 @@ package view
 			
 			if(MovieClipContainer(e.currentTarget).skinClass.animationsDic["hover"] == true && mcc.currentLabel != "selected"){
 				if(hoverTouch) {
-					mcc.loop(false);
-					playAnimation(mcc.id, "hover");
+					
+					if(_hoveredEntity == null || mcc.id != _hoveredEntity.id) {
+						mcc.loop(false);
+						playAnimation(mcc.id, "hover");
+						_hoveredEntity = mcc;trace("hoooovvveeer");
+						_manager.dispatchHandler(mcc.id);
+					}
 				}
 				else {
-					mcc.stop();var mc:MovieClip;
+					mcc.stop();
 				}
 			}
 			
@@ -161,7 +166,6 @@ package view
 				if(mcc.skinClass.animationsDic["selected"] == true)
 					playAnimation(mcc.id, "selected");
 				
-				//UI.getInstance().removeEntityUI();
 				_manager.dispatchHandler(mcc.id);
 				
 			}

@@ -27,6 +27,7 @@ package model
 		private var _buff:IBuff;
 		private var _owner:String;
 		private var _rotation:Number;
+		private var _forwardAngle:int;
 		private var _actionButtons:Vector.<ActionButtonVO>;
 		
 		
@@ -37,6 +38,16 @@ package model
 			_rotation = 0;
 		}
 		
+		public function get forwardAngle():int
+		{
+			return _forwardAngle;
+		}
+
+		public function set forwardAngle(value:int):void
+		{
+			_forwardAngle = value;
+		}
+
 		public function get actionButtons():Vector.<ActionButtonVO>
 		{
 			return _actionButtons;
