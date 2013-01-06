@@ -127,8 +127,12 @@ package managers
 			
 			UI.getInstance().visible = true;
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
-			if(e.connectionOrder == "second"){
-				UI.getInstance().enableButtons(false);
+			//tests only
+			//if(e) return;
+			if(e){
+				if(e.connectionOrder == "second"){
+					UI.getInstance().enableButtons(false);
+				}
 			}
 		
 			var bgEntity:EntityVO = new BackgroundVO(350, 350);
@@ -203,8 +207,10 @@ package managers
 		
 		private function showStatus(e:NotifyStatusEvent):void {
 			//for fast layout tests
-			/*if(e.status.indexOf("NetConnection") != -1)
-				buildPlayersWorld();*/
+			/*if(e.status.indexOf("NetConnection") != -1){
+				buildPlayersWorld();
+				UI.getInstance().enableButtons(true);
+			}*/
 			
 			_main.storeStatusData(e.status);
 		}

@@ -5,6 +5,7 @@ package view
 	import actions.Action;
 	
 	import events.ButtonClickedEvent;
+	import events.ButtonTriggeredEvent;
 	import events.SelectorPanelEvent;
 	
 	import flash.events.TimerEvent;
@@ -79,12 +80,14 @@ package view
 		public function UI(showDebugData:Boolean)
 		{
 			_statusArray = new Array();
-			_slotPlacementGuide = new SlotPlacementGuide();		
+			_slotPlacementGuide = new SlotPlacementGuide();
+			_slotPlacementGuide.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onPlacementSlotTouched);
 			initActionbar();
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 			if (showDebugData)
 				showDebugInfo();
 		}
+		
 		
 		public function get enemyHp():int
 		{
@@ -200,49 +203,51 @@ package view
 			}
 		}
 		
+		private function onPlacementSlotTouched(e:ButtonTriggeredEvent):void {
+			if(_status == WAITING_FOR_TARGET){
+				if(_action.entity is IUnitSpawner) {
+					IUnitSpawner(_action.entity).rallypoint = e.clickedPosition; 
+					dispatchSignal(_action);
+					showRallyPoint(_action.entity.position, e.clickedPosition);					
+					_status = DEFAULT;
+				}		
+			}
+		}
+		
 		public function entityClickedHandler(entity:EntityVO, operation:String):void {
-			if(operation == "click"){
+		
+			if(operation == "click") {
+				
+				_clickedEntity = entity;
+				
+				if(_actionIssued) {
+				
+					_actionIssued.entity.position = _clickedEntity.position.clone();
+					dispatchSignal(_actionIssued);
 					
-				if(_status == WAITING_FOR_TARGET){
-					if(_action.entity is IUnitSpawner) {
-						//IUnitSpawner(_action.entity).rallypoint = point; 
-						//_action.target = point;
-						dispatchSignal(_action);
-						//showRallyPoint(point);					
-						_status = DEFAULT;
+					if(_pressingShift){
+						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.type, null);
+						_actionIssued = new Action(_actionIssued.type, newEntity);	
 					}
-				}
-				else {
-					_clickedEntity = entity;
-					if(_actionIssued) {
-
-						_actionIssued.entity.position = _clickedEntity.position.clone();
-						dispatchSignal(_actionIssued);
-						
-						if(_pressingShift){
-							var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.type, null);
-							_actionIssued = new Action(_actionIssued.type, newEntity);	
-						}
-						//if we are pressing shift then we can place the same unit in another slot
-						else{
-							//restoring the mouse appearance
-							Mouse.show();
-							removeChild(_mouseCursorImage);
-							_mouseCursorImage.dispose();
-							removeChild(_slotPlacementGuide);
-							_actionIssued = null;
-						}
-						
-					}
+					//if we are pressing shift then we can place the same unit in another slot
 					else {
-						showEntityUI(_clickedEntity);
+						//restoring the mouse appearance
+						Mouse.show();
+						removeChild(_mouseCursorImage);
+						_mouseCursorImage.dispose();
+						removeChild(_slotPlacementGuide);
+						_actionIssued = null;
 					}
+				}		
+				else {
+					showEntityUI(_clickedEntity);
 				}
 			}
 
 			if(operation == "hover"){
 				_slotPlacementGuide.turnOnOrOffRow(TileVO(entity).row, true);
 			}
+			
 			if(operation == "hoverEnded"){
 				_slotPlacementGuide.turnOnOrOffRow(TileVO(entity).row, false);
 			}
@@ -250,9 +255,11 @@ package view
 		
 		
 		private function showEntityUI(entity:EntityVO):void {
+			if(entity.actionButtons == null) return;
 			_showingEntityUI = true;
 			/*if(_selectorPanel)
 				removeEntityUI();*/
+			
 			_selectorPanel = new SelectorPanel(entity.actionButtons, entity.position);
 			_selectorPanel.addEventListener("selectorPanelEvent", onSelectorTouched);
 			_selectorPanel.x = entity.position.x; _selectorPanel.y = entity.position.y;
@@ -303,10 +310,13 @@ package view
 					case "sell":
 						action = new Action(e.actionType, _clickedEntity);
 						break;
+					//if the action type is setRallyPoint, we stop the flow and wait for a target
 					case "setRallypoint":
-						//TODO change mouse cursor to a custom one
 						_status = WAITING_FOR_TARGET;
-						//action = new Action(e.actionType, entity);
+						_action = new Action(e.actionType, _clickedEntity);
+						addChild(_slotPlacementGuide);
+						removeEntityUI();
+						return;
 						break;
 					case "upgrade":
 						var entity2:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, _clickedEntity.position);

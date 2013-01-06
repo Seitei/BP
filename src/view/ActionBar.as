@@ -158,7 +158,6 @@ package view
 		
 		
 		private function onReadyButtonTouched(e:ButtonTriggeredEvent):void {
-			
 			var ab:ActionButton = ActionButton(e.currentTarget);
 			dispatchEvent(new Event("ReadyEvent", true)); 
 		}

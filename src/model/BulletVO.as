@@ -13,7 +13,6 @@ package model
 	{
 		private var _positionDest:Point;
 		private var _damage:int;
-		private var _hasTarget:Boolean;
 		private var _forwardAngle:int;
 		
 		public function BulletVO(x:int = 0, y:int = 0)
@@ -27,16 +26,6 @@ package model
 			forwardAngle = -45;
 		}
 		
-		public function get hasTarget():Boolean
-		{
-			return _hasTarget;
-		}
-
-		public function set hasTarget(value:Boolean):void
-		{
-			_hasTarget = value;
-		}
-
 		public function get positionDest():Point
 		{
 			return _positionDest;

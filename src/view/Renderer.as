@@ -42,6 +42,7 @@ package view
 		private var _playerName:String;
 		private var _stateChangeRelatedAnimationsDic:Dictionary;
 		private var _hoveredEntity:MovieClipContainer;
+		private var _enemyEntitiesContainer:Sprite;
 		
 		public function Renderer()
 		{
@@ -49,6 +50,13 @@ package view
 			_stateChangeRelatedAnimationsDic = new Dictionary();
 			_manager= Manager.getInstance();
 			_playerName = _manager.getPlayerName();
+			_enemyEntitiesContainer = new Sprite();
+			addChild(_enemyEntitiesContainer);
+			_enemyEntitiesContainer.pivotX = 350;
+			_enemyEntitiesContainer.pivotY = 350;
+			_enemyEntitiesContainer.rotation = 180 * Math.PI / 180;
+			_enemyEntitiesContainer.x = 350;
+			_enemyEntitiesContainer.y = 350;
 		}
 		
 		public function renderObject(entity:EntityVO):void {
@@ -77,7 +85,6 @@ package view
 			mcc.x = entity.position.x; mcc.y = entity.position.y;
 			
 			
-			addChild(mcc);
 			
 			mcc.pivotX = mcc.width/2; mcc.pivotY = mcc.height/2;
 
@@ -89,6 +96,13 @@ package view
 			if(entity.owner == _playerName) {
 				mcc.addEventListener(TouchEvent.TOUCH, onTouch);
 				mcc.useHandCursor = true;
+			}
+			
+			if(entity.owner != _playerName){
+				_enemyEntitiesContainer.addChild(mcc);
+			}
+			else {
+				addChild(mcc);
 			}
 			
 			if(entity.status == UnitStatus.BUILDING) {

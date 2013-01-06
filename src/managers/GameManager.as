@@ -16,6 +16,7 @@ package managers
 	import interfaces.ITargeter;
 	import interfaces.IUnitSpawner;
 	
+	import model.BulletVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
 	import model.SkinClass;
@@ -101,12 +102,12 @@ package managers
 			for each ( var action:Action in buffer) {
 	
 				if(action.type == "addEntity" || action.type == "upgrade"){
-					action.entity.position.x = 700 - action.entity.position.x;
+				/*	action.entity.position.x = 700 - action.entity.position.x;
 					action.entity.position.y = 700 - action.entity.position.y;
 					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
-					
-					if(action.entity is IUnitSpawner){
+				*/	
+			/*		if(action.entity is IUnitSpawner){
 						IUnitSpawner(action.entity).spawningPoint.x = -IUnitSpawner(action.entity).spawningPoint.x;
 						IUnitSpawner(action.entity).spawningPoint.y = -IUnitSpawner(action.entity).spawningPoint.y;
 					}
@@ -115,10 +116,12 @@ package managers
 						IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 						IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
 					}
-				}
-				if(action.type == "setRallyPoint")
+			*/	}
+			/*	if(action.type == "setRallypoint"){
+					IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 					IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
-				
+				}
+			*/	
 				updateWorld(action);
 			}
 		}
@@ -143,7 +146,7 @@ package managers
 			for each (var ent:EntityVO in entities) {
 				if(ent is IMovableEntity) {
 					//if the entity has a defined target:
-					if(IMovableEntity(ent).hasTarget){
+					if(IMovableEntity(ent).positionDest){
 						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {
 							Movement.moveToPoint(spriteEntities[ent.id], IMovableEntity(ent).positionDest, ent.speed, true); 
 							ent.position.x = spriteEntities[ent.id].x;
@@ -156,8 +159,14 @@ package managers
 						}
 						else {
 							if(ent.status == UnitStatus.MOVING_TO_TARGET){
-								ent.status = UnitStatus.IDDLE;
-								Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);
+								IMovableEntity(ent).positionDest = null;
+								/*if(ent is BulletVO){
+									Movement.moveInDirection(spriteEntities[ent.id], ent.forwardAngle, ent.speed); 
+									ent.position.x = spriteEntities[ent.id].x;
+									ent.position.y = spriteEntities[ent.id].y;
+								}*/
+								/*ent.status = UnitStatus.IDDLE;
+								Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);*/
 							}
 						}		
 					}

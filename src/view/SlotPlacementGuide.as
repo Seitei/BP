@@ -37,10 +37,15 @@ package view
 						ResourceManager.getInstance().getTexture("placement_slot_hover")
 					);
 					
-					slot.x = (j * (30 + 2))  + 380 - (i * 32);
-					slot.y = (j * (30 + 2))  + i * 32 + 35;
-						
+					
+					slot.pivotX = slot.width / 2;
+					slot.pivotY = slot.height / 2;
+
 					slot.rotation = 45 * Math.PI / 180;
+
+					slot.x = (j * (30 + 2)) + 385 - (i * 32);
+					slot.y = (j * (30 + 2)) + i * 32 + 58;
+					
 					addChild(slot);
 					
 					_rowsArray[j][i] = slot;

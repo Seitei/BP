@@ -28,13 +28,12 @@ package model
 		private var _owner:String;
 		private var _rotation:Number;
 		private var _forwardAngle:int;
-		private var _actionButtons:Vector.<ActionButtonVO>;
+		protected var _actionButtons:Vector.<ActionButtonVO>;
 		
 		
 		public function EntityVO()
 		{
 			position = new Point();
-			_actionButtons = new Vector.<ActionButtonVO>;
 			_rotation = 0;
 		}
 		

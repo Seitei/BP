@@ -31,6 +31,9 @@ package utils
 		[Embed(source = "../assets/set_rallypoint.png")]
 		private static const SetRallypoint:Class;
 		
+		[Embed(source = "../assets/rallypoint.png")]
+		private static const Rallypoint:Class;
+		
 		[Embed(source = "../assets/upgrade.png")]
 		private static const Upgrade:Class;
 				
@@ -124,6 +127,7 @@ package utils
 			TextureAssets["background"] = Background;
 			TextureAssets["action_bar_bg"] = ActionBarBg;
 			TextureAssets["set_rallypoint"] = SetRallypoint;
+			TextureAssets["rallypoint"] = Rallypoint;
 			TextureAssets["unit"] = Unit;
 			TextureAssets["building_unit"] = buildingUnit;
 			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
