@@ -51,7 +51,6 @@ package view
 		
 		private var _clickedEntity:EntityVO;
 		private var _broadcastSignal:BroadcastSignal;
-		private var _manager:Manager;
 		private var _stateTxt:TextField;
 		private var _playerNameTxt:TextField;
 		private var _playerName:String;
@@ -66,7 +65,8 @@ package view
 		private var _action:Action;
 		private var _gold:int;
 		private var _goldIncome:int;
-		private var _hp:int;
+		private var _myHp:int;
+		private var _enemyHp:int;
 		private var _rallypointContainer:Sprite;
 		private var _statusArray:Array;
 		private var _showingEntityUI:Boolean = false;
@@ -78,10 +78,6 @@ package view
 		
 		public function UI(showDebugData:Boolean)
 		{
-			_manager = Manager.getInstance();
-			_gold = _manager.getPlayerGold();
-			_goldIncome = _manager.getPlayerGoldIncome();
-			_playerName = _manager.getPlayerName(); 
 			_statusArray = new Array();
 			_slotPlacementGuide = new SlotPlacementGuide();		
 			initActionbar();
@@ -90,29 +86,42 @@ package view
 				showDebugInfo();
 		}
 		
+		public function get enemyHp():int
+		{
+			return _enemyHp;
+		}
+
+		public function set enemyHp(value:int):void
+		{
+			_enemyHp = value;
+			_actionBar.enemyHp = _enemyHp;
+		}
+
 		private function onAddedToStage(e:Event):void {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyPressed);
 		}
 		
-		public function set hp(value:int):void
+		public function set myHp(value:int):void
 		{
-			_hp = value;
-			_actionBar.hp = _hp;
+			_myHp = value;
+			_actionBar.myHp = _myHp;
 		}
-
+		
 		private function initActionbar():void {
 			_actionBar = new ActionBar();
 			_actionBar.x = 700;
 			_actionBar.gold = _gold;
 			_actionBar.goldIncome = _goldIncome;
+			_actionBar.myHp = _myHp;
+			_actionBar.enemyHp = _enemyHp;
 			addChild(_actionBar);
 			_actionBar.addEventListener(ButtonClickedEvent.BUTTON_CLICKED_EVENT, onButtonClicked);
 			_actionBar.addEventListener("ReadyEvent", sendReadyEvent);
 		}
 		
 		public function sendReadyEvent(e:Event):void {
-			_manager.sendPlayerReadyEvent();
+			Manager.getInstance().sendPlayerReadyEvent();
 		}
 		
 		public function enableButtons(bool:Boolean):void {
@@ -171,13 +180,23 @@ package view
 		private function onKeyPressed(e:KeyboardEvent):void {
 			if(e.shiftKey && !_pressingShift){
 				_pressingShift = true;
-				//_clickedEntitiesArray = new Array();
 			}
 			
 			if(!e.shiftKey) {
 				_pressingShift = false;
-				//_manager.dispatchHandler(_clickedEntitiesArray, new Point(400,400));
-				//_clickedEntitiesArray = new Array();
+				Mouse.show();
+				removeChild(_mouseCursorImage);
+				_mouseCursorImage.dispose();
+				removeChild(_slotPlacementGuide);
+				_actionIssued = null;
+			}
+			
+			if(e.keyCode == 27){
+				Mouse.show();
+				removeChild(_mouseCursorImage);
+				_mouseCursorImage.dispose();
+				removeChild(_slotPlacementGuide);
+				_actionIssued = null;
 			}
 		}
 		
@@ -301,15 +320,15 @@ package view
 		}
 		
 		private function dispatchSignal(action:Action):void {
-			if(action.type == "addEntity" && IBuyableEntity(action.entity).cost > _manager.getPlayerGold()) {
+			if(action.type == "addEntity" && IBuyableEntity(action.entity).cost > _gold) {
 				trace("cant do bro");
 			}
 			else {
 				_broadcastSignal = new BroadcastSignal(action);
-				_broadcastSignal.signal.add(_manager.handler);
+				_broadcastSignal.signal.add(Manager.getInstance().handler);
 				_broadcastSignal.dispatch();
 				//to test stuff I send right away
-				_manager.sendActionBuffer();
+				Manager.getInstance().sendActionBuffer();
 			}
 		}
 		
@@ -394,7 +413,7 @@ package view
 				_showingCountDown = false;
 				removeChild(_countDownTxt);
 				_timer.removeEventListener(TimerEvent.TIMER, onTimer);
-				_manager.advanceGameState();
+				Manager.getInstance().advanceGameState();
 			}
 				
 		}

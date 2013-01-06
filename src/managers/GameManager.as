@@ -168,10 +168,16 @@ package managers
 						ent.position.y = spriteEntities[ent.id].y;
 					}
 					
-					//if the bullets can go throught, we apply damage:
-					if(ent.position.y < 0 || ent.position.x > 700 || ent.position.y > 700 || ent.position.x < 0) {
+					//damage to us
+					if( ent.position.y > 700 || ent.position.x < 0) {
+						Manager.getInstance().myHp -= IAttack(ent).damage;
 						removeEntity(ent);
-						Manager.getInstance().hp -= IAttack(ent).damage; 
+					}
+					
+					//damage to the enemy player
+					if(ent.position.y < 0 || ent.position.x > 700){
+						Manager.getInstance().enemyHp -= IAttack(ent).damage; 
+						removeEntity(ent);
 					}
 					
 				}

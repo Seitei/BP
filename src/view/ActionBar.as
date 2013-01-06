@@ -31,17 +31,30 @@ package view
 		private var _myReadyButton:Button;
 		private var _gold:int;
 		private var _goldIncome:int;
-		private var _hp:int;
+		private var _myHp:int;
+		private var _enemyHp:int;
 		private var _goldTxt:TextField;
 		private var _goldIncomeTxt:TextField;
 		private var _plusSeparatorTxt:TextField;
-		private var _hpTxt:TextField;
+		private var _myHpTxt:TextField;
+		private var _enemyHpTxt:TextField;
 		private var _time:int;
 		private var _timeTxt:TextField;
 		private var _turnCountdownTxt:TextField;
 		private var _hesReady:Boolean;
 		private var _buttonsVector:Vector.<ExtendedButton>;
 		
+		public function get enemyHp():int
+		{
+			return _enemyHp;
+		}
+
+		public function set enemyHp(value:int):void
+		{
+			_enemyHp = value;
+			_enemyHpTxt.text = String(value);
+		}
+
 		public function set goldIncome(value:int):void
 		{
 			_goldIncome = value;
@@ -58,9 +71,9 @@ package view
 			_goldTxt.text = String(_gold);
 		}
 		
-		public function set hp(value:int):void {
-			_hp = value;
-			_hpTxt.text = String(value);
+		public function set myHp(value:int):void {
+			_myHp = value;
+			_myHpTxt.text = String(value);
 		}
 		
 		public function ActionBar() {
@@ -75,7 +88,8 @@ package view
 			
 			initGold();
 			initGoldIncome();
-			initHp();
+			initMyHp();
+			initEnemyHp();
 			initPlusSeparator();
 			initTurnCountdown();
 			initReadyButton();
@@ -178,43 +192,47 @@ package view
 		}
 		
 		private function initGold():void {
-			_goldTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_goldTxt.x = 3;
-			_goldTxt.y = 300;
+			_goldTxt = new TextField(50, 30, "3", "ObelixPro", 16, 0, false);
+			_goldTxt.x = 15;
+			_goldTxt.y = 0;
 			_goldTxt.color = 0xF9E70E;
 			_goldTxt.text = String(_gold);
-			_goldTxt.width = 100;
 			addChild(_goldTxt);
 		}
 		
+		private function initGoldIncome():void {
+			_goldIncomeTxt = new TextField(50, 30, "", "ObelixPro", 16, 0, false);
+			_goldIncomeTxt.x = 50;
+			_goldIncomeTxt.color = 0x44D63C;
+			_goldIncomeTxt.y = 0;
+			_goldIncomeTxt.text = String(_goldIncome);
+			addChild(_goldIncomeTxt);
+		}
+
 		private function initPlusSeparator():void {
-			_plusSeparatorTxt = new TextField(150, 50, "3", "ObelixPro", 14, 0, false);
-			_plusSeparatorTxt.x = 180;
+			_plusSeparatorTxt = new TextField(20, 30, "+", "ObelixPro", 14, 0, false);
+			_plusSeparatorTxt.x = 50;
 			_plusSeparatorTxt.color = 0xFFFFFF;
-			_plusSeparatorTxt.y = -12;
-			_plusSeparatorTxt.text = "+";
-			_plusSeparatorTxt.width = 100;
+			_plusSeparatorTxt.y = 0;
 			addChild(_plusSeparatorTxt);
 		}
 		
-		private function initGoldIncome():void {
-			_goldIncomeTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_goldIncomeTxt.x = 200;
-			_goldIncomeTxt.color = 0x44D63C;
-			_goldIncomeTxt.y = -12;
-			_goldIncomeTxt.text = String(_goldIncome);
-			_goldIncomeTxt.width = 100;
-			addChild(_goldIncomeTxt);
+		private function initMyHp():void {
+			_myHpTxt = new TextField(50, 30, "", "ObelixPro", 16, 0, false);
+			_myHpTxt.x = 43;
+			_myHpTxt.color = 0xE20613;
+			_myHpTxt.y = 26;
+			_myHpTxt.text = String(_myHp);
+			addChild(_myHpTxt);
 		}
 		
-		private function initHp():void {
-			_hpTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_hpTxt.x = 3;
-			_hpTxt.color = 0xE20613;
-			_hpTxt.y = 400;
-			_hpTxt.text = "";
-			_hpTxt.width = 100;
-			addChild(_hpTxt);
+		private function initEnemyHp():void {
+			_enemyHpTxt = new TextField(50, 30, "400", "ObelixPro", 16, 0, false);
+			_enemyHpTxt.x = 43;
+			_enemyHpTxt.color = 0xE20613;
+			_enemyHpTxt.y = 52;
+			_enemyHpTxt.text = String(_enemyHp);
+			addChild(_enemyHpTxt);
 		}
 		
 	}

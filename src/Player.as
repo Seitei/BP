@@ -16,16 +16,28 @@ package
 		private var _gold:int;
 		private var _goldIncome:int;
 		private var _name:String;
+		private var _hp:int;
 		
 		public function Player(name:String, nc:NetConnect)
 		{
 			_name = name;
 			_nc = nc;
-			_gold = 500;
+			_gold = 100;
+			_hp = 500;
 			_goldIncome = 8;
 			_buffer = new Vector.<Action>;
 		}
 		
+		public function get hp():int
+		{
+			return _hp;
+		}
+
+		public function set hp(value:int):void
+		{
+			_hp = value;
+		}
+
 		public function get name():String
 		{
 			return _name;

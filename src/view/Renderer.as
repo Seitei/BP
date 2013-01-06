@@ -101,8 +101,8 @@ package view
 			
 			mcc.setCurrentMovieClip(mcc.skinClass.originalMcc);
 			
-			var quad:Quad = new Quad(2, 2);
-			addChild(quad); quad.x = entity.position.x; quad.y = entity.position.y;
+			/*var quad:Quad = new Quad(2, 2);
+			addChild(quad); quad.x = entity.position.x; quad.y = entity.position.y;*/
 		}
 		
 		public function pauseOrResumeAnimations():void {

@@ -60,15 +60,20 @@ package managers
 		private var _playerName:String;
 		private var _imReady:Boolean;
 		private var _hesReady:Boolean;
-		private var _hp:int;
+		private var _myHp:int;
+		
+		//for the moment, the starter value of the enemy HP is hardcoded to 500
+		private var _enemyHp:int = 500;
 		
 		public function Manager()
 		{
 			//TODO receive from server
 			_playerName = "Player_" + String(int(1000 * Math.random())) + "_";
-			
 			_nc = new NetConnect();
-			_player = new Player(_playerName, _nc);
+			_player = new Player(_playerName, _nc); 
+			_gold = _player.gold;
+			_goldIncome = _player.goldIncome;
+			_myHp = _player.hp;
 			_gameManager = GameManager.getInstance();
 			_gameManager.playerName = _player.name;
 			
@@ -81,32 +86,18 @@ package managers
 			
 			_entityClickedSignal = new Signal(String, String);
 			_entityClickedSignal.add(entityClickedSignalhandler);
+			initUI();
 			
 		}
 		
-		public function get hp():int
-		{
-			return _hp;
-		}
-
-		public function set hp(value:int):void
-		{
-			_hp = value;
-			UI.getInstance().hp = _hp;
-		}
-
-		public function get goldIncome():int
-		{
-			return _goldIncome;
-		}
-
-		public function set goldIncome(value:int):void
-		{
-			_goldIncome = value;
-			_player.goldIncome = value;
+		private function initUI():void {
+			UI.getInstance().gold = _gold;
+			UI.getInstance().myHp = _myHp;
+			UI.getInstance().enemyHp = _enemyHp;
 			UI.getInstance().goldIncome = _goldIncome;
+			UI.getInstance().playerName = _playerName; 
 		}
-
+		
 		public function get imReady():Boolean
 		{
 			return _imReady;
@@ -284,12 +275,46 @@ package managers
 			}
 		}
 		
-		public function getPlayerGold():int {
-			_gold = _player.gold;
+		public function get enemyHp():int
+		{
+			return _enemyHp;
+		}
+		
+		public function set enemyHp(value:int):void
+		{
+			_enemyHp += value;
+			UI.getInstance().enemyHp = _enemyHp;
+		}
+		
+		public function get myHp():int
+		{
+			return _myHp;
+		}
+		
+		public function set myHp(value:int):void
+		{
+			_myHp += value;
+			_player.hp = _myHp;
+			UI.getInstance().myHp = _myHp;
+		}
+		
+		public function get goldIncome():int
+		{
+			return _goldIncome;
+		}
+		
+		public function set goldIncome(value:int):void
+		{
+			_goldIncome = value;
+			_player.goldIncome = value;
+			UI.getInstance().goldIncome = _goldIncome;
+		}
+		
+		public function get gold():int {
 			return _gold;
 		}
 		
-		public function getPlayerGoldIncome():int {
+		public function get playerGoldIncome():int {
 			_goldIncome = _player.goldIncome;
 			return _goldIncome;
 		}
