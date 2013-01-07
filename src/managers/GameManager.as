@@ -28,12 +28,14 @@ package managers
 	import starling.display.DisplayObject;
 	import starling.display.MovieClip;
 	import starling.display.Quad;
+	import starling.display.Sprite;
 	import starling.errors.AbstractClassError;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	
 	import utils.GameStatus;
 	import utils.Movement;
+	import utils.MovieClipContainer;
 	import utils.UnitStatus;
 	
 	import view.SpriteEntity;
@@ -85,7 +87,7 @@ package managers
 					removeEntity(action.entity);
 					break;
 				case "setRallypoint":
-					_world.updateEntity(action.entity);
+					_world.updateEntity(action.entity, "rallypoint", IUnitSpawner(action.entity).rallypoint );
 					break;
 				case "upgrade":
 					Main.getInstance().getRenderer().removeEntity(action.entity.id);
@@ -102,12 +104,12 @@ package managers
 			for each ( var action:Action in buffer) {
 	
 				if(action.type == "addEntity" || action.type == "upgrade"){
-				/*	action.entity.position.x = 700 - action.entity.position.x;
+					action.entity.position.x = 700 - action.entity.position.x;
 					action.entity.position.y = 700 - action.entity.position.y;
 					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
-				*/	
-			/*		if(action.entity is IUnitSpawner){
+					
+					if(action.entity is IUnitSpawner){
 						IUnitSpawner(action.entity).spawningPoint.x = -IUnitSpawner(action.entity).spawningPoint.x;
 						IUnitSpawner(action.entity).spawningPoint.y = -IUnitSpawner(action.entity).spawningPoint.y;
 					}
@@ -116,12 +118,12 @@ package managers
 						IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 						IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
 					}
-			*/	}
-			/*	if(action.type == "setRallypoint"){
+				}
+				if(action.type == "setRallypoint"){
 					IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 					IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
 				}
-			*/	
+				
 				updateWorld(action);
 			}
 		}
@@ -145,12 +147,13 @@ package managers
 			
 			for each (var ent:EntityVO in entities) {
 				if(ent is IMovableEntity) {
+					var mcc:MovieClipContainer = spriteEntities[ent.id];
 					//if the entity has a defined target:
 					if(IMovableEntity(ent).positionDest){
 						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {
-							Movement.moveToPoint(spriteEntities[ent.id], IMovableEntity(ent).positionDest, ent.speed, true); 
-							ent.position.x = spriteEntities[ent.id].x;
-							ent.position.y = spriteEntities[ent.id].y;
+							Movement.moveToPoint(mcc, IMovableEntity(ent).positionDest, ent.speed, true); 
+							ent.position.x = mcc.x;
+							ent.position.y = mcc.y;
 							
 							if(ent.status == UnitStatus.IDDLE){
 								ent.status = UnitStatus.MOVING_TO_TARGET;
@@ -172,9 +175,9 @@ package managers
 					}
 					//if not we move at 45 degrees:
 					else {
-						Movement.moveInDirection(spriteEntities[ent.id], ent.forwardAngle, ent.speed); 
-						ent.position.x = spriteEntities[ent.id].x;
-						ent.position.y = spriteEntities[ent.id].y;
+						Movement.moveInDirection(mcc, ent.forwardAngle, ent.speed); 
+						ent.position.x = mcc.x;
+						ent.position.y = mcc.y;
 					}
 					
 					//damage to us
@@ -192,7 +195,7 @@ package managers
 				}
 				
 				//detect if another unit is in range
-				/*if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
+				if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
 					IUnitSpawner(ent).canSpawn = false;
 					for each(var target:EntityVO in entities) {
 						if(target is ITargeteable && ent.owner != target.owner) {
@@ -206,17 +209,14 @@ package managers
 							}
 						}
 					}
-				}*/
+				}
 					
 				//detect collision
-				if(ent is IAttack) {
+				/*if(ent is IAttack) {
 					for each(var targetedEnt:EntityVO in entities) {
 						if(targetedEnt.owner != ent.owner && targetedEnt is ITargeteable) {
+							trace(targetedEnt.position);
 							if(Point.distance(ent.position, targetedEnt.position) < 20){
-							/*var rec:Rectangle = spriteEntities[ent.id].getBounds(spriteEntities[ent.id].parent);
-							var rec2:Rectangle = spriteEntities[targetedEnt.id].getBounds(spriteEntities[targetedEnt.id].parent);
-							if(rec.intersects(rec2)){*/
-								
 								removeEntity(ent);
 								targetedEnt.hp -= IAttack(ent).damage;
 								
@@ -226,7 +226,7 @@ package managers
 							}
 						}
 					}
-				}
+				}*/
 				
 				if(ent is IUnitSpawner) {
 					if(IUnitSpawner(ent).canSpawn){

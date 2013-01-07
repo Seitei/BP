@@ -51,15 +51,23 @@ package model
 			return _entitiesDic;
 		}
 
-		public function updateEntity(entity:EntityVO):void {
-			_entitiesDic[entity.id] = entity;
+		public function updateEntity(entity:EntityVO, property:String = "", value:* = null):void {
+			
 			var count:int= 0;
 			for each(var ent:EntityVO in _entitiesArray) {
 				if(ent.id == entity.id) {
-					_entitiesArray[count] = entity;
+					if(property == ""){
+						_entitiesArray[count] = entity;
+						_entitiesDic[entity.id] = entity;
+					}
+					else{
+						_entitiesDic[entity.id][property] = value;
+						_entitiesArray[count][property] = value;
+					}
 					break;
 				}
 				count++;
+			
 			}
 		}
 		
