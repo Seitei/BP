@@ -266,8 +266,7 @@ package view
 			addChild(_selectorPanel);
 		}
 		
-		 
-		private function showRallyPoint(entityPosition:Point, rallyPoint:Point):void {
+		public function showRallyPoint(entityPosition:Point, rallyPoint:Point):void {
 			_showingEntityUI = true;
 			//da line
 			_rallypointContainer = new Sprite();
@@ -404,6 +403,15 @@ package view
 			_timer.removeEventListener(TimerEvent.TIMER, onTimer);
 			removeChild(_countDownTxt);
 		}
+		
+		//when the game is playing, the UI elements have to go
+		public function removeUiElements():void {
+		
+			removeEntityUI();
+			
+		}
+		
+		
 		
 		public function showCountDown():void {
 			_showingCountDown = true;

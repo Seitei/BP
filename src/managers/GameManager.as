@@ -103,9 +103,12 @@ package managers
 			
 			for each ( var action:Action in buffer) {
 	
-				if(action.type == "addEntity" || action.type == "upgrade"){
+				if(action.entity){
 					action.entity.position.x = 700 - action.entity.position.x;
 					action.entity.position.y = 700 - action.entity.position.y;
+				}
+				
+				if(action.type == "addEntity" || action.type == "upgrade"){
 					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
 					
@@ -122,6 +125,7 @@ package managers
 				if(action.type == "setRallypoint"){
 					IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 					IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
+					Manager.getInstance().getUI().showRallyPoint(action.entity.position, IUnitSpawner(action.entity).rallypoint);
 				}
 				
 				updateWorld(action);
@@ -182,13 +186,13 @@ package managers
 					
 					//damage to us
 					if( ent.position.y > 700 || ent.position.x < 0) {
-						Manager.getInstance().myHp -= IAttack(ent).damage;
+						Manager.getInstance().updateMyHp(-IAttack(ent).damage);
 						removeEntity(ent);
 					}
 					
 					//damage to the enemy player
 					if(ent.position.y < 0 || ent.position.x > 700){
-						Manager.getInstance().enemyHp -= IAttack(ent).damage; 
+						Manager.getInstance().updateEnemyHp(-IAttack(ent).damage); 
 						removeEntity(ent);
 					}
 					

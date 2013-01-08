@@ -61,6 +61,7 @@ package managers
 		private var _imReady:Boolean;
 		private var _hesReady:Boolean;
 		private var _myHp:int;
+		private var _ui:UI;
 		
 		//for the moment, the starter value of the enemy HP is hardcoded to 500
 		private var _enemyHp:int = 500;
@@ -95,7 +96,8 @@ package managers
 			UI.getInstance().myHp = _myHp;
 			UI.getInstance().enemyHp = _enemyHp;
 			UI.getInstance().goldIncome = _goldIncome;
-			UI.getInstance().playerName = _playerName; 
+			UI.getInstance().playerName = _playerName;
+			_ui = UI.getInstance();
 		}
 		
 		public function get imReady():Boolean
@@ -204,6 +206,9 @@ package managers
 			buildPlayersWorld();
 		}
 		
+		public function getUI():UI {
+			return _ui;
+		}
 		
 		private function showStatus(e:NotifyStatusEvent):void {
 			//for fast layout tests
@@ -260,8 +265,10 @@ package managers
 			_main.state = _state;
 			UI.getInstance().state = _state;
 			
-			if(_state == GameStatus.COUNTDOWN_STOPPED && _somethingToSend) {
-				sendActionBuffer();
+			if(_state == GameStatus.COUNTDOWN_STOPPED) {
+				if( _somethingToSend)
+					sendActionBuffer();
+				UI.getInstance().removeUiElements();
 			}
 			
 			if(_state == GameStatus.STOPPED) {
@@ -286,7 +293,7 @@ package managers
 			return _enemyHp;
 		}
 		
-		public function set enemyHp(value:int):void
+		public function updateEnemyHp(value:int):void
 		{
 			_enemyHp += value;
 			UI.getInstance().enemyHp = _enemyHp;
@@ -297,7 +304,7 @@ package managers
 			return _myHp;
 		}
 		
-		public function set myHp(value:int):void
+		public function updateMyHp(value:int):void
 		{
 			_myHp += value;
 			_player.hp = _myHp;

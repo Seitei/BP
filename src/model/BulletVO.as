@@ -18,7 +18,7 @@ package model
 		public function BulletVO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
-			damage = 70;
+			damage = 3;
 			type = "bullet";
 			speed = 2;
 			skinClass = new SkinClass("cannon_bullet", "walking", true);

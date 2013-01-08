@@ -67,7 +67,6 @@ package model
 					break;
 				}
 				count++;
-			
 			}
 		}
 		
