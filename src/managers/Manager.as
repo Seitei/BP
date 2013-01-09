@@ -164,7 +164,6 @@ package managers
 						point.y = (j * (30 + 2))  + 16 + 10 * 40 + i * 64;
 						var tile:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
 						TileVO(tile).row = j + i;
-						//tile.rotation = 45 * Math.PI / 180;
 						var tile_action:Action = new Action("addEntity", tile);
 						handler(tile_action);
 					}
@@ -177,6 +176,8 @@ package managers
 			timer.start();
 			
 			_main.startGame();
+			
+			UI.getInstance().showPlanningUI(true);
 		}
 		
 		private function onTimer(e:TimerEvent):void {
@@ -268,12 +269,13 @@ package managers
 			if(_state == GameStatus.COUNTDOWN_STOPPED) {
 				if( _somethingToSend)
 					sendActionBuffer();
-				UI.getInstance().removeUiElements();
+				UI.getInstance().showPlanningUI(false);
 			}
 			
 			if(_state == GameStatus.STOPPED) {
 				updatePlayerGold(_player.goldIncome);
 				Main.getInstance().getRenderer().pauseOrResumeAnimations();
+				UI.getInstance().showPlanningUI(true);
 			}
 			
 			if(_state == GameStatus.PLAYING) {

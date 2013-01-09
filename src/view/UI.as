@@ -38,7 +38,9 @@ package view
 	import starling.text.TextField;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
+	import starling.utils.MatrixUtil;
 	
+	import utils.ExtendedButton;
 	import utils.GameStatus;
 	import utils.ResourceManager;
 	
@@ -88,6 +90,13 @@ package view
 				showDebugInfo();
 		}
 		
+		//when the game state advance to the planning state, we show the planning UI
+		public function showPlanningUI(value:Boolean):void {
+			
+			addChild(_slotPlacementGuide);
+			
+			
+		}
 		
 		public function get enemyHp():int
 		{
@@ -150,9 +159,11 @@ package view
 			
 			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, null);
 			_actionIssued = new Action(e.actionType, newEntity);
-			addChild(_slotPlacementGuide);
+			
 			
 		}
+		
+		
 		
 		private function onMove(e:TouchEvent):void {
 			var touch:Touch = e.touches[0];
@@ -190,7 +201,7 @@ package view
 				Mouse.show();
 				removeChild(_mouseCursorImage);
 				_mouseCursorImage.dispose();
-				removeChild(_slotPlacementGuide);
+				//removeChild(_slotPlacementGuide);
 				_actionIssued = null;
 			}
 			
@@ -198,7 +209,7 @@ package view
 				Mouse.show();
 				removeChild(_mouseCursorImage);
 				_mouseCursorImage.dispose();
-				removeChild(_slotPlacementGuide);
+				//removeChild(_slotPlacementGuide);
 				_actionIssued = null;
 			}
 		}
@@ -235,7 +246,7 @@ package view
 						Mouse.show();
 						removeChild(_mouseCursorImage);
 						_mouseCursorImage.dispose();
-						removeChild(_slotPlacementGuide);
+						//removeChild(_slotPlacementGuide);
 						_actionIssued = null;
 					}
 				}		
@@ -313,7 +324,7 @@ package view
 					case "setRallypoint":
 						_status = WAITING_FOR_TARGET;
 						_action = new Action(e.actionType, _clickedEntity);
-						addChild(_slotPlacementGuide);
+						//addChild(_slotPlacementGuide);
 						removeEntityUI();
 						return;
 						break;
@@ -403,15 +414,6 @@ package view
 			_timer.removeEventListener(TimerEvent.TIMER, onTimer);
 			removeChild(_countDownTxt);
 		}
-		
-		//when the game is playing, the UI elements have to go
-		public function removeUiElements():void {
-		
-			removeEntityUI();
-			
-		}
-		
-		
 		
 		public function showCountDown():void {
 			_showingCountDown = true;

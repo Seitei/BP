@@ -102,6 +102,9 @@ package utils
 		
 		[Embed(source = "../assets/placement_slot_hover.png")]
 		private static const PlacementSlotHover:Class;
+		
+		[Embed(source = "../assets/planning_bg.png")]
+		private static const PlanningBG:Class;
 
 		// XML //
 		
@@ -155,6 +158,7 @@ package utils
 			TextureAssets["placement_slot_up"] = PlacementSlotUp;
 			TextureAssets["placement_slot_down"] = PlacementSlotDown;
 			TextureAssets["placement_slot_hover"] = PlacementSlotHover;
+			TextureAssets["planning_bg"] = PlanningBG;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
