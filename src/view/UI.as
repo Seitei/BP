@@ -84,6 +84,8 @@ package view
 			_statusArray = new Array();
 			_slotPlacementGuide = new SlotPlacementGuide();
 			_slotPlacementGuide.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onPlacementSlotTouched);
+			/*_slotPlacementGuide.touchable = false;
+			_slotPlacementGuide.flatten();*/
 			initActionbar();
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 			if (showDebugData)
@@ -277,28 +279,40 @@ package view
 			addChild(_selectorPanel);
 		}
 		
+		//for the moment, using quads to draw, later an animated movieclip would be better
 		public function showRallyPoint(entityPosition:Point, rallyPoint:Point):void {
 			_showingEntityUI = true;
-			//da line
 			_rallypointContainer = new Sprite();
+
+			//first line
 			
 			var diff:Point = entityPosition.subtract(rallyPoint); 
 			var dist:Number = diff.length;
 			
-			var quad:Quad = new Quad(2, dist, 0xff5500);
+			var quad:Quad = new Quad(4, dist, 0xff5500);
 			quad.x = entityPosition.x; quad.y = entityPosition.y;
 			
 			quad.rotation = Math.atan2(diff.y, diff.x) + 90 * (Math.PI / 180);
 			_rallypointContainer.addChild(quad);
 			
-			//da point
-			var texture:Texture = ResourceManager.getInstance().getTexture("rallypoint");
+			//second line
+			var diff2:Point = rallyPoint.subtract(rallyPoint); 
+			var dist2:Number = diff.length;
 			
-			var rallypoint:Button = new Button(texture);
-			rallypoint.x = rallyPoint.x; rallypoint.y = rallyPoint.y;
-			rallypoint.pivotX = rallypoint.width/2; rallypoint.pivotY = rallypoint.width/2;
-			rallypoint.useHandCursor = false;
-			_rallypointContainer.addChild(rallypoint);
+			var quad2:Quad = new Quad(4, dist, 0xff4400);
+			quad2.x = rallyPoint.x; quad2.y = rallyPoint.y;
+			
+			quad.rotation = 45 * (Math.PI / 180);
+			_rallypointContainer.addChild(quad);
+			
+			//the arrow
+			var texture:Texture = ResourceManager.getInstance().getTexture("arrow");
+			
+			var arrowBtn:Button = new Button(texture);
+			arrowBtn.x = rallyPoint.x; arrowBtn.y = rallyPoint.y;
+			arrowBtn.pivotX = arrowBtn.width/2; arrowBtn.pivotY = arrowBtn.width/2;
+			arrowBtn.useHandCursor = false;
+			_rallypointContainer.addChild(arrowBtn);
 			
 			addChild(_rallypointContainer);
 		}
@@ -367,11 +381,13 @@ package view
 		
 		private function showDebugInfo():void {
 			_stateTxt = new TextField(100, 50, "STOPPED");
+			_stateTxt.touchable = false;
 			_stateTxt.x = -15;
 			_stateTxt.y = -10;
 			addChild(_stateTxt);
 			
 			_playerNameTxt = new TextField(100, 50, _playerName);
+			_playerNameTxt.touchable = false;
 			_playerNameTxt.x = -5;
 			_playerNameTxt.y = 5;
 			
@@ -385,6 +401,7 @@ package view
 		
 		private function showNewNetStatusLine(status:String):void {
 			var statusNetTxt:TextField = new TextField(200, 20, status, "Verdana", 10);
+			statusNetTxt.touchable = false;
 			statusNetTxt.x = 0;
 			statusNetTxt.y = 150;
 			statusNetTxt.y = 10 * _messageCount + 30;
