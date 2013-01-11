@@ -257,13 +257,13 @@ package view
 				}
 			}
 
-			if(operation == "hover"){
+			/*if(operation == "hover"){
 				_slotPlacementGuide.turnOnOrOffRow(TileVO(entity).row, true);
 			}
 			
 			if(operation == "hoverEnded"){
 				_slotPlacementGuide.turnOnOrOffRow(TileVO(entity).row, false);
-			}
+			}*/
 		}
 		
 		
@@ -285,7 +285,6 @@ package view
 			_rallypointContainer = new Sprite();
 
 			//first line
-			
 			var diff:Point = entityPosition.subtract(rallyPoint); 
 			var dist:Number = diff.length;
 			
@@ -296,14 +295,15 @@ package view
 			_rallypointContainer.addChild(quad);
 			
 			//second line
-			var diff2:Point = rallyPoint.subtract(rallyPoint); 
-			var dist2:Number = diff.length;
+			var point:Point = new Point(_slotPlacementGuide.getFirstTile(0).x, _slotPlacementGuide.getFirstTile(0).y);
+			var diff2:Point = rallyPoint.subtract(point); 
+			var dist2:Number = diff2.length;
 			
-			var quad2:Quad = new Quad(4, dist, 0xff4400);
+			var quad2:Quad = new Quad(4, dist2, 0x00FF00);
 			quad2.x = rallyPoint.x; quad2.y = rallyPoint.y;
 			
-			quad.rotation = 45 * (Math.PI / 180);
-			_rallypointContainer.addChild(quad);
+			quad2.rotation = (-135) * (Math.PI / 180);
+			_rallypointContainer.addChild(quad2);
 			
 			//the arrow
 			var texture:Texture = ResourceManager.getInstance().getTexture("arrow");

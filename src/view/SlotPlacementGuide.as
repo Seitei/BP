@@ -65,7 +65,6 @@ package view
 					}
 					
 					addChild(slot);
-					var asd:String = _rowsDesc[i];
 					_rowsDic[_rowsDesc[i]][j] = slot;
 					
 				}
@@ -78,24 +77,6 @@ package view
 		
 		}
 
-		
-		/*if(i > 5){
-		depth = (i - 5) * 2 	
-		}
-		
-		if(j > iIncrement * 2 + 11 - iIncrement - 2){
-		_rowsDic["R" + String(iIncrement)][depth - i] = slot;
-		}
-		
-		if(j > iIncrement){
-		_rowsDic[iIncrement - j - 1][i] = slot;
-		}
-		
-		else{
-		_rowsDic["L" + String(iIncrement - j)][j] = slot;
-		}*/
-		
-		
 		public function getFirstTile(row:int):ExtendedButton {
 			return _rowsDic[row][0];	
 		}
