@@ -3,6 +3,7 @@ package view
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	
 	import utils.ExtendedButton;
@@ -41,6 +42,7 @@ package view
 						ResourceManager.getInstance().getTexture("placement_slot_hover")
 					);
 					
+					slot.row = _rowsDesc[i];
 					
 					slot.pivotX = slot.width / 2;
 					slot.pivotY = slot.height / 2;
@@ -65,19 +67,20 @@ package view
 					}
 					
 					addChild(slot);
+					
 					_rowsDic[_rowsDesc[i]][j] = slot;
 					
 				}
 				
 				if(i < 6) tilesQuant += 2;
-				if(i > 5 && i < 16) tilesQuant = 11;
-				if(i > 15) tilesQuant -= 2;
+				if(i >= 5 && i < 16) tilesQuant = 11;
+				if(i >= 15) tilesQuant -= 2;
 				
 			}
 		
 		}
 
-		public function getFirstTile(row:int):ExtendedButton {
+		public function getFirstTile(row:String):ExtendedButton {
 			return _rowsDic[row][0];	
 		}
 		

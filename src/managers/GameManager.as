@@ -125,7 +125,7 @@ package managers
 				if(action.type == "setRallypoint"){
 					IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
 					IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
-					Manager.getInstance().getUI().showRallyPoint(action.entity.position, IUnitSpawner(action.entity).rallypoint);
+					Manager.getInstance().getUI().showRallyPoint(action.entity.position, IUnitSpawner(action.entity).rallypoint, "L2");
 				}
 				
 				updateWorld(action);

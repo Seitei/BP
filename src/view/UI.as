@@ -221,7 +221,7 @@ package view
 				if(_action.entity is IUnitSpawner) {
 					IUnitSpawner(_action.entity).rallypoint = e.clickedPosition; 
 					dispatchSignal(_action);
-					showRallyPoint(_action.entity.position, e.clickedPosition);					
+					showRallyPoint(_action.entity.position, e.clickedPosition, TileButton(e.target).row);					
 					_status = DEFAULT;
 				}		
 			}
@@ -280,7 +280,7 @@ package view
 		}
 		
 		//for the moment, using quads to draw, later an animated movieclip would be better
-		public function showRallyPoint(entityPosition:Point, rallyPoint:Point):void {
+		public function showRallyPoint(entityPosition:Point, rallyPoint:Point, row:String):void {
 			_showingEntityUI = true;
 			_rallypointContainer = new Sprite();
 
@@ -295,7 +295,7 @@ package view
 			_rallypointContainer.addChild(quad);
 			
 			//second line
-			var point:Point = new Point(_slotPlacementGuide.getFirstTile(0).x, _slotPlacementGuide.getFirstTile(0).y);
+			var point:Point = new Point(_slotPlacementGuide.getFirstTile(row).x, _slotPlacementGuide.getFirstTile(row).y);
 			var diff2:Point = rallyPoint.subtract(point); 
 			var dist2:Number = diff2.length;
 			
@@ -307,12 +307,13 @@ package view
 			
 			//the arrow
 			var texture:Texture = ResourceManager.getInstance().getTexture("arrow");
-			
-			var arrowBtn:Button = new Button(texture);
-			arrowBtn.x = rallyPoint.x; arrowBtn.y = rallyPoint.y;
-			arrowBtn.pivotX = arrowBtn.width/2; arrowBtn.pivotY = arrowBtn.width/2;
-			arrowBtn.useHandCursor = false;
-			_rallypointContainer.addChild(arrowBtn);
+			var arrow:Image = new Image(texture);
+			arrow.x = _slotPlacementGuide.getFirstTile(row).x;
+			arrow.y = _slotPlacementGuide.getFirstTile(row).y;
+			arrow.pivotX = arrow.width/2; arrow.pivotY = arrow.width/2;
+			arrow.rotation = 45 * Math.PI / 180;
+			arrow.useHandCursor = false;
+			_rallypointContainer.addChild(arrow);
 			
 			addChild(_rallypointContainer);
 		}
