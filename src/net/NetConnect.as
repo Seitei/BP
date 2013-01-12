@@ -11,12 +11,10 @@ package net
 	
 	import model.BackgroundVO;
 	import model.BuildingImprovementGoldVO;
-	import model.BuildingTowerUpgradeDamage1VO;
 	import model.BuildingTowerVO;
 	import model.BuildingUnitVO;
 	import model.BulletVO;
 	import model.EntityVO;
-	import model.HQVO;
 	import model.ShipVO;
 	import model.SkinClass;
 	import model.Spawner1VO;
@@ -51,14 +49,12 @@ package net
 		registerClassAlias("Dictionary", Dictionary);
 		registerClassAlias("Array", Array);
 		registerClassAlias("BackgroundVO", BackgroundVO);
-		registerClassAlias("HQVO", HQVO);
 		registerClassAlias("TileVO", TileVO);
 		registerClassAlias("SkinClass", SkinClass);
 		registerClassAlias("Boolean", Boolean);
 		registerClassAlias("UnitVO", UnitVO);
 		registerClassAlias("BulletVO", BulletVO);
 		registerClassAlias("BuildingTowerVO", BuildingTowerVO);
-		registerClassAlias("BuildingTowerUpgradeDamage1VO", BuildingTowerUpgradeDamage1VO); 
 		registerClassAlias("ShipVO", ShipVO);
 		registerClassAlias("Spawner1", Spawner1VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);

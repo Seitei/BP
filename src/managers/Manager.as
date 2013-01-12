@@ -130,7 +130,7 @@ package managers
 			UI.getInstance().visible = true;
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
 			//tests only
-			if(e) return;
+			/*if(e) return;*/
 			if(e){
 				if(e.connectionOrder == "second"){
 					UI.getInstance().enableButtons(false);
@@ -213,10 +213,10 @@ package managers
 		
 		private function showStatus(e:NotifyStatusEvent):void {
 			//for fast layout tests
-			if(e.status.indexOf("NetConnection") != -1){
+			/*if(e.status.indexOf("NetConnection") != -1){
 				buildPlayersWorld();
 				UI.getInstance().enableButtons(true);
-			}
+			}*/
 			
 			_main.storeStatusData(e.status);
 		}

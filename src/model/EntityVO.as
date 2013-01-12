@@ -2,6 +2,7 @@ package model
 {
 	import flash.geom.Point;
 	
+	import interfaces.IBehavior;
 	import interfaces.IBuff;
 	import interfaces.IEntityVO;
 	
@@ -29,12 +30,37 @@ package model
 		private var _rotation:Number;
 		private var _forwardAngle:int;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
+		protected var _behavior:Vector.<Class>;
 		
 		
 		public function EntityVO()
 		{
 			position = new Point();
 			_rotation = 0;
+		}
+		
+		public function get y():Number
+		{
+			return _y;
+		}
+
+		public function set y(value:Number):void
+		{
+			_y = value;
+		}
+
+		public function get x():Number
+		{
+			return _x;
+		}
+
+		public function set x(value:Number):void
+		{
+			_x = value;
+		}
+
+		public function loop():void {
+			
 		}
 		
 		public function get forwardAngle():int

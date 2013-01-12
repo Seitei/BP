@@ -42,9 +42,6 @@ package model
 				position = new Point();
 			
 			switch(type) {
-				case "hq":
-					entity = new HQVO(position.x, position.y);
-					break;
 				case "buildingUnit":
 					entity = new BuildingUnitVO(position.x, position.y);
 					break;
@@ -59,9 +56,6 @@ package model
 					break;
 				case "buildingTower":
 					entity = new BuildingTowerVO(position.x, position.y);
-					break;
-				case "buildingTowerUpgradeDamage1":
-					entity = new BuildingTowerUpgradeDamage1VO(position.x, position.y);
 					break;
 				case "tile":
 					entity = new TileVO(position.x, position.y);

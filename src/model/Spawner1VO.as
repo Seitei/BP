@@ -2,9 +2,12 @@ package model
 {
 	import actions.Action;
 	
+	import behaviors.Move;
+	
 	import flash.geom.Point;
 	import flash.net.registerClassAlias;
 	
+	import interfaces.IBehavior;
 	import interfaces.IBuyableEntity;
 	import interfaces.IEntityVO;
 	import interfaces.IMovableEntity;
@@ -29,6 +32,7 @@ package model
 		private var _currentUnits:int = 0;
 		private var _inheritedForwardAngle:int;
 		private var _spawningPoint:Point;
+		private var _behaviors:Vector.<IBehavior>;
 		
 		public function set spawningPoint(value:Point):void {
 			_spawningPoint = value;	
@@ -46,7 +50,7 @@ package model
 			canSpawn = true;
 			_spawnRate = 60;
 			type = "spawner1";
-			speed = 0;
+			speed = 1;
 			skinClass = new SkinClass("spawner1", "spawner1", false);
 			skinClass.animationsDic["spawner1"] = true;
 			hp = 500;
@@ -54,6 +58,22 @@ package model
 			//set what the entity has to show in the selector panel
 			initActionButtons();
 			
+			_behavior = new Vector.<Class>;
+			_behaviors = new Vector.<IBehavior>;
+			
+			_behavior.push(Move);
+			
+			
+			for (var i:int = 0; i < _behavior.length; i ++){
+				_behaviors[i] = new _behavior[i];
+			}
+			
+		}
+		
+		override public function loop():void {
+			for (var i:int = 0; i < 1; i ++){
+				_behaviors[i].loop(this);
+			}
 		}
 		
 		private function initActionButtons():void {

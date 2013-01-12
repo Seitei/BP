@@ -150,10 +150,12 @@ package managers
 			var entities:Array = _world.getEntities();
 			
 			for each (var ent:EntityVO in entities) {
-				if(ent is IMovableEntity) {
-					var mcc:MovieClipContainer = spriteEntities[ent.id];
+					
+					//var mcc:MovieClipContainer = spriteEntities[ent.id];
+					
+					ent.loop();
 					//if the entity has a defined target:
-					if(IMovableEntity(ent).positionDest){
+					/*if(IMovableEntity(ent).positionDest){
 						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {
 							Movement.moveToPoint(mcc, IMovableEntity(ent).positionDest, ent.speed, true); 
 							ent.position.x = mcc.x;
@@ -167,39 +169,39 @@ package managers
 						else {
 							if(ent.status == UnitStatus.MOVING_TO_TARGET){
 								IMovableEntity(ent).positionDest = null;
-								/*if(ent is BulletVO){
+								if(ent is BulletVO){
 									Movement.moveInDirection(spriteEntities[ent.id], ent.forwardAngle, ent.speed); 
 									ent.position.x = spriteEntities[ent.id].x;
 									ent.position.y = spriteEntities[ent.id].y;
-								}*/
-								/*ent.status = UnitStatus.IDDLE;
-								Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);*/
+								}
+								ent.status = UnitStatus.IDDLE;
+								Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);
 							}
 						}		
-					}
+					}*/
 					//if not we move at 45 degrees:
-					else {
+					/*else {
 						Movement.moveInDirection(mcc, ent.forwardAngle, ent.speed); 
 						ent.position.x = mcc.x;
 						ent.position.y = mcc.y;
-					}
+					}*/
 					
 					//damage to us
-					if( ent.position.y > 700 || ent.position.x < 0) {
+					/*if( ent.position.y > 700 || ent.position.x < 0) {
 						Manager.getInstance().updateMyHp(-IAttack(ent).damage);
 						removeEntity(ent);
-					}
+					}*/
 					
 					//damage to the enemy player
-					if(ent.position.y < 0 || ent.position.x > 700){
+					/*if(ent.position.y < 0 || ent.position.x > 700){
 						Manager.getInstance().updateEnemyHp(-IAttack(ent).damage); 
 						removeEntity(ent);
-					}
+					}*/
 					
-				}
+				
 				
 				//detect if another unit is in range
-				if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
+				/*if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
 					IUnitSpawner(ent).canSpawn = false;
 					for each(var target:EntityVO in entities) {
 						if(target is ITargeteable && ent.owner != target.owner) {
@@ -213,10 +215,10 @@ package managers
 							}
 						}
 					}
-				}
+				}*/
 					
 				//detect collision
-				if(ent is IAttack) {
+				/*if(ent is IAttack) {
 					for each(var targetedEnt:EntityVO in entities) {
 						if(targetedEnt.owner != ent.owner && targetedEnt is ITargeteable) {
 							trace(targetedEnt.position);
@@ -230,9 +232,9 @@ package managers
 							}
 						}
 					}
-				}
+				}*/
 				
-				if(ent is IUnitSpawner) {
+				/*if(ent is IUnitSpawner) {
 					if(IUnitSpawner(ent).canSpawn){
 						IUnitSpawner(ent).advanceTime();
 					}
@@ -240,7 +242,7 @@ package managers
 				
 				if(ent is IBuildeable && ent.status == UnitStatus.BUILDING) {
 					IBuildeable(ent).advanceConstructionTime();
-				}
+				}*/
 				
 				
 			}

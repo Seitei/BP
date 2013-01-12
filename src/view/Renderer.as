@@ -159,7 +159,6 @@ package view
 						playAnimation(mcc.id, "hover");
 						mcc.loop(false);
 						_hoveredEntity = mcc;
-						trace("hoooovvveeer");
 						_manager.dispatchHandler(mcc.id, "hover");
 					}
 				}
