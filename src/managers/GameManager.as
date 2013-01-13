@@ -146,12 +146,14 @@ package managers
 				updateEntities();	
 		}
 		
-		private function getEntitiesSubgroup(reqs:Array):Array {
+		private function getEntitiesSubgroup(reqs:Array, owner:String):Array {
 			
 			var entitiesSubgroup:Array = new Array();
+			
 			for(var i:int = 0; i < reqs.length; i++){
-				entitiesSubgroup.push(_world.getEntitiesSubgroup(reqs[i]));
+				entitiesSubgroup.push(_world.getEntitiesSubgroup(reqs[i], owner));
 			}
+			
 			return entitiesSubgroup;
 		}
 		
@@ -161,7 +163,7 @@ package managers
 			
 			for each (var ent:EntityVO in entities) {
 					
-					ent.loop(getEntitiesSubgroup(ent.behaviorReqs));
+					ent.loop(getEntitiesSubgroup(ent.behaviorReqs, ent.owner));
 					//if the entity has a defined target:
 					/*if(IMovableEntity(ent).positionDest){
 						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {

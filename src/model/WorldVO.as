@@ -23,10 +23,11 @@ package model
 		private static var _instance:WorldVO;
 		private var _entitiesDic:Dictionary;
 		private var _entitiesArray:Vector.<EntityVO>;
-		private var _enemyEntitiesArray:Vector.<EntityVO>;
+		private var _entitiesSoubgroupArray:Dictionary;
 		private var _unitsArray:Dictionary;
 		private var _buildingsArray:Dictionary;
 		private var _bulletsArray:Dictionary;
+		private var _playersNamesArray:Array;
 		
 		private var _counter:int = 0; 
 		private var _playerName:String;
@@ -35,7 +36,8 @@ package model
 		{
 			_entitiesDic = new Dictionary();
 			_entitiesArray = new Vector.<EntityVO>;
-			_enemyEntitiesArray = new Vector.<EntityVO>;
+			_entitiesSoubgroupArray = new Dictionary();
+			_playersNamesArray = new Array();
 		}
 
 		public function get playerName():String
@@ -80,8 +82,20 @@ package model
 			_entitiesArray.push(entity);
 			_entitiesDic[entity.id] = entity;	
 			
-			if(entity.owner != _playerName)
-				_enemyEntitiesArray.push(entity);
+			
+			
+			//TODO -> change this when ship and background gets implemented
+			if(entity.owner){
+				if((entity.owner != _playersNamesArray[0] || _playersNamesArray.length == 0) && (_playersNamesArray.length < 2)){
+					_playersNamesArray.push(entity.owner);
+					_entitiesSoubgroupArray[entity.owner] = new Vector.<EntityVO>;
+				}
+				
+				_entitiesSoubgroupArray[entity.owner].push(entity);
+				
+			}
+				
+			
 		}
 		
 		public function removeEntity(entity:EntityVO):void {
@@ -105,11 +119,22 @@ package model
 			_entitiesArray = new Vector.<EntityVO>;
 		}
 		
-		public function getEntitiesSubgroup(subgroup:String):Vector.<EntityVO> {
+		private function getEnemyName(owner:String):String {
+			if(_playersNamesArray[0] == owner)
+				return _playersNamesArray[1];
+			else
+				return _playersNamesArray[0];
+		}
+		
+		public function getEntitiesSubgroup(subgroup:String, owner:String):Vector.<EntityVO> {
 			
 			switch(subgroup) {
 				case "enemy_entities":
-					return _enemyEntitiesArray;
+					return _entitiesSoubgroupArray[getEnemyName(owner)];
+					break;
+				
+				case "ally_entities":
+					return _entitiesSoubgroupArray[owner];
 					break;
 				
 				case "all_entities":
@@ -129,11 +154,6 @@ package model
 		public function getEntities():Vector.<EntityVO> {
 			return _entitiesArray;
 		}
-		
-		public function getEnemyEntities():Vector.<EntityVO> {
-			return _enemyEntitiesArray;
-		}
-			
 		
 		public static function getInstance():WorldVO {
 			if ( !_instance)

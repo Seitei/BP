@@ -66,7 +66,7 @@ package model
 			}
 			_counter ++;
 			entity.owner = player;
-			entity.id = playerName + entity.type + _counter;
+			entity.id = player + entity.type + _counter;
 			entity.rotation = 45 * Math.PI / 180;
 			
 			if(entity is IBuildeable)
