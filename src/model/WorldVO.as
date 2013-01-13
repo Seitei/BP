@@ -7,6 +7,7 @@ package model
 	import interfaces.IEntityVO;
 	
 	import starling.display.Sprite;
+	import starling.errors.AbstractClassError;
 
 	public class WorldVO
 	{
@@ -21,7 +22,8 @@ package model
 		public var type:String = "unit";
 		private static var _instance:WorldVO;
 		private var _entitiesDic:Dictionary;
-		private var _entitiesArray:Array;
+		private var _entitiesArray:Vector.<EntityVO>;
+		private var _enemyEntitiesArray:Vector.<EntityVO>;
 		private var _unitsArray:Dictionary;
 		private var _buildingsArray:Dictionary;
 		private var _bulletsArray:Dictionary;
@@ -32,7 +34,8 @@ package model
 		public function WorldVO()
 		{
 			_entitiesDic = new Dictionary();
-			_entitiesArray = new Array();
+			_entitiesArray = new Vector.<EntityVO>;
+			_enemyEntitiesArray = new Vector.<EntityVO>;
 		}
 
 		public function get playerName():String
@@ -61,8 +64,8 @@ package model
 						_entitiesDic[entity.id] = entity;
 					}
 					else{
-						_entitiesDic[entity.id][property] = value;
 						_entitiesArray[count][property] = value;
+						_entitiesDic[entity.id][property] = value;
 					}
 					break;
 				}
@@ -76,6 +79,9 @@ package model
 			
 			_entitiesArray.push(entity);
 			_entitiesDic[entity.id] = entity;	
+			
+			if(entity.owner != _playerName)
+				_enemyEntitiesArray.push(entity);
 		}
 		
 		public function removeEntity(entity:EntityVO):void {
@@ -96,16 +102,38 @@ package model
 		}
 		public function resetContent():void {
 			_entitiesDic = new Dictionary();
-			_entitiesArray = new Array();
+			_entitiesArray = new Vector.<EntityVO>;
+		}
+		
+		public function getEntitiesSubgroup(subgroup:String):Vector.<EntityVO> {
+			
+			switch(subgroup) {
+				case "enemy_entities":
+					return _enemyEntitiesArray;
+					break;
+				
+				case "all_entities":
+					return _entitiesArray;
+					break;
+				
+				default:
+					return null;
+					break;
+			}
 		}
 		
 		public function getEntity(id:String):EntityVO {
 			return _entitiesDic[id];
 		}
 		
-		public function getEntities():Array {
+		public function getEntities():Vector.<EntityVO> {
 			return _entitiesArray;
 		}
+		
+		public function getEnemyEntities():Vector.<EntityVO> {
+			return _enemyEntitiesArray;
+		}
+			
 		
 		public static function getInstance():WorldVO {
 			if ( !_instance)

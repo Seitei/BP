@@ -24,7 +24,6 @@ package view
 	import model.ActionButtonVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
-	import model.UnitVO;
 	
 	import org.osflash.signals.natives.INativeDispatcher;
 	

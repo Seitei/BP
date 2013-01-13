@@ -42,9 +42,6 @@ package model
 				position = new Point();
 			
 			switch(type) {
-				case "buildingUnit":
-					entity = new BuildingUnitVO(position.x, position.y);
-					break;
 				case "background":
 					entity = new BackgroundVO(position.x, position.y);
 					break;
@@ -54,14 +51,8 @@ package model
 				case "buildingImprovementGold":
 					entity = new BuildingImprovementGoldVO(position.x, position.y);
 					break;
-				case "buildingTower":
-					entity = new BuildingTowerVO(position.x, position.y);
-					break;
 				case "tile":
 					entity = new TileVO(position.x, position.y);
-					break;
-				case "unit":
-					entity = new UnitVO(position.x, position.y);
 					break;
 				case "spawner1":
 					entity = new Spawner1VO(position.x, position.y);

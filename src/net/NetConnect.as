@@ -11,15 +11,12 @@ package net
 	
 	import model.BackgroundVO;
 	import model.BuildingImprovementGoldVO;
-	import model.BuildingTowerVO;
-	import model.BuildingUnitVO;
 	import model.BulletVO;
 	import model.EntityVO;
 	import model.ShipVO;
 	import model.SkinClass;
 	import model.Spawner1VO;
 	import model.TileVO;
-	import model.UnitVO;
 	
 	public class NetConnect extends EventDispatcher
 	{
@@ -43,7 +40,6 @@ package net
 		registerClassAlias("Point", Point);
 		registerClassAlias("Action", Action);
 		registerClassAlias("EntityVO", EntityVO);
-		registerClassAlias("BuildingUnitVO", BuildingUnitVO);
 		registerClassAlias("Vector", Vector);
 		registerClassAlias("Point", Point);
 		registerClassAlias("Dictionary", Dictionary);
@@ -52,9 +48,7 @@ package net
 		registerClassAlias("TileVO", TileVO);
 		registerClassAlias("SkinClass", SkinClass);
 		registerClassAlias("Boolean", Boolean);
-		registerClassAlias("UnitVO", UnitVO);
 		registerClassAlias("BulletVO", BulletVO);
-		registerClassAlias("BuildingTowerVO", BuildingTowerVO);
 		registerClassAlias("ShipVO", ShipVO);
 		registerClassAlias("Spawner1", Spawner1VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);

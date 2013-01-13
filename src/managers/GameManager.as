@@ -20,7 +20,6 @@ package managers
 	import model.EntityFactoryVO;
 	import model.EntityVO;
 	import model.SkinClass;
-	import model.UnitVO;
 	import model.WorldVO;
 	
 	import org.osflash.signals.Signal;
@@ -48,6 +47,7 @@ package managers
 		private var _world:WorldVO;
 		private var _entitySignal:Signal;
 		private var _playerName:String;
+		private var _entitiesSubgroupsDic:Dictionary;
 		
 		public function GameManager()
 		{
@@ -56,6 +56,7 @@ package managers
 			_entitySignal = new Signal(Action);
 			_entitySignal.add(updateWorld);
 			_world = WorldVO.getInstance();
+			_entitiesSubgroupsDic = new Dictionary();
 		}
 		
 		public function get world():WorldVO {
@@ -133,7 +134,7 @@ package managers
 		}
 		
 		private function renderEntities():void {
-			var entities:Array = new Array();
+			var entities:Vector.<EntityVO> = new Vector.<EntityVO>;
 			entities = _world.getEntities();
 			for each (var ent:EntityVO in entities) {
 				renderEntity(ent);	
@@ -145,15 +146,22 @@ package managers
 				updateEntities();	
 		}
 		
+		private function getEntitiesSubgroup(reqs:Array):Array {
+			
+			var entitiesSubgroup:Array = new Array();
+			for(var i:int = 0; i < reqs.length; i++){
+				entitiesSubgroup.push(_world.getEntitiesSubgroup(reqs[i]));
+			}
+			return entitiesSubgroup;
+		}
+		
 		private function updateEntities():void {
 			var spriteEntities:Dictionary = Main.getInstance().getRenderer().getSpriteEntitiesDic();
-			var entities:Array = _world.getEntities();
+			var entities:Vector.<EntityVO> = _world.getEntities();
 			
 			for each (var ent:EntityVO in entities) {
 					
-					//var mcc:MovieClipContainer = spriteEntities[ent.id];
-					
-					ent.loop();
+					ent.loop(getEntitiesSubgroup(ent.behaviorReqs));
 					//if the entity has a defined target:
 					/*if(IMovableEntity(ent).positionDest){
 						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {

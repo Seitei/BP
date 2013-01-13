@@ -23,7 +23,6 @@ package view
 	import model.EntityFactoryVO;
 	import model.EntityVO;
 	import model.TileVO;
-	import model.UnitVO;
 	
 	import starling.core.Starling;
 	import starling.display.Button;

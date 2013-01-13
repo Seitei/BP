@@ -28,17 +28,69 @@ package model
 		private var _buff:IBuff;
 		private var _owner:String;
 		private var _rotation:Number;
+		private var _entityTypeSpawned:String;
+		private var _spawningPoint:Point;
 		private var _forwardAngle:int;
+		private var _spawnRate:int;
+		
 		protected var _actionButtons:Vector.<ActionButtonVO>;
 		protected var _behavior:Vector.<Class>;
+		protected var _behaviorSteps:Vector.<IBehavior>;
+		protected var _behaviorReqs:Array;
 		
 		
 		public function EntityVO()
 		{
 			position = new Point();
 			_rotation = 0;
+			_behavior = new Vector.<Class>;
+			_behaviorSteps = new Vector.<IBehavior>;
+			_behaviorReqs = new Array();
 		}
 		
+		public function get behaviorReqs():Array
+		{
+			return _behaviorReqs;
+		}
+
+		public function get spawnRate():int
+		{
+			return _spawnRate;
+		}
+
+		public function set spawnRate(value:int):void
+		{
+			_spawnRate = value;
+		}
+
+		public function get forwardAngle():int
+		{
+			return _forwardAngle;
+		}
+
+		public function set forwardAngle(value:int):void
+		{
+			_forwardAngle = value;
+		}
+
+		public function set spawningPoint(value:Point):void {
+			_spawningPoint = value;	
+		}
+		
+		public function get spawningPoint():Point {
+			return _spawningPoint;
+		}	
+		
+		public function get entityTypeSpawned():String
+		{
+			return _entityTypeSpawned;
+		}
+
+		public function set entityTypeSpawned(value:String):void
+		{
+			_entityTypeSpawned = value;
+		}
+
 		public function get y():Number
 		{
 			return _y;
@@ -59,20 +111,10 @@ package model
 			_x = value;
 		}
 
-		public function loop():void {
+		public function loop(behaviorReqsContent:Array):void {
 			
 		}
 		
-		public function get forwardAngle():int
-		{
-			return _forwardAngle;
-		}
-
-		public function set forwardAngle(value:int):void
-		{
-			_forwardAngle = value;
-		}
-
 		public function get actionButtons():Vector.<ActionButtonVO>
 		{
 			return _actionButtons;
