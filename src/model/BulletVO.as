@@ -12,7 +12,7 @@ package model
 	
 	import starling.display.Sprite;
 
-	public class BulletVO extends EntityVO implements IMovableEntity, IAttack, ITargeteable
+	public class BulletVO extends EntityVO implements ITargeteable
 	{
 		private var _positionDest:Point;
 		private var _damage:int;

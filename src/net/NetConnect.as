@@ -155,6 +155,7 @@ package net
 			_receivingStream.client = this;
 			_receivingStream.play("data");
 			dispatchEvent(new NotifyNeighborConnectedEvent(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, "first"));
+			_connected = true;
 		}
 		
 		private function connectToPeer(farID:String):void {
@@ -165,6 +166,7 @@ package net
 			_receivingStream.client = this;
 			_receivingStream.play("data");
 			dispatchEvent(new NotifyNeighborConnectedEvent(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, "second"));
+			_connected = true;
 		}
 		
 		public function sendReadyMessage(message:String):void {

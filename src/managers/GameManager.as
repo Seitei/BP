@@ -225,22 +225,6 @@ package managers
 					}
 				}*/
 					
-				//detect collision
-				/*if(ent is IAttack) {
-					for each(var targetedEnt:EntityVO in entities) {
-						if(targetedEnt.owner != ent.owner && targetedEnt is ITargeteable) {
-							trace(targetedEnt.position);
-							if(Point.distance(ent.position, targetedEnt.position) < 20){
-								removeEntity(ent);
-								targetedEnt.hp -= IAttack(ent).damage;
-								
-								if(targetedEnt.hp <= 0)
-									removeEntity(targetedEnt);
-								
-							}
-						}
-					}
-				}*/
 				
 				/*if(ent is IUnitSpawner) {
 					if(IUnitSpawner(ent).canSpawn){

@@ -1,8 +1,10 @@
 package behavior_steps
 {
+	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
 	import interfaces.IBehavior;
+	import interfaces.ITargeteable;
 	
 	import model.EntityVO;
 	
@@ -19,8 +21,22 @@ package behavior_steps
 		}
 		
 		public function loop(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
-			trace("ATTACK");
 			
+			for each(var targetedEnt:EntityVO in entitiesSubgroup) {
+
+				if(targetedEnt is ITargeteable) {
+				
+					if(Point.distance(entity.position, targetedEnt.position) < 20){
+						
+						trace("DO DAMAGE!");
+					}
+					//(removeEntity(ent);
+					/*targetedEnt.hp -= IAttack(ent).damage;
+					
+					if(targetedEnt.hp <= 0)
+					removeEntity(targetedEnt);*/
+				}
+			}
 		}
 			
 		public function get req():String
