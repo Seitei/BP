@@ -31,8 +31,6 @@ package behavior_steps
 		public function loop(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
 			
 				advanceTime();
-				/*var action:Action = new Action("addEntity", entity);
-				GameManager.getInstance().dispatchAction(action);*/
 		}
 		
 		public function get req():String
@@ -59,6 +57,7 @@ package behavior_steps
 			var spawnedEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_entity.owner, _entity.entityTypeSpawned, new Point(_entity.position.x + _entity.spawningPoint.x, _entity.position.y + _entity.spawningPoint.y));
 			spawnedEntity.forwardAngle += _entity.forwardAngle;
 			spawnedEntity.parentContainer = _entity.id;
+			spawnedEntity.positionDest = _entity.rallypoint;
 			var action:Action = new Action("addEntity", spawnedEntity);
 			GameManager.getInstance().dispatchAction(action);
 		}

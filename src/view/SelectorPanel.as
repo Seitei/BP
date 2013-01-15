@@ -16,8 +16,6 @@ package view
 	import flash.ui.Mouse;
 	import flash.utils.Timer;
 	
-	import interfaces.IUnitSpawner;
-	
 	import managers.GameManager;
 	import managers.Manager;
 	

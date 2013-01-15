@@ -32,11 +32,17 @@ package model
 		private var _spawningPoint:Point;
 		private var _forwardAngle:int;
 		private var _spawnRate:int;
+		private var _damage:int;
+		private var _rallypoint:Point;
+		private var _spawningpoint:Point;
+		private var _positionDest:Point;
 		
 		protected var _actionButtons:Vector.<ActionButtonVO>;
 		protected var _behavior:Vector.<Class>;
 		protected var _behaviorSteps:Vector.<IBehavior>;
 		protected var _behaviorReqs:Array;
+		
+		
 		
 		
 		public function EntityVO()
@@ -46,8 +52,51 @@ package model
 			_behavior = new Vector.<Class>;
 			_behaviorSteps = new Vector.<IBehavior>;
 			_behaviorReqs = new Array();
+			_rallypoint = new Point();
+			_spawningpoint = new Point();
+			//_positionDest = new Point();
 		}
 		
+		public function get positionDest():Point
+		{
+			return _positionDest;
+		}
+
+		public function set positionDest(value:Point):void
+		{
+			_positionDest = value;
+		}
+
+		public function get spawningpoint():Point
+		{
+			return _spawningpoint;
+		}
+
+		public function set spawningpoint(value:Point):void
+		{
+			_spawningpoint = value;
+		}
+
+		public function get rallypoint():Point
+		{
+			return _rallypoint;
+		}
+
+		public function set rallypoint(value:Point):void
+		{
+			_rallypoint = value;
+		}
+
+		public function get damage():int
+		{
+			return _damage;
+		}
+
+		public function set damage(value:int):void
+		{
+			_damage = value;
+		}
+
 		public function get behaviorReqs():Array
 		{
 			return _behaviorReqs;

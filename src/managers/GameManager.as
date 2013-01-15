@@ -8,13 +8,11 @@ package managers
 	import flash.net.registerClassAlias;
 	import flash.utils.Dictionary;
 	
-	import interfaces.IAttack;
+	import interfaces.*;
 	import interfaces.IBuildeable;
 	import interfaces.IEntityVO;
-	import interfaces.IMovableEntity;
 	import interfaces.ITargeteable;
 	import interfaces.ITargeter;
-	import interfaces.IUnitSpawner;
 	
 	import model.BulletVO;
 	import model.EntityFactoryVO;
@@ -37,6 +35,7 @@ package managers
 	import utils.MovieClipContainer;
 	import utils.UnitStatus;
 	
+	import view.SlotPlacementGuide;
 	import view.SpriteEntity;
 
 	public class GameManager
@@ -88,7 +87,7 @@ package managers
 					removeEntity(action.entity);
 					break;
 				case "setRallypoint":
-					_world.updateEntity(action.entity, "rallypoint", IUnitSpawner(action.entity).rallypoint );
+					_world.updateEntity(action.entity, "rallypoint", action.entity.rallypoint );
 					break;
 				case "upgrade":
 					Main.getInstance().getRenderer().removeEntity(action.entity.id);
@@ -113,20 +112,20 @@ package managers
 					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
 					
-					if(action.entity is IUnitSpawner){
-						IUnitSpawner(action.entity).spawningPoint.x = -IUnitSpawner(action.entity).spawningPoint.x;
-						IUnitSpawner(action.entity).spawningPoint.y = -IUnitSpawner(action.entity).spawningPoint.y;
+					if(action.entity.rallypoint != new Point(0, 0)){
+						action.entity.spawningpoint.x = -action.entity.spawningpoint.x;
+						action.entity.spawningpoint.y = -action.entity.spawningpoint.y;
 					}
 					
-					if(action.entity is IUnitSpawner && IUnitSpawner(action.entity).rallypoint) {
-						IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
-						IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
+					if(action.entity.rallypoint != new Point(0, 0)) {
+						action.entity.rallypoint.x = 700 -action.entity.rallypoint.x;
+						action.entity.rallypoint.y = 700 -action.entity.rallypoint.y;
 					}
 				}
 				if(action.type == "setRallypoint"){
-					IUnitSpawner(action.entity).rallypoint.x = 700 - IUnitSpawner(action.entity).rallypoint.x;
-					IUnitSpawner(action.entity).rallypoint.y = 700 - IUnitSpawner(action.entity).rallypoint.y;
-					Manager.getInstance().getUI().showRallyPoint(action.entity.position, IUnitSpawner(action.entity).rallypoint, "L2");
+					action.entity.rallypoint.x = 700 - action.entity.rallypoint.x;
+					action.entity.rallypoint.y = 700 - action.entity.rallypoint.y;
+					Manager.getInstance().getUI().showRallyPoint(action.entity.position, action.entity.rallypoint, SlotPlacementGuide.getInstance().getInvertedRow(action.target.row), "last");
 				}
 				
 				updateWorld(action);
@@ -164,37 +163,6 @@ package managers
 			for each (var ent:EntityVO in entities) {
 					
 					ent.loop(getEntitiesSubgroup(ent.behaviorReqs, ent.owner));
-					//if the entity has a defined target:
-					/*if(IMovableEntity(ent).positionDest){
-						if(!IMovableEntity(ent).positionDest.equals(ent.position)) {
-							Movement.moveToPoint(mcc, IMovableEntity(ent).positionDest, ent.speed, true); 
-							ent.position.x = mcc.x;
-							ent.position.y = mcc.y;
-							
-							if(ent.status == UnitStatus.IDDLE){
-								ent.status = UnitStatus.MOVING_TO_TARGET;
-								Main.getInstance().getRenderer().playAnimation(ent.id, "walking", true);
-							}
-						}
-						else {
-							if(ent.status == UnitStatus.MOVING_TO_TARGET){
-								IMovableEntity(ent).positionDest = null;
-								if(ent is BulletVO){
-									Movement.moveInDirection(spriteEntities[ent.id], ent.forwardAngle, ent.speed); 
-									ent.position.x = spriteEntities[ent.id].x;
-									ent.position.y = spriteEntities[ent.id].y;
-								}
-								ent.status = UnitStatus.IDDLE;
-								Main.getInstance().getRenderer().playAnimation(ent.id, "iddle", true);
-							}
-						}		
-					}*/
-					//if not we move at 45 degrees:
-					/*else {
-						Movement.moveInDirection(mcc, ent.forwardAngle, ent.speed); 
-						ent.position.x = mcc.x;
-						ent.position.y = mcc.y;
-					}*/
 					
 					//damage to us
 					/*if( ent.position.y > 700 || ent.position.x < 0) {
@@ -212,15 +180,15 @@ package managers
 				
 				//detect if another unit is in range
 				/*if(ent is ITargeter && ent.status != UnitStatus.BUILDING) {
-					IUnitSpawner(ent).canSpawn = false;
+					(ent).canSpawn = false;
 					for each(var target:EntityVO in entities) {
 						if(target is ITargeteable && ent.owner != target.owner) {
 							var entPoint:Point = ent.position.clone();
 							var targetPoint:Point = target.position.clone();
 							var dist:Number = Point.distance(entPoint, targetPoint);
 							if(dist < ITargeter(ent).targetRange){
-								IUnitSpawner(ent).canSpawn = true;
-								IUnitSpawner(ent).rallypoint = targetPoint;
+								(ent).canSpawn = true;
+								(ent).rallypoint = targetPoint;
 								break;
 							}
 						}
@@ -228,9 +196,9 @@ package managers
 				}*/
 					
 				
-				/*if(ent is IUnitSpawner) {
-					if(IUnitSpawner(ent).canSpawn){
-						IUnitSpawner(ent).advanceTime();
+				/*if(ent is ) {
+					if((ent).canSpawn){
+						(ent).advanceTime();
 					}
 				}
 				
@@ -257,14 +225,9 @@ package managers
 			Main.getInstance().getRenderer().renderObject(ent);
 		}
 		
-		private function removeEntity(ent:EntityVO):void {
-			if(_world.entitiesDic[ent.parentContainer] is IUnitSpawner) {
-				_world.entitiesDic[ent.parentContainer].maxUnits++;				
-			}
-				
+		public function removeEntity(ent:EntityVO):void {
 			_world.removeEntity(ent);
 			Main.getInstance().getRenderer().removeEntity(ent.id);
-			
 		}
 		
 		public static function getInstance():GameManager {

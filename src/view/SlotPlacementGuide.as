@@ -15,6 +15,7 @@ package view
 	{
 		private var _rowsDic:Dictionary;
 		private var _rowsDesc:Array;
+		private static var _instance:SlotPlacementGuide;
 		
 		public function SlotPlacementGuide()
 		{
@@ -24,9 +25,9 @@ package view
 			//init array
 			for(var xi:int = 0; xi < 21; xi++) {
 				_rowsDic[_rowsDesc[xi]] = new Array();
-				for(var xj:int = 0; xj < 11; xj++) {
+			/*	for(var xj:int = 0; xj < 11; xj++) {
 					_rowsDic[_rowsDesc[xi]][xj] = 0;
-				}
+				}*/
 			}
 			
 			var tilesQuant:int = 1;
@@ -80,8 +81,19 @@ package view
 		
 		}
 
-		public function getFirstTile(row:String):ExtendedButton {
+		public function getFirstOrLastTile(row:String, depth:String):TileButton {
+			if(depth == "last")
+				return getLastTile(row);
+			else
+				return getFirstTile(row);
+		}
+		
+		public function getFirstTile(row:String):TileButton {
 			return _rowsDic[row][0];	
+		}
+		
+		public function getLastTile(row:String):TileButton {
+			return _rowsDic[row][_rowsDic[row].length - 1];
 		}
 		
 		//here we tell what row we need to turn on, test purposes
@@ -92,8 +104,18 @@ package view
 			}
 		}
 		
+		public function getInvertedRow(row:String):String {
+			var invertedRow:String;
+			invertedRow = _rowsDesc[_rowsDesc.length - _rowsDesc.indexOf(row, 0)];
+			return invertedRow;
+		}
 		
 		
+		public static function getInstance():SlotPlacementGuide {
+			if(!_instance)
+				_instance = new SlotPlacementGuide();
+			return _instance;
+		}
 		
 		
 		

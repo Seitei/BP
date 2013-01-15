@@ -11,9 +11,7 @@ package model
 	import interfaces.IBehavior;
 	import interfaces.IBuyableEntity;
 	import interfaces.IEntityVO;
-	import interfaces.IMovableEntity;
 	import interfaces.ITargeteable;
-	import interfaces.IUnitSpawner;
 	
 	import managers.GameManager;
 	
@@ -83,14 +81,5 @@ package model
 			_cost = value;
 		}
 
-		public function set rallypoint(point:Point):void {
-			_rallypoint = new Point(point.x, point.y); 
-		}
-		
-		public function get rallypoint():Point {
-			return _rallypoint;
-		}
-		
-		
 	}
 }

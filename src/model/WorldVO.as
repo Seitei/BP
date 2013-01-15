@@ -104,6 +104,7 @@ package model
 			
 			_entitiesDic[entity.id] = null;
 			_entitiesArray.splice(_entitiesArray.indexOf(entity, 0), 1);
+			_entitiesSoubgroupArray[entity.owner].splice(_entitiesSoubgroupArray[entity.owner].indexOf(entity, 0), 1);
 			
 			/*var count:int = 0;
 			for each(var ent:EntityVO in _entitiesArray) {
@@ -114,6 +115,7 @@ package model
 				count++;
 			}*/
 		}
+		
 		public function resetContent():void {
 			_entitiesDic = new Dictionary();
 			_entitiesArray = new Vector.<EntityVO>;

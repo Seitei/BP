@@ -6,6 +6,8 @@ package behavior_steps
 	import interfaces.IBehavior;
 	import interfaces.ITargeteable;
 	
+	import managers.GameManager;
+	
 	import model.EntityVO;
 	
 	import utils.Movement;
@@ -27,14 +29,14 @@ package behavior_steps
 				if(targetedEnt is ITargeteable) {
 				
 					if(Point.distance(entity.position, targetedEnt.position) < 20){
+						GameManager.getInstance().removeEntity(entity);
+						targetedEnt.hp -= entity.damage;
 						
-						trace("DO DAMAGE!");
+						if(targetedEnt.hp <= 0)
+							GameManager.getInstance().removeEntity(targetedEnt);
+						
 					}
-					//(removeEntity(ent);
-					/*targetedEnt.hp -= IAttack(ent).damage;
 					
-					if(targetedEnt.hp <= 0)
-					removeEntity(targetedEnt);*/
 				}
 			}
 		}

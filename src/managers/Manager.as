@@ -171,7 +171,7 @@ package managers
 			}
 			
 			//send now with a delay, remove this patch when final implementation is in progress
-			var timer:Timer = new Timer(200, 1);
+			var timer:Timer = new Timer(500, 1);
 			timer.addEventListener(TimerEvent.TIMER, onTimer);
 			timer.start();
 			

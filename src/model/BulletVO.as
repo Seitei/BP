@@ -5,9 +5,7 @@ package model
 	
 	import flash.geom.Point;
 	
-	import interfaces.IAttack;
 	import interfaces.IEntityVO;
-	import interfaces.IMovableEntity;
 	import interfaces.ITargeteable;
 	
 	import starling.display.Sprite;
@@ -43,27 +41,10 @@ package model
 				_behaviorSteps[i].loop(this, behaviorReqsContent[i]);
 			}
 		}
+	
 		
-		public function get positionDest():Point
-		{
-			return _positionDest;
-		}
-
-		public function set positionDest(value:Point):void
-		{
-			_positionDest = value;
-		}
-
-		public function get damage():int
-		{
-			return _damage;
-		}
-
-		public function set damage(value:int):void
-		{
-			_damage = value;
-		}
-
+		
+		
 		
 	}
 }

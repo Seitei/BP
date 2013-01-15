@@ -15,7 +15,6 @@ package view
 	import flash.utils.Timer;
 	
 	import interfaces.IBuyableEntity;
-	import interfaces.IUnitSpawner;
 	
 	import managers.Manager;
 	
@@ -81,7 +80,7 @@ package view
 		public function UI(showDebugData:Boolean)
 		{
 			_statusArray = new Array();
-			_slotPlacementGuide = new SlotPlacementGuide();
+			_slotPlacementGuide = SlotPlacementGuide.getInstance();
 			_slotPlacementGuide.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onPlacementSlotTouched);
 			/*_slotPlacementGuide.touchable = false;
 			_slotPlacementGuide.flatten();*/
@@ -217,12 +216,11 @@ package view
 		
 		private function onPlacementSlotTouched(e:ButtonTriggeredEvent):void {
 			if(_status == WAITING_FOR_TARGET){
-				if(_action.entity is IUnitSpawner) {
-					IUnitSpawner(_action.entity).rallypoint = e.clickedPosition; 
-					dispatchSignal(_action);
-					showRallyPoint(_action.entity.position, e.clickedPosition, TileButton(e.target).row);					
-					_status = DEFAULT;
-				}		
+				_action.entity.rallypoint = e.clickedPosition;
+				_action.target = e.target;
+				dispatchSignal(_action);
+				showRallyPoint(_action.entity.position, e.clickedPosition, TileButton(e.target).row, "first");					
+				_status = DEFAULT;
 			}
 		}
 		
@@ -279,7 +277,7 @@ package view
 		}
 		
 		//for the moment, using quads to draw, later an animated movieclip would be better
-		public function showRallyPoint(entityPosition:Point, rallyPoint:Point, row:String):void {
+		public function showRallyPoint(entityPosition:Point, rallyPoint:Point, row:String, depth:String):void {
 			_showingEntityUI = true;
 			_rallypointContainer = new Sprite();
 
@@ -294,7 +292,8 @@ package view
 			_rallypointContainer.addChild(quad);
 			
 			//second line
-			var point:Point = new Point(_slotPlacementGuide.getFirstTile(row).x, _slotPlacementGuide.getFirstTile(row).y);
+				
+			var point:Point = new Point(_slotPlacementGuide.getFirstOrLastTile(row, depth).x, _slotPlacementGuide.getFirstOrLastTile(row, depth).y);
 			var diff2:Point = rallyPoint.subtract(point); 
 			var dist2:Number = diff2.length;
 			
@@ -307,8 +306,8 @@ package view
 			//the arrow
 			var texture:Texture = ResourceManager.getInstance().getTexture("arrow");
 			var arrow:Image = new Image(texture);
-			arrow.x = _slotPlacementGuide.getFirstTile(row).x;
-			arrow.y = _slotPlacementGuide.getFirstTile(row).y;
+			arrow.x = _slotPlacementGuide.getFirstOrLastTile(row, depth).x;
+			arrow.y = _slotPlacementGuide.getFirstOrLastTile(row, depth).y;
 			arrow.pivotX = arrow.width/2; arrow.pivotY = arrow.width/2;
 			arrow.rotation = 45 * Math.PI / 180;
 			arrow.useHandCursor = false;
