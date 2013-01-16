@@ -5,7 +5,6 @@ package model
 	
 	import flash.geom.Point;
 	
-	import interfaces.IEntityVO;
 	import interfaces.ITargeteable;
 	
 	import starling.display.Sprite;
@@ -38,7 +37,7 @@ package model
 		
 		override public function loop(behaviorReqsContent:Array):void {
 			for (var i:int = 0; i < _behavior.length; i ++){
-				_behaviorSteps[i].loop(this, behaviorReqsContent[i]);
+				_behaviorSteps[i].execute(this, behaviorReqsContent[i]);
 			}
 		}
 	

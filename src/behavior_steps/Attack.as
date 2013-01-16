@@ -22,7 +22,7 @@ package behavior_steps
 		   
 		}
 		
-		public function loop(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
+		public function execute(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
 			
 			for each(var targetedEnt:EntityVO in entitiesSubgroup) {
 

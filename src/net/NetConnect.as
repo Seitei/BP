@@ -16,6 +16,7 @@ package net
 	import model.ShipVO;
 	import model.SkinClass;
 	import model.Spawner1VO;
+	import model.Spawner2VO;
 	import model.TileVO;
 	
 	public class NetConnect extends EventDispatcher
@@ -51,6 +52,7 @@ package net
 		registerClassAlias("BulletVO", BulletVO);
 		registerClassAlias("ShipVO", ShipVO);
 		registerClassAlias("Spawner1", Spawner1VO);
+		registerClassAlias("Spawner2", Spawner2VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);
 		
 		private const SERVER:String = "rtmfp://p2p.rtmfp.net/"; 

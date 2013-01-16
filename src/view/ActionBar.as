@@ -97,6 +97,7 @@ package view
 			//entities
 			
 			initCannonButton();
+			initCannon2Button();
 			
 			//enableButtons(false);
 		}
@@ -121,13 +122,34 @@ package view
 			spawner1Btn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
 
 			_buttonsVector.push(spawner1Btn);
+			
+			
 		}
-	
-		/*public function updateReadyButton(state:String):void {
-			_hesReady = true;
-			_myReadyButton.upState = ResourceManager.getInstance().getTexture("button_ready_" + state);
-		}*/
-		
+
+		private function initCannon2Button():void {
+			
+			var spawner2Btn:ActionButton = new ActionButton(
+				ResourceManager.getInstance().getTexture("spawner2_up_btn"), 
+				"addEntity", 
+				"spawner2",
+				null,
+				null,
+				"",
+				ResourceManager.getInstance().getTexture("spawner2_down_btn"), 
+				ResourceManager.getInstance().getTexture("spawner2_hover_btn"),
+				ResourceManager.getInstance().getTexture("spawner2_mouse_btn")
+			);
+			
+			spawner2Btn.x = 48;
+			spawner2Btn.y = 81;
+			addChild(spawner2Btn);
+			spawner2Btn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
+			
+			_buttonsVector.push(spawner2Btn);
+			
+			
+		}
+
 		private function initReadyButton():void {
 			var readyButton:ActionButton = new ActionButton(
 				ResourceManager.getInstance().getTexture("ready_up_btn"), 

@@ -4,7 +4,6 @@ package model
 	
 	import interfaces.IBehavior;
 	import interfaces.IBuff;
-	import interfaces.IEntityVO;
 	
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
@@ -36,6 +35,7 @@ package model
 		private var _rallypoint:Point;
 		private var _spawningpoint:Point;
 		private var _positionDest:Point;
+		private var _cost:int;
 		
 		protected var _actionButtons:Vector.<ActionButtonVO>;
 		protected var _behavior:Vector.<Class>;
@@ -57,6 +57,16 @@ package model
 			//_positionDest = new Point();
 		}
 		
+		public function get cost():int
+		{
+			return _cost;
+		}
+
+		public function set cost(value:int):void
+		{
+			_cost = value;
+		}
+
 		public function get positionDest():Point
 		{
 			return _positionDest;

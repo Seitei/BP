@@ -29,7 +29,7 @@ package behavior_steps
 			_req = value;
 		}
 
-		public function loop(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
+		public function execute(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
 			
 			var spriteEntities:Dictionary = Main.getInstance().getRenderer().getSpriteEntitiesDic();
 			var mcc:MovieClipContainer = spriteEntities[entity.id];

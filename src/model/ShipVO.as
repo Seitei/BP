@@ -2,7 +2,6 @@ package model
 {
 	import flash.geom.Point;
 	
-	import interfaces.IEntityVO;
 	
 	import starling.display.Sprite;
 

@@ -4,8 +4,6 @@ package model
 	import flash.media.ID3Info;
 	import flash.utils.Dictionary;
 	
-	import interfaces.IEntityVO;
-	
 	import starling.display.Sprite;
 	import starling.errors.AbstractClassError;
 

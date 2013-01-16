@@ -20,7 +20,7 @@ package view
 		public function SlotPlacementGuide()
 		{
 			_rowsDic = new Dictionary();
-			_rowsDesc = ["L5", "L4", "L3", "L2", "L1", "L0", 0, 1, 2, 3, 4, 5, 6, 7, 8, "R0", "R1", "R2", "R3", "R4", "R5"]; 
+			_rowsDesc = ["L5", "L4", "L3", "L2", "L1", "L0", "0", "1", "2", "3", "4", "5", "6", "7", "8", "R0", "R1", "R2", "R3", "R4", "R5"]; 
 			
 			//init array
 			for(var xi:int = 0; xi < 21; xi++) {
@@ -106,7 +106,8 @@ package view
 		
 		public function getInvertedRow(row:String):String {
 			var invertedRow:String;
-			invertedRow = _rowsDesc[_rowsDesc.length - _rowsDesc.indexOf(row, 0)];
+			var indexof:int = _rowsDesc.indexOf(row, 0);
+			invertedRow = _rowsDesc[(_rowsDesc.length - 1) - _rowsDesc.indexOf(row, 0)];
 			return invertedRow;
 		}
 		

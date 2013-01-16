@@ -18,7 +18,7 @@ package model
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 
-	public class Spawner1VO extends EntityVO implements ITargeteable
+	public class Spawner2VO extends EntityVO implements ITargeteable
 	{
 		private var _cost:int;
 		private var _rallypoint:Point;
@@ -26,16 +26,16 @@ package model
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
 			
-		public function Spawner1VO(x:int = 0, y:int = 0)
+		public function Spawner2VO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
 			//TODO temporary fix
 			cost = 3;
-			type = "spawner1";
+			type = "spawner2";
 			speed = 1;
 			spawnRate = 60;
-			skinClass = new SkinClass("spawner1", "spawner1", false);
-			skinClass.animationsDic["spawner1"] = true;
+			skinClass = new SkinClass("spawner2", "spawner2", false);
+			skinClass.animationsDic["spawner2"] = true;
 			hp = 500;
 			entityTypeSpawned = "bullet";
 			spawningPoint = new Point(18, -18);

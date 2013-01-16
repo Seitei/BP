@@ -10,7 +10,6 @@ package managers
 	
 	import interfaces.*;
 	import interfaces.IBuildeable;
-	import interfaces.IEntityVO;
 	import interfaces.ITargeteable;
 	import interfaces.ITargeter;
 	

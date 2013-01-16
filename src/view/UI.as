@@ -14,8 +14,6 @@ package view
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
-	import interfaces.IBuyableEntity;
-	
 	import managers.Manager;
 	
 	import model.ActionButtonVO;
@@ -267,8 +265,8 @@ package view
 		private function showEntityUI(entity:EntityVO):void {
 			if(entity.actionButtons == null) return;
 			_showingEntityUI = true;
-			/*if(_selectorPanel)
-				removeEntityUI();*/
+			if(_selectorPanel)
+				removeEntityUI();
 			
 			_selectorPanel = new SelectorPanel(entity.actionButtons, entity.position);
 			_selectorPanel.addEventListener("selectorPanelEvent", onSelectorTouched);
@@ -297,10 +295,10 @@ package view
 			var diff2:Point = rallyPoint.subtract(point); 
 			var dist2:Number = diff2.length;
 			
-			var quad2:Quad = new Quad(4, dist2, 0x00FF00);
+			var quad2:Quad = new Quad(4, dist2, 0xFF0000);
 			quad2.x = rallyPoint.x; quad2.y = rallyPoint.y;
 			
-			quad2.rotation = (-135) * (Math.PI / 180);
+			quad2.rotation = depth == "first" ? (-135) * (Math.PI / 180) : (45) * (Math.PI / 180);
 			_rallypointContainer.addChild(quad2);
 			
 			//the arrow
@@ -309,7 +307,7 @@ package view
 			arrow.x = _slotPlacementGuide.getFirstOrLastTile(row, depth).x;
 			arrow.y = _slotPlacementGuide.getFirstOrLastTile(row, depth).y;
 			arrow.pivotX = arrow.width/2; arrow.pivotY = arrow.width/2;
-			arrow.rotation = 45 * Math.PI / 180;
+			arrow.rotation = depth == "first" ? 45 * Math.PI / 180 : 225 * Math.PI / 180;
 			arrow.useHandCursor = false;
 			_rallypointContainer.addChild(arrow);
 			
@@ -337,7 +335,6 @@ package view
 					case "setRallypoint":
 						_status = WAITING_FOR_TARGET;
 						_action = new Action(e.actionType, _clickedEntity);
-						//addChild(_slotPlacementGuide);
 						removeEntityUI();
 						return;
 						break;
@@ -353,7 +350,7 @@ package view
 		}
 		
 		private function dispatchSignal(action:Action):void {
-			if(action.type == "addEntity" && IBuyableEntity(action.entity).cost > _gold) {
+			if(action.type == "addEntity" && action.entity.cost > _gold) {
 				trace("cant do bro");
 			}
 			else {

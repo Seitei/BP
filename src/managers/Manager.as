@@ -14,8 +14,6 @@ package managers
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
-	import interfaces.IBuyableEntity;
-	
 	import model.BackgroundVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
@@ -225,14 +223,13 @@ package managers
 			
 			switch(action.type) {
 				case "addEntity":
-					if(action.entity is IBuyableEntity)
-						updatePlayerGold(-IBuyableEntity(action.entity).cost);
+					updatePlayerGold(-action.entity.cost);
 					break;
 				case "sell":
-					updatePlayerGold(+IBuyableEntity(action.entity).cost / 2);
+					updatePlayerGold(action.entity.cost / 2);
 					break;
 				case "upgrade":
-					updatePlayerGold(-IBuyableEntity(action.entity).cost);
+					updatePlayerGold(-action.entity.cost);
 					break;
 			}
 			

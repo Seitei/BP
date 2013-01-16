@@ -3,7 +3,6 @@ package model
 	import flash.geom.Point;
 	
 	import interfaces.IBuildeable;
-	import interfaces.IEntityVO;
 	
 	import managers.Manager;
 	
@@ -45,21 +44,31 @@ package model
 				case "background":
 					entity = new BackgroundVO(position.x, position.y);
 					break;
+				
 				case "ship":
 					entity = new ShipVO(position.x, position.y);
 					break;
+				
 				case "buildingImprovementGold":
 					entity = new BuildingImprovementGoldVO(position.x, position.y);
 					break;
+				
 				case "tile":
 					entity = new TileVO(position.x, position.y);
 					break;
+				
 				case "spawner1":
 					entity = new Spawner1VO(position.x, position.y);
 					break;
+				
+				case "spawner2":
+					entity = new Spawner2VO(position.x, position.y);
+					break;
+				
 				case "bullet":
 					entity = new BulletVO(position.x, position.y);
 					break;
+				
 				case "default":
 					trace("noob");
 					break;
