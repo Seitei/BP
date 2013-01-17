@@ -1,7 +1,7 @@
 package events
 {
-	import flash.events.Event;
-	
+	import starling.events.Event;
+
 	public class NotifyStatusEvent extends Event
 	{
 		public static const NOTIFY_STATUS:String = "notifyStatus";

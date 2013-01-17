@@ -6,7 +6,6 @@ package net
 	import events.NotifyNeighborConnectedEvent;
 	import events.NotifyStatusEvent;
 	
-	import flash.events.EventDispatcher;
 	import flash.net.Responder;
 	
 	import model.BackgroundVO;
@@ -19,7 +18,9 @@ package net
 	import model.Spawner2VO;
 	import model.TileVO;
 	
-	public class NetConnect extends EventDispatcher
+	import starling.events.EventDispatcher;
+	
+	public class NetConnect extends starling.events.EventDispatcher
 	{
 		import flash.display.SimpleButton;
 		import flash.display.Sprite;
@@ -77,14 +78,13 @@ package net
 		private static var _instance:NetConnect;
 		private var _receiving:Boolean;
 		private var _message:Object;
-		
+			
 		public function NetConnect():void {
-		
-			_message = new Object();
-			_status = "waiting";
-			_cirrusNc = new NetConnection(); 
-			_cirrusNc.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus); 
-			_cirrusNc.connect( SERVER + DEVKEY );
+				_message = new Object();
+				_status = "waiting";
+				_cirrusNc = new NetConnection(); 
+				_cirrusNc.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus); 
+				_cirrusNc.connect( SERVER + DEVKEY );
 		}
 		
 		public function onResult(response:Object):void {
@@ -215,24 +215,6 @@ package net
 			_message.sequence = _seq++;
 			_sendStream.send("handler", _message);
 		}
-		
-		
-		
-		public static function getInstance():NetConnect {
-			if(!_instance){
-				_instance = new NetConnect();
-			}
-			return _instance;
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		

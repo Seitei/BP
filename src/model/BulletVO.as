@@ -11,7 +11,6 @@ package model
 
 	public class BulletVO extends EntityVO implements ITargeteable
 	{
-		private var _positionDest:Point;
 		private var _damage:int;
 		private var _forwardAngle:int;
 		

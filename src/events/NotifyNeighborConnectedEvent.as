@@ -2,7 +2,7 @@ package events
 {
 	import actions.Action;
 	
-	import flash.events.Event;
+	import starling.events.Event;
 	
 	public class NotifyNeighborConnectedEvent extends Event
 	{

@@ -41,10 +41,6 @@ package managers
 	
 	public class Manager
 	{
-		//refers to the position to place the tiles
-		private static const BOT:int = 1;
-		private static const TOP:int = 0;
-		
 		private var _gold:int;
 		private var _goldIncome:int;
 		private var _player:Player;
@@ -52,7 +48,6 @@ package managers
 		private var _gameManager:GameManager;
 		private static var _instance:Manager;
 		private var _state:int = GameStatus.STOPPED;
-		private var _somethingToSend:Boolean;
 		private var _main:Main;
 		private var _entityClickedSignal:Signal;
 		private var _playerName:String;
@@ -61,15 +56,16 @@ package managers
 		private var _myHp:int;
 		private var _ui:UI;
 		
+		public var online:Boolean;
+		
 		//for the moment, the starter value of the enemy HP is hardcoded to 500
 		private var _enemyHp:int = 500;
 		
 		public function Manager()
 		{
 			//TODO receive from server
-			_playerName = "Player_" + String(int(1000 * Math.random())) + "_";
-			_nc = new NetConnect();
-			_player = new Player(_playerName, _nc); 
+			_playerName = "Player-" + String(int(1000 * Math.random())) + "_";
+			_player = new Player(_playerName, online); 
 			_gold = _player.gold;
 			_goldIncome = _player.goldIncome;
 			_myHp = _player.hp;
@@ -78,15 +74,14 @@ package managers
 			
 			_main = Main.getInstance();
 			
-			_nc.addEventListener(NotifyEvent.NOTIFY_PLAYER_READY_EVENT, receiveReadyMessage);
-			_nc.addEventListener(NotifyEvent.NOTIFY_ACTION_EVENT, receiveActionMessage);
-			_nc.addEventListener(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, buildPlayersWorld);
-			_nc.addEventListener(NotifyStatusEvent.NOTIFY_STATUS, showStatus);
+			_player.addEventListener(NotifyEvent.NOTIFY_PLAYER_READY_EVENT, receiveReadyMessage);
+			_player.addEventListener(NotifyEvent.NOTIFY_ACTION_EVENT, receiveActionMessage);
+			_player.addEventListener(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, buildPlayersWorld);
+			_player.addEventListener(NotifyStatusEvent.NOTIFY_STATUS, showStatus);
 			
 			_entityClickedSignal = new Signal(String, String);
 			_entityClickedSignal.add(entityClickedSignalhandler);
 			initUI();
-			
 		}
 		
 		private function initUI():void {
@@ -96,6 +91,7 @@ package managers
 			UI.getInstance().goldIncome = _goldIncome;
 			UI.getInstance().playerName = _playerName;
 			_ui = UI.getInstance();
+			_ui.online = online;
 		}
 		
 		public function get imReady():Boolean
@@ -127,8 +123,7 @@ package managers
 			
 			UI.getInstance().visible = true;
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
-			//tests only
-			/*if(e) return;*/
+			
 			if(e){
 				if(e.connectionOrder == "second"){
 					UI.getInstance().enableButtons(false);
@@ -137,12 +132,21 @@ package managers
 		
 			var bgEntity:EntityVO = new BackgroundVO(350, 350);
 			var bg_action:Action = new Action("addEntity", bgEntity);
-			handler(bg_action);
+			handler(bg_action, online);
 			
 			var shipEntity:EntityVO = new ShipVO(182.5, 700 - 182.5); 
+			shipEntity.id = _playerName + shipEntity.type + 666;
 			var ship_action:Action = new Action("addEntity", shipEntity);
 			shipEntity.owner = _playerName;
-			handler(ship_action);
+			handler(ship_action, online);
+			
+			if(!online){
+				shipEntity.id = "TEST" + shipEntity.id.substring(shipEntity.id.indexOf("_"));
+				var ship_action_offline:Action = new Action("addEntity", shipEntity);
+				shipEntity.owner = "TEST";
+				handler(ship_action_offline, true);
+			}
+				
 			
 			var shipConfigurationSlots:Array = new Array();
 			
@@ -160,10 +164,23 @@ package managers
 						var point:Point = new Point();
 						point.x = (j * (30 + 2))  + 28;
 						point.y = (j * (30 + 2))  + 16 + 10 * 40 + i * 64;
-						var tile:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
+						
+						var tile:EntityVO;
+						
+						tile = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
 						TileVO(tile).row = j + i;
 						var tile_action:Action = new Action("addEntity", tile);
-						handler(tile_action);
+						handler(tile_action, online);
+						
+						//if not online, we force a send with different id and owner to recreate the complete map
+						if(!online){
+							var tile_offline:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
+							TileVO(tile_offline).row = j + i;
+							tile_offline.owner = "TEST";
+							tile_offline.id = "TEST" + tile_offline.id.substring(tile_offline.id.indexOf("_"));
+							var tile_action_offline:Action = new Action("addEntity", tile_offline);
+							handler(tile_action_offline, true);
+						}
 					}
 				}
 			}
@@ -191,35 +208,20 @@ package managers
 		}
 			
 		
-		public function resetGame():void {
-			//temporary - here we come when someone wins
-			_state = GameStatus.STOPPED;
-			_gameManager.state = _state;
-			UI.getInstance().state = _state;
-
-			UI.getInstance().resetUI();
-			_gameManager.world.resetContent();
-			Main.getInstance().getRenderer().resetDisplayContent();
-			Main.getInstance().reset();
-			
-			buildPlayersWorld();
-		}
-		
 		public function getUI():UI {
 			return _ui;
 		}
 		
 		private function showStatus(e:NotifyStatusEvent):void {
-			//for fast layout tests
-			/*if(e.status.indexOf("NetConnection") != -1){
-				buildPlayersWorld();
-				UI.getInstance().enableButtons(true);
-			}*/
-			
 			_main.storeStatusData(e.status);
 		}
 		
-		public function handler(action:Action):void {
+		public function handler(action:Action, sendActionBuffer:Boolean):void {
+			
+			if(!online && sendActionBuffer){
+				_player.addToActionBuffer(action);
+				return;
+			}
 			
 			switch(action.type) {
 				case "addEntity":
@@ -240,13 +242,11 @@ package managers
 				}
 			}
 			
-				
 			_gameManager.updateWorld(action);
 			
-			if(action.entity.type != "background") {
+			if(action.entity.type != "background" && sendActionBuffer) {
 				_player.addToActionBuffer(action);
 			}
-			_somethingToSend = true;
 			
 		}
 		
@@ -264,8 +264,7 @@ package managers
 			UI.getInstance().state = _state;
 			
 			if(_state == GameStatus.COUNTDOWN_STOPPED) {
-				if( _somethingToSend)
-					sendActionBuffer();
+				sendActionBuffer();
 				UI.getInstance().showPlanningUI(false);
 			}
 			
@@ -281,10 +280,7 @@ package managers
 		}
 		
 		public function sendActionBuffer():void {
-			if (_somethingToSend) {
-				_somethingToSend = false;				
-				_player.sendActionBuffer();
-			}
+			_player.sendActionBuffer(online);
 		}
 		
 		public function get enemyHp():int
@@ -358,8 +354,8 @@ package managers
 			return _instance;
 		}
 		
-		public function loop(e:starling.events.Event):void {
-			_gameManager.loop(e);
+		public function loop(e:Event):void {
+			_gameManager.loop();
 		}
 		
 		

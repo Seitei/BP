@@ -205,7 +205,7 @@ package utils
 				}
 				
 				resetContents();
-				dispatchEvent(new ButtonTriggeredEvent(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, new Point(this.x, this.y), true));
+				dispatchEvent(new ButtonTriggeredEvent(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, this.localToGlobal(new Point(0, 0)), true));
 			}
 		}
 		

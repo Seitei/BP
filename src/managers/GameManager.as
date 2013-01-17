@@ -111,12 +111,12 @@ package managers
 					action.entity.forwardAngle += 180;
 					action.entity.rotation += 180 * (Math.PI / 180);
 					
-					if(action.entity.rallypoint != new Point(0, 0)){
+					if(action.entity.rallypoint){
 						action.entity.spawningpoint.x = -action.entity.spawningpoint.x;
 						action.entity.spawningpoint.y = -action.entity.spawningpoint.y;
 					}
 					
-					if(action.entity.rallypoint != new Point(0, 0)) {
+					if(action.entity.rallypoint) {
 						action.entity.rallypoint.x = 700 -action.entity.rallypoint.x;
 						action.entity.rallypoint.y = 700 -action.entity.rallypoint.y;
 					}
@@ -139,7 +139,7 @@ package managers
 			}
 		}
 		
-		public function loop(event:Event):void {
+		public function loop():void {
 			if (_state == GameStatus.PLAYING || _state == GameStatus.COUNTDOWN_PLAYING)
 				updateEntities();	
 		}
@@ -208,12 +208,6 @@ package managers
 				
 			}
 		}
-		
-		private function resetGame():void {
-			//cleaning the world content
-			Manager.getInstance().resetGame();	
-		}
-		
 		
 		public function set state(state:int):void {
 			_state = state;

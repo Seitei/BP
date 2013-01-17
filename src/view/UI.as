@@ -74,6 +74,7 @@ package view
 		private var _actionIssued:Action;
 		private var _slotPlacementGuide:SlotPlacementGuide;
 		private var _pressingShift:Boolean;
+		public var online:Boolean;
 		
 		public function UI(showDebugData:Boolean)
 		{
@@ -145,13 +146,14 @@ package view
 			if(e.mouseCursorTexture) {
 				Mouse.hide();
 				_mouseCursorImage = new Image(e.mouseCursorTexture);
-				addChild(_mouseCursorImage);
 				
+				_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
+				_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
 				_mouseCursorImage.x = e.startingPosition.x;
 				_mouseCursorImage.y = e.startingPosition.y;
 				_mouseCursorImage.touchable = false;
-				_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
-				_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
+
+				addChild(_mouseCursorImage);
 				stage.addEventListener(TouchEvent.TOUCH, onMove);
 			}
 			
@@ -345,7 +347,7 @@ package view
 						action = new Action(e.actionType, entity2);
 						break;
 				}
-			dispatchSignal(action);
+			//dispatchSignal(action);
 			removeEntityUI();
 		}
 		
@@ -354,11 +356,13 @@ package view
 				trace("cant do bro");
 			}
 			else {
-				_broadcastSignal = new BroadcastSignal(action);
+				_broadcastSignal = new BroadcastSignal(action, online);
 				_broadcastSignal.signal.add(Manager.getInstance().handler);
 				_broadcastSignal.dispatch();
-				//to test stuff I send right away
-				Manager.getInstance().sendActionBuffer();
+				
+				if(online)
+					Manager.getInstance().sendActionBuffer();
+				
 			}
 		}
 		

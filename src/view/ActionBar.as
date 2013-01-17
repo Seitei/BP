@@ -140,7 +140,7 @@ package view
 				ResourceManager.getInstance().getTexture("spawner2_mouse_btn")
 			);
 			
-			spawner2Btn.x = 48;
+			spawner2Btn.x = 51;
 			spawner2Btn.y = 81;
 			addChild(spawner2Btn);
 			spawner2Btn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);

@@ -1,7 +1,6 @@
 package
 {
 	import flash.events.TimerEvent;
-	import flash.profiler.showRedrawRegions;
 	import flash.ui.Keyboard;
 	import flash.utils.Timer;
 	
@@ -29,20 +28,31 @@ package
 		private static const TURN_TIME:int = 998;
 		private var _state:int = GameStatus.STOPPED;
 		
+		//we use this to change the mode
+		//- ONLINE -> normal gameplay, you send actinos throught Cirrus to the other player
+		//- OFFLINE -> you act as two players in one screen, for tests purposes only
+		public var online:Boolean = false;
+		//public var mode:int = ONLINE;
+		
 		public function Main()
 		{
 			_instance = this;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			_renderer = Renderer.getInstance();
 			_ui = UI.getInstance(true);
+			_ui.online = online;
 			_ui.visible = false;
 			_manager = Manager.getInstance();
+			_manager.online = online;
 		}
 		
-		private function onAdded (e:Event):void
+		private function onAdded(e:Event):void
 		{
 			addChild(_renderer);
 			addChild(_ui);
+			
+			if(!online)
+				_manager.buildPlayersWorld();
 		}
 		
 		public function startGame():void {

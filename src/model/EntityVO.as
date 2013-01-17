@@ -52,7 +52,7 @@ package model
 			_behavior = new Vector.<Class>;
 			_behaviorSteps = new Vector.<IBehavior>;
 			_behaviorReqs = new Array();
-			_rallypoint = new Point();
+			//_rallypoint = new Point();
 			_spawningpoint = new Point();
 			//_positionDest = new Point();
 		}
