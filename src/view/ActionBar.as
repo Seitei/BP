@@ -93,7 +93,7 @@ package view
 			initPlusSeparator();
 			initTurnCountdown();
 			initReadyButton();
-			
+			initResourceButton();
 			//entities
 			
 			initCannonButton();
@@ -149,6 +149,30 @@ package view
 			
 			
 		}
+		
+		private function initResourceButton():void {
+			
+			var resourceBtn:ActionButton = new ActionButton(
+				ResourceManager.getInstance().getTexture("building_improvement_gold_up_btn"), 
+				"addEntity", 
+				"buildingImprovementGold",
+				null,
+				null,
+				"",
+				ResourceManager.getInstance().getTexture("building_improvement_gold_down_btn"), 
+				ResourceManager.getInstance().getTexture("building_improvement_gold_hover_btn"),
+				ResourceManager.getInstance().getTexture("building_improvement_gold_mouse_btn")
+			);
+			
+			resourceBtn.x = 3;
+			resourceBtn.y = 129;
+			addChild(resourceBtn);
+			resourceBtn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
+			
+			_buttonsVector.push(resourceBtn);
+			
+			
+		}
 
 		private function initReadyButton():void {
 			var readyButton:ActionButton = new ActionButton(
@@ -158,13 +182,12 @@ package view
 				null,
 				null,
 				"",
-				ResourceManager.getInstance().getTexture("ready_up_btn"), 
-				ResourceManager.getInstance().getTexture("ready_up_btn"),
-				ResourceManager.getInstance().getTexture("ready_up_btn")
+				ResourceManager.getInstance().getTexture("ready_down_btn"), 
+				ResourceManager.getInstance().getTexture("ready_hover_btn")
 			);
 			
 			readyButton.x = 3;
-			readyButton.y = 129;
+			readyButton.y = 429;
 			addChild(readyButton);
 			readyButton.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onReadyButtonTouched);
 			

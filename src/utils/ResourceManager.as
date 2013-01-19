@@ -16,12 +16,6 @@ package utils
 		[Embed(source = "../assets/action_bar_bg.png")]
 		private static const ActionBarBg:Class;
 		
-		[Embed(source = "../assets/main_selector_improvements.png")]
-		private static const MainSelectorImprovements:Class;
-		
-		[Embed(source = "../assets/main_selector_units.png")]
-		private static const MainSelectorUnits:Class;
-		
 		[Embed(source = "../assets/main_selector_towers.png")]
 		private static const MainSelectorTowers:Class;
 		
@@ -37,14 +31,20 @@ package utils
 		[Embed(source = "../assets/upgrade.png")]
 		private static const Upgrade:Class;
 				
-		[Embed(source = "../assets/unit.png")]
-		private static const Unit:Class;
-		
-		[Embed(source = "../assets/building_unit.png")]
-		private static const buildingUnit:Class;
-		
 		[Embed(source = "../assets/building_improvement_gold.png")]
 		private static const buildingImprovementGold:Class;
+		
+		[Embed(source = "../assets/building_improvement_gold_up_btn.png")]
+		private static const buildingImprovementGoldUpBtn:Class;
+		
+		[Embed(source = "../assets/building_improvement_gold_hover_btn.png")]
+		private static const buildingImprovementGoldHoverBtn:Class;
+		
+		[Embed(source = "../assets/building_improvement_gold_down_btn.png")]
+		private static const buildingImprovementGoldDownBtn:Class;
+		
+		[Embed(source = "../assets/building_improvement_gold_mouse_btn.png")]
+		private static const buildingImprovementGoldMouseBtn:Class;
 		
 		[Embed(source = "../assets/tile.png")]
 		private static const Tile:Class;
@@ -61,12 +61,6 @@ package utils
 		[Embed(source = "../assets/building.png")]
 		private static const Building:Class;
 
-		[Embed(source = "../assets/upgrade_damage_1.png")]
-		private static const UpgradeDamage1:Class;
-		
-		[Embed(source = "../assets/upgrade_armor_1.png")]
-		private static const UpgradeArmor1:Class;
-		
 		[Embed(source = "../assets/spawner1_down_btn.png")]
 		private static const Spawner1DownBtn:Class;
 		
@@ -99,6 +93,12 @@ package utils
 		
 		[Embed(source = "../assets/ready_up_btn.png")]
 		private static const ReadyUpBtn:Class;
+		
+		[Embed(source = "../assets/ready_down_btn.png")]
+		private static const ReadyDownBtn:Class;
+		
+		[Embed(source = "../assets/ready_hover_btn.png")]
+		private static const ReadyHoverBtn:Class;
 		
 		[Embed(source = "../assets/cannon_bullet.png")]
 		private static const CannonBullet:Class;
@@ -143,11 +143,6 @@ package utils
 			TextureAssets["action_bar_bg"] = ActionBarBg;
 			TextureAssets["set_rallypoint"] = SetRallypoint;
 			TextureAssets["rallypoint"] = Rallypoint;
-			TextureAssets["unit"] = Unit;
-			TextureAssets["building_unit"] = buildingUnit;
-			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
-			TextureAssets["main_selector_improvements"] = MainSelectorImprovements;
-			TextureAssets["main_selector_units"] = MainSelectorUnits;
 			TextureAssets["main_selector_towers"] = MainSelectorTowers;
 			TextureAssets["sell"] = Sell;
 			TextureAssets["upgrade"] = Upgrade;
@@ -156,8 +151,6 @@ package utils
 			TextureAssets["ship"] = Ship;
 			TextureAssets["timon"] = Timon;
 			TextureAssets["building"] = Building;
-			TextureAssets["upgrade_damage_1"] = UpgradeDamage1;
-			TextureAssets["upgrade_armor_1"] = UpgradeArmor1;
 			TextureAssets["spawner1_up_btn"] = Spawner1UpBtn;
 			TextureAssets["spawner1_hover_btn"] = Spawner1HoverBtn;
 			TextureAssets["spawner1_down_btn"] = Spawner1DownBtn;
@@ -166,7 +159,14 @@ package utils
 			TextureAssets["spawner2_hover_btn"] = Spawner2HoverBtn;
 			TextureAssets["spawner2_down_btn"] = Spawner2DownBtn;
 			TextureAssets["spawner2_mouse_btn"] = Spawner2MouseBtn;
+			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
+			TextureAssets["building_improvement_gold_up_btn"] = buildingImprovementGoldUpBtn;
+			TextureAssets["building_improvement_gold_hover_btn"] = buildingImprovementGoldHoverBtn;
+			TextureAssets["building_improvement_gold_down_btn"] = buildingImprovementGoldDownBtn;
+			TextureAssets["building_improvement_gold_mouse_btn"] = buildingImprovementGoldMouseBtn;
 			TextureAssets["ready_up_btn"] = ReadyUpBtn;
+			TextureAssets["ready_down_btn"] = ReadyDownBtn;
+			TextureAssets["ready_hover_btn"] = ReadyHoverBtn;
 			TextureAssets["spawner1"] = Spawner1;
 			TextureAssets["spawner2"] = Spawner2;
 			TextureAssets["cannon_bullet"] = CannonBullet;

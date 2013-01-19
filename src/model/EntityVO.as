@@ -1,9 +1,9 @@
 package model
 {
 	import flash.geom.Point;
+	import flash.utils.Dictionary;
 	
 	import interfaces.IBehavior;
-	import interfaces.IBuff;
 	
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
@@ -18,38 +18,36 @@ package model
 		private var _position:Point;
 		private var _skinClass:SkinClass;
 		private var _type:String = "";
-		private var _speed:Number;
 		private var _id:String;
 		private var _parentContainerId:String;
 		private var _childEntityId:String;
-		private var _hp:int;
 		private var _status:int;
-		private var _buff:IBuff;
 		private var _owner:String;
 		private var _rotation:Number;
 		private var _entityTypeSpawned:String;
 		private var _spawningPoint:Point;
 		private var _forwardAngle:int;
 		private var _spawnRate:int;
-		private var _damage:int;
+		private var _power:int;
 		private var _rallypoint:Point;
 		private var _spawningpoint:Point;
 		private var _positionDest:Point;
 		private var _cost:int;
+		private var _tilesAffectedArray:Array;
+		private var _loopable:Boolean;
 		
+		protected var _buffsDic:Dictionary;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
-		protected var _behavior:Vector.<Class>;
+		protected var _behavior:Array;
 		protected var _behaviorSteps:Vector.<IBehavior>;
 		protected var _behaviorReqs:Array;
-		
-		
 		
 		
 		public function EntityVO()
 		{
 			position = new Point();
 			_rotation = 0;
-			_behavior = new Vector.<Class>;
+			_behavior = new Array();
 			_behaviorSteps = new Vector.<IBehavior>;
 			_behaviorReqs = new Array();
 			//_rallypoint = new Point();
@@ -57,6 +55,36 @@ package model
 			//_positionDest = new Point();
 		}
 		
+		public function get behaviorSteps():Vector.<IBehavior>
+		{
+			return _behaviorSteps;
+		}
+
+		public function set behaviorSteps(value:Vector.<IBehavior>):void
+		{
+			_behaviorSteps = value;
+		}
+
+		public function get loopable():Boolean
+		{
+			return _loopable;
+		}
+
+		public function set loopable(value:Boolean):void
+		{
+			_loopable = value;
+		}
+
+		public function get tilesAffectedArray():Array
+		{
+			return _tilesAffectedArray;
+		}
+
+		public function set tilesAffectedArray(value:Array):void
+		{
+			_tilesAffectedArray = value;
+		}
+
 		public function get cost():int
 		{
 			return _cost;
@@ -97,14 +125,14 @@ package model
 			_rallypoint = value;
 		}
 
-		public function get damage():int
+		public function get power():int
 		{
-			return _damage;
+			return _power;
 		}
 
-		public function set damage(value:int):void
+		public function set power(value:int):void
 		{
-			_damage = value;
+			_power = value;
 		}
 
 		public function get behaviorReqs():Array
@@ -199,16 +227,6 @@ package model
 			_owner = value;
 		}
 
-		public function get buff():IBuff
-		{
-			return _buff;
-		}
-
-		public function set buff(value:IBuff):void
-		{
-			_buff = value;
-		}
-
 		public function get status():int
 		{
 			return _status;
@@ -217,16 +235,6 @@ package model
 		public function set status(value:int):void
 		{
 			_status = value;
-		}
-
-		public function get hp():int
-		{
-			return _hp;
-		}
-
-		public function set hp(value:int):void
-		{
-			_hp = value;
 		}
 
 		public function get childEntity():String
@@ -267,16 +275,6 @@ package model
 		public function set id(value:String):void
 		{
 			_id = value;
-		}
-
-		public function get speed():Number
-		{
-			return _speed;
-		}
-
-		public function set speed(value:Number):void
-		{
-			_speed = value;
 		}
 
 		public function get type():String

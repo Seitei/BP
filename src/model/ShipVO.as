@@ -13,7 +13,6 @@ package model
 			super();
 			position.x = x, position.y = y;
 			type = "ship";
-			speed = 0;
 			skinClass = new SkinClass("ship", "ship", false);
 			skinClass.animationsDic["ship"] = true;
 		}

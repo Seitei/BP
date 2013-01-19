@@ -20,17 +20,29 @@ package behavior_steps
 
 	public class Spawn implements IBehavior
 	{
-		private var _entity:EntityVO;
 		private var _timePassed:int;
+		private var _entityType:String;
 		private var _req:String = "";
+		private var _loopable:Boolean = true;
+		private var _when:String = "loop";
 		
-		public function Spawn(entity:EntityVO){
-			_entity = entity;
+		public function Spawn(...params){
+			_entityType = params[0];
 		}
 		
-		public function execute(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
+		public function execute(entity:EntityVO, reqs:* = null):void {
 			
-				advanceTime();
+				advanceTime(entity);
+		}
+		
+		public function get when():String
+		{
+			return _when;
+		}
+		
+		public function set when(value:String):void
+		{
+			_when = value;
 		}
 		
 		public function get req():String
@@ -44,28 +56,29 @@ package behavior_steps
 		}
 
 		
-		private function advanceTime():void {
+		private function advanceTime(entity:EntityVO):void {
 			_timePassed ++;
-			if ((_timePassed > _entity.spawnRate)) {
-				spawnEntity();
+			if ((_timePassed > entity.spawnRate)) {
+				spawnEntity(entity);
 				_timePassed = 0;				
 			}
 		}
 			
 		
-		private function spawnEntity():void {
-			var spawnedEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_entity.owner, _entity.entityTypeSpawned, new Point(_entity.position.x + _entity.spawningPoint.x, _entity.position.y + _entity.spawningPoint.y));
-			spawnedEntity.forwardAngle += _entity.forwardAngle;
-			spawnedEntity.parentContainer = _entity.id;
-			spawnedEntity.positionDest = _entity.rallypoint;
+		private function spawnEntity(entity:EntityVO):void {
+			var spawnedEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(entity.owner, _entityType, new Point(entity.position.x + entity.spawningPoint.x, entity.position.y + entity.spawningPoint.y));
+			spawnedEntity.forwardAngle += entity.forwardAngle;
+			spawnedEntity.parentContainer = entity.id;
+			spawnedEntity.positionDest = entity.rallypoint;
 			var action:Action = new Action("addEntity", spawnedEntity);
 			GameManager.getInstance().dispatchAction(action);
 		}
 			
-			
-			
-			
-			
+		public function get loopable():Boolean
+		{
+			return _loopable;
+		}
+		
 		
 		
 		

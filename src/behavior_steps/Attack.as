@@ -17,22 +17,35 @@ package behavior_steps
 	{
 			
 		private var _req:String = "enemy_entities";
+		private var _loopable:Boolean = true;
+		private var _executeNow:Boolean = false;
+		private var _when:String = "loop";
 		
-		public function Attack(entity:EntityVO){
+		public function Attack(...params){
 		   
 		}
 		
-		public function execute(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
+		public function get when():String
+		{
+			return _when;
+		}
+
+		public function set when(value:String):void
+		{
+			_when = value;
+		}
+
+		public function execute(entity:EntityVO, reqs:* = null):void {
 			
-			for each(var targetedEnt:EntityVO in entitiesSubgroup) {
+			for each(var targetedEnt:EntityVO in reqs) {
 
 				if(targetedEnt is ITargeteable) {
 				
 					if(Point.distance(entity.position, targetedEnt.position) < 20){
 						GameManager.getInstance().removeEntity(entity);
-						targetedEnt.hp -= entity.damage;
+						targetedEnt.power -= entity.power;
 						
-						if(targetedEnt.hp <= 0)
+						if(targetedEnt.power <= 0)
 							GameManager.getInstance().removeEntity(targetedEnt);
 						
 					}
@@ -51,8 +64,20 @@ package behavior_steps
 			_req = value;
 		}
 
-			
-			
+		public function get loopable():Boolean
+		{
+			return _loopable;
+		}
+		
+		public function get executeNow():Boolean
+		{
+			return _executeNow;
+		}
+		
+		public function set executeNow(value:Boolean):void
+		{
+			_executeNow = value;
+		}	
 			
 			
 			

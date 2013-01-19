@@ -157,7 +157,8 @@ package managers
 		
 		private function updateEntities():void {
 			var spriteEntities:Dictionary = Main.getInstance().getRenderer().getSpriteEntitiesDic();
-			var entities:Vector.<EntityVO> = _world.getEntities();
+			//we only consider the loopable entities
+			var entities:Vector.<EntityVO> = _world.getLoopableEntities();
 			
 			for each (var ent:EntityVO in entities) {
 					

@@ -17,20 +17,24 @@ package model
 		public function BulletVO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
-			damage = 3;
+			power = 3;
 			type = "bullet";
-			speed = 2;
 			skinClass = new SkinClass("cannon_bullet", "walking", true);
 			skinClass.animationsDic["walking"] = true;
 			forwardAngle = -45;
 			
 			//behavior:
-			_behavior.push(Move);
-			_behavior.push(Attack);
+			_behavior[0] = [Move, 2];
+			_behavior[1] = [Attack];
 			
 			for (var i:int = 0; i < _behavior.length; i ++){
-				_behaviorSteps[i] = new _behavior[i](this);
+				
+				_behaviorSteps[i] = new _behavior[i][0](_behavior[i].slice(1));
 				_behaviorReqs.push(_behaviorSteps[i].req);
+				//if at least one behavior step needs to loop, then the entity is a loopable entity and
+				//we need to include it in the loopable entities array
+				if(_behaviorSteps[i].when == "loop")
+					loopable = true;
 			}
 		}
 		

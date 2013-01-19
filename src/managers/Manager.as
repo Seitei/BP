@@ -14,6 +14,8 @@ package managers
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
+	import interfaces.IBehavior;
+	
 	import model.BackgroundVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
@@ -114,7 +116,7 @@ package managers
 		}
 		
 		private function entityClickedSignalhandler(id:String, operation:String):void {
-			var entity:EntityVO = WorldVO.getInstance().getEntity(id);
+			var entity:EntityVO = _gameManager.world.getEntity(id);
 			UI.getInstance().entityClickedHandler(entity, operation);
 			
 		}
@@ -200,11 +202,27 @@ package managers
 		}
 		
 		public function sendPlayerReadyEvent():void {
-			_imReady = true;
-			if(_hesReady)
-				advanceGameState();
-			UI.getInstance().enableButtons(false);
-			_player.sendReadyMessage(_playerName + "_placeReadyButton");
+			
+			if(!online){
+				if(!_imReady){
+					_imReady = true;
+					_playerName = "TEST";
+					Main.getInstance().getRenderer().playerName = "TEST";
+					UI.getInstance().playerName = "TEST";					
+				}
+				else{
+					advanceGameState();	
+				}
+			}
+			else{
+				_imReady = true;
+				if(_hesReady)
+					advanceGameState();
+				UI.getInstance().enableButtons(false);
+				_player.sendReadyMessage(_playerName);
+				
+			}
+			
 		}
 			
 		
@@ -235,10 +253,10 @@ package managers
 					break;
 			}
 			
-			if(action.entity.buff){
-				switch(action.entity.buff.buffType){
-					case "goldIncomeImprovement":
-						goldIncome += action.entity.buff.buffStats;
+			for (var i:int = 0; i < action.entity.behaviorSteps.length; i ++){
+				//if we need to execute the behavior now, we ask for "place" when behavior property
+				if(action.entity.behaviorSteps[i].when == "place"){
+					action.entity.behaviorSteps[i].execute(action.entity, provideReqsContent(action.entity.behaviorSteps[i].req));
 				}
 			}
 			
@@ -247,6 +265,10 @@ package managers
 			if(action.entity.type != "background" && sendActionBuffer) {
 				_player.addToActionBuffer(action);
 			}
+			
+		}
+		
+		private function provideReqsContent(req:String):* {
 			
 		}
 		

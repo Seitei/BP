@@ -51,6 +51,11 @@ package view
 			_playerName = _manager.getPlayerName();
 		}
 		
+		public function set playerName(value:String):void
+		{
+			_playerName = value;
+		}
+
 		public function renderObject(entity:EntityVO):void {
 			
 			var mcc:MovieClipContainer = new MovieClipContainer();
@@ -85,10 +90,10 @@ package view
 			
 			_spriteEntityDic[entity.id] = mcc;
 			
-			if(entity.owner == _playerName) {
+			//if(entity.owner == _playerName) {
 				mcc.addEventListener(TouchEvent.TOUCH, onTouch);
 				mcc.useHandCursor = true;
-			}
+			//}
 			
 			addChild(mcc);
 			

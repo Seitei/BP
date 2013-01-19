@@ -11,7 +11,6 @@ package model
 		{
 			position.x = x, position.y = y;
 			type = "background";
-			speed = 0;
 			skinClass = new SkinClass("background", "background", false);
 			skinClass.animationsDic["background"] = true;
 		}

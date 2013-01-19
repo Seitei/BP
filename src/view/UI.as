@@ -230,9 +230,11 @@ package view
 				
 				_clickedEntity = entity;
 				
-				if(_actionIssued) {
+				if(_actionIssued && entity.owner == _playerName) {
 				
 					_actionIssued.entity.position = _clickedEntity.position.clone();
+					_actionIssued.entity.forwardAngle = _clickedEntity.forwardAngle;
+					_actionIssued.entity.rotation = _clickedEntity.rotation;
 					dispatchSignal(_actionIssued);
 					
 					if(_pressingShift){
@@ -326,10 +328,6 @@ package view
 				var action:Action;
 				
 				switch(e.actionType) {
-					case "addEntity":
-						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, _clickedEntity.position);
-						action = new Action(e.actionType, newEntity);
-						break;
 					case "sell":
 						action = new Action(e.actionType, _clickedEntity);
 						break;
@@ -434,8 +432,8 @@ package view
 		
 		public function showCountDown():void {
 			_showingCountDown = true;
-			_timer = new Timer(1000, 3);
-			_countDownTxt = new TextField(200, 100, "3", "Verdana", 60);
+			_timer = new Timer(1000, 2);
+			_countDownTxt = new TextField(200, 100, "2", "Verdana", 60);
 			_countDownTxt.x = 300;
 			_countDownTxt.y = 200;
 			addChild(_countDownTxt);

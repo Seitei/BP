@@ -32,22 +32,26 @@ package model
 			//TODO temporary fix
 			cost = 3;
 			type = "spawner2";
-			speed = 1;
 			spawnRate = 60;
 			skinClass = new SkinClass("spawner2", "spawner2", false);
 			skinClass.animationsDic["spawner2"] = true;
-			hp = 500;
+			power = 500;
 			entityTypeSpawned = "bullet";
 			spawningPoint = new Point(18, -18);
 			//set what the entity has to show in the selector panel
 			initActionButtons();
 			
 			//behavior:
-			_behavior.push(Spawn);
+			_behavior[0] = [Spawn, "bullet"];
 			
 			for (var i:int = 0; i < _behavior.length; i ++){
-				_behaviorSteps[i] = new _behavior[i](this);
+				
+				_behaviorSteps[i] = new _behavior[i][0](_behavior[i].slice(1));
 				_behaviorReqs.push(_behaviorSteps[i].req);
+				//if at least one behavior step needs to loop, then the entity is a loopable entity and
+				//we need to include it in the loopable entities array
+				if(_behaviorSteps[i].when == "loop")
+					loopable = true;
 			}
 		}
 		

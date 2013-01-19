@@ -14,11 +14,35 @@ package behavior_steps
 	public class Move implements IBehavior
 	{
 		private var _req:String = "";
+		private var _loopable:Boolean = true;
+		private var _executeNow:Boolean = false;
+		private var _when:String = "loop";
+		private var _speed:int = 0;
 		
-	   	public function Move(entity:EntityVO = null){
-		   
+	   	public function Move(...params){
+			_speed = params[0];   
 	   	}
 		
+		public function get when():String
+		{
+			return _when;
+		}
+		
+		public function set when(value:String):void
+		{
+			_when = value;
+		}
+		
+		public function get loopable():Boolean
+		{
+			return _loopable;
+		}
+
+		public function set loopable(value:Boolean):void
+		{
+			_loopable = value;
+		}
+
 		public function get req():String
 		{
 			return _req;
@@ -29,7 +53,7 @@ package behavior_steps
 			_req = value;
 		}
 
-		public function execute(entity:EntityVO, entitiesSubgroup:Vector.<EntityVO> = null):void {
+		public function execute(entity:EntityVO, reqs:* = null):void {
 			
 			var spriteEntities:Dictionary = Main.getInstance().getRenderer().getSpriteEntitiesDic();
 			var mcc:MovieClipContainer = spriteEntities[entity.id];
@@ -42,7 +66,7 @@ package behavior_steps
 					entity.positionDest = null;
 				}
 				else {
-					Movement.moveToPoint(mcc, entity.positionDest, entity.speed, true); 
+					Movement.moveToPoint(mcc, entity.positionDest, _speed, true); 
 					entity.position.x = mcc.x;
 					entity.position.y = mcc.y;
 				}
@@ -56,7 +80,7 @@ package behavior_steps
 			
 			//if not we move at 45 degrees:
 			else {
-				Movement.moveInDirection(mcc, entity.forwardAngle, entity.speed); 
+				Movement.moveInDirection(mcc, entity.forwardAngle, _speed); 
 				entity.position.x = mcc.x;
 				entity.position.y = mcc.y;
 			}
@@ -72,27 +96,17 @@ package behavior_steps
 			Manager.getInstance().updateEnemyHp(-IAttack(ent).damage); 
 			removeEntity(ent);
 			}*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		}
 			
+		public function get executeNow():Boolean
+		{
+			return _executeNow;
+		}
 		
+		public function set executeNow(value:Boolean):void
+		{
+			_executeNow = value;
+		}
 		
 		
 		

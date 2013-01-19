@@ -12,7 +12,6 @@ package model
 		{
 			position.x = x, position.y = y;
 			type = "tile";
-			speed = 0;
 			skinClass = new SkinClass("tile", "hover", true);
 			skinClass.animationsDic["hover"] = true;
 			skinClass.animationsDic["selected"] = true;

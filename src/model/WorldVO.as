@@ -21,6 +21,7 @@ package model
 		private static var _instance:WorldVO;
 		private var _entitiesDic:Dictionary;
 		private var _entitiesArray:Vector.<EntityVO>;
+		private var _loopableEntitiesArray:Vector.<EntityVO>;
 		private var _entitiesSoubgroupArray:Dictionary;
 		private var _unitsArray:Dictionary;
 		private var _buildingsArray:Dictionary;
@@ -35,6 +36,7 @@ package model
 			_entitiesDic = new Dictionary();
 			_entitiesArray = new Vector.<EntityVO>;
 			_entitiesSoubgroupArray = new Dictionary();
+			_loopableEntitiesArray = new Vector.<EntityVO>;
 			_playersNamesArray = new Array();
 		}
 
@@ -88,9 +90,11 @@ package model
 					_playersNamesArray.push(entity.owner);
 					_entitiesSoubgroupArray[entity.owner] = new Vector.<EntityVO>;
 				}
-				
 				_entitiesSoubgroupArray[entity.owner].push(entity);
-				
+			}
+			
+			if(entity.loopable){
+				_loopableEntitiesArray.push(entity);
 			}
 				
 			
@@ -103,6 +107,7 @@ package model
 			_entitiesDic[entity.id] = null;
 			_entitiesArray.splice(_entitiesArray.indexOf(entity, 0), 1);
 			_entitiesSoubgroupArray[entity.owner].splice(_entitiesSoubgroupArray[entity.owner].indexOf(entity, 0), 1);
+			_loopableEntitiesArray.splice(_loopableEntitiesArray.indexOf(entity, 0), 1);
 			
 			/*var count:int = 0;
 			for each(var ent:EntityVO in _entitiesArray) {
@@ -153,6 +158,10 @@ package model
 		
 		public function getEntities():Vector.<EntityVO> {
 			return _entitiesArray;
+		}
+		
+		public function getLoopableEntities():Vector.<EntityVO> {
+			return _loopableEntitiesArray;
 		}
 		
 		public static function getInstance():WorldVO {

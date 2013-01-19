@@ -120,10 +120,8 @@ package
 		}
 		
 		public function sendActionBuffer(online:Boolean):void {
-			//if we are online, the message goes throught netConnect
 			if(online)
 				_nc.sendActionBuffer(_buffer);
-			//if not, we bypass that and send the action buffer to the manager directly
 			else
 				dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_ACTION_EVENT, _buffer));
 				
@@ -131,13 +129,28 @@ package
 		}
 		
 		public function sendReadyMessage(message:String):void {
-			_nc.sendReadyMessage(message);
+				_nc.sendReadyMessage(message);
 		}
 		
 		public function receiveMessage(buffer:Vector.<Action>):void {
 			//TODO
 			
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 }
