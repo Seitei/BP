@@ -5,11 +5,9 @@ package model
 	
 	import flash.geom.Point;
 	
-	import interfaces.ITargeteable;
-	
 	import starling.display.Sprite;
 
-	public class BulletVO extends EntityVO implements ITargeteable
+	public class BulletVO extends EntityVO
 	{
 		private var _damage:int;
 		private var _forwardAngle:int;
@@ -22,6 +20,7 @@ package model
 			skinClass = new SkinClass("cannon_bullet", "walking", true);
 			skinClass.animationsDic["walking"] = true;
 			forwardAngle = -45;
+			attackable = true;
 			
 			//behavior:
 			_behavior[0] = [Move, 2];

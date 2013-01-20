@@ -10,7 +10,6 @@ package managers
 	
 	import interfaces.*;
 	import interfaces.IBuildeable;
-	import interfaces.ITargeteable;
 	import interfaces.ITargeter;
 	
 	import model.BulletVO;
@@ -158,7 +157,7 @@ package managers
 		private function updateEntities():void {
 			var spriteEntities:Dictionary = Main.getInstance().getRenderer().getSpriteEntitiesDic();
 			//we only consider the loopable entities
-			var entities:Vector.<EntityVO> = _world.getLoopableEntities();
+			var entities:Vector.<EntityVO> = _world.getEntitiesSubgroup("loopable_entities");
 			
 			for each (var ent:EntityVO in entities) {
 					

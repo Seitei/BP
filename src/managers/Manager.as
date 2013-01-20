@@ -269,7 +269,7 @@ package managers
 		}
 		
 		private function provideReqsContent(req:String):* {
-			
+				
 		}
 		
 		public function updateUITurnCountdown(count:int):void {

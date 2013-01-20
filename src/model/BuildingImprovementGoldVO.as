@@ -4,11 +4,9 @@ package model
 	
 	import flash.geom.Point;
 	
-	import interfaces.ITargeteable;
-	
 	import starling.display.Sprite;
 	
-	public class BuildingImprovementGoldVO extends EntityVO implements ITargeteable
+	public class BuildingImprovementGoldVO extends EntityVO
 	{
 		private var _cost:int;
 		
@@ -21,6 +19,7 @@ package model
 			skinClass.animationsDic["building_improvement_gold"] = true;
 			//buff = new GoldBuff("goldIncomeImprovement", 2, "player");
 			power = 500;
+			attackable = true;
 		
 			//behavior:
 			_behavior[0] = [IncreaseGoldIncome, 2];

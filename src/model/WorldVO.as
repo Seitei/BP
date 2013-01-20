@@ -21,8 +21,7 @@ package model
 		private static var _instance:WorldVO;
 		private var _entitiesDic:Dictionary;
 		private var _entitiesArray:Vector.<EntityVO>;
-		private var _loopableEntitiesArray:Vector.<EntityVO>;
-		private var _entitiesSoubgroupArray:Dictionary;
+		private var _entitiesSubgroupsDic:Dictionary;
 		private var _unitsArray:Dictionary;
 		private var _buildingsArray:Dictionary;
 		private var _bulletsArray:Dictionary;
@@ -35,8 +34,12 @@ package model
 		{
 			_entitiesDic = new Dictionary();
 			_entitiesArray = new Vector.<EntityVO>;
-			_entitiesSoubgroupArray = new Dictionary();
-			_loopableEntitiesArray = new Vector.<EntityVO>;
+			
+			_entitiesSubgroupsDic = new Dictionary();
+				_entitiesSubgroupsDic["loopable_entities"] = new Vector.<EntityVO>;
+				
+				
+			
 			_playersNamesArray = new Array();
 		}
 
@@ -75,26 +78,37 @@ package model
 			}
 		}
 		
+		private function createSubgroupVectors(owner:String):void {
+			if((owner != _playersNamesArray[0] || _playersNamesArray.length == 0)){
+				_playersNamesArray.push(owner);
+				_entitiesSubgroupsDic[owner] = new Vector.<EntityVO>;
+				_entitiesSubgroupsDic[owner + "_attackable_entities"] = new Vector.<EntityVO>; 
+			}
+		}
+		
 		public function addEntity(entity:EntityVO):void {
+			
+			//TODO -> change this when ship and background gets implemented
+			if(entity.owner){
+				if(_playersNamesArray.length < 2){
+					createSubgroupVectors(entity.owner);
+				}
+				
+				_entitiesSubgroupsDic[entity.owner].push(entity);
+				
+				if(entity.attackable){
+					_entitiesSubgroupsDic[entity.owner + "_attackable_entities"].push(entity);
+				}
+			}
+
 			if(entity.parentContainer)
 				_entitiesDic[entity.parentContainer].childEntity = entity.id;
 			
 			_entitiesArray.push(entity);
 			_entitiesDic[entity.id] = entity;	
 			
-			
-			
-			//TODO -> change this when ship and background gets implemented
-			if(entity.owner){
-				if((entity.owner != _playersNamesArray[0] || _playersNamesArray.length == 0) && (_playersNamesArray.length < 2)){
-					_playersNamesArray.push(entity.owner);
-					_entitiesSoubgroupArray[entity.owner] = new Vector.<EntityVO>;
-				}
-				_entitiesSoubgroupArray[entity.owner].push(entity);
-			}
-			
 			if(entity.loopable){
-				_loopableEntitiesArray.push(entity);
+				_entitiesSubgroupsDic["loopable_entities"].push(entity);
 			}
 				
 			
@@ -106,22 +120,14 @@ package model
 			
 			_entitiesDic[entity.id] = null;
 			_entitiesArray.splice(_entitiesArray.indexOf(entity, 0), 1);
-			_entitiesSoubgroupArray[entity.owner].splice(_entitiesSoubgroupArray[entity.owner].indexOf(entity, 0), 1);
-			_loopableEntitiesArray.splice(_loopableEntitiesArray.indexOf(entity, 0), 1);
 			
-			/*var count:int = 0;
-			for each(var ent:EntityVO in _entitiesArray) {
-				if(ent.id == entity.id) {
-					_entitiesArray.splice(count, 1);
-					break;
-				}
-				count++;
-			}*/
-		}
-		
-		public function resetContent():void {
-			_entitiesDic = new Dictionary();
-			_entitiesArray = new Vector.<EntityVO>;
+			for each(var entityVector:Vector.<EntityVO> in _entitiesSubgroupsDic){
+				entityVector.splice(entityVector.indexOf(entity, 0), 1);
+			}
+			
+			
+			
+			
 		}
 		
 		private function getEnemyName(owner:String):String {
@@ -131,15 +137,23 @@ package model
 				return _playersNamesArray[0];
 		}
 		
-		public function getEntitiesSubgroup(subgroup:String, owner:String):Vector.<EntityVO> {
+		public function getEntitiesSubgroup(subgroup:String, owner:String = "all"):Vector.<EntityVO> {
 			
 			switch(subgroup) {
 				case "enemy_entities":
-					return _entitiesSoubgroupArray[getEnemyName(owner)];
+					return _entitiesSubgroupsDic[getEnemyName(owner)];
+					break;
+			
+				case "ally_entities":
+					return _entitiesSubgroupsDic[owner];
 					break;
 				
-				case "ally_entities":
-					return _entitiesSoubgroupArray[owner];
+				case "loopable_entities":
+					return _entitiesSubgroupsDic["loopable_entities"];
+					break;
+				
+				case "enemy_attackable_entities":
+					return _entitiesSubgroupsDic[getEnemyName(owner) + "_attackable_entities"];
 					break;
 				
 				case "all_entities":
@@ -158,10 +172,6 @@ package model
 		
 		public function getEntities():Vector.<EntityVO> {
 			return _entitiesArray;
-		}
-		
-		public function getLoopableEntities():Vector.<EntityVO> {
-			return _loopableEntitiesArray;
 		}
 		
 		public static function getInstance():WorldVO {

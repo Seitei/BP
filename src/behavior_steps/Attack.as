@@ -4,7 +4,6 @@ package behavior_steps
 	import flash.utils.Dictionary;
 	
 	import interfaces.IBehavior;
-	import interfaces.ITargeteable;
 	
 	import managers.GameManager;
 	
@@ -16,7 +15,7 @@ package behavior_steps
 	public class Attack implements IBehavior
 	{
 			
-		private var _req:String = "enemy_entities";
+		private var _req:String = "enemy_attackable_entities";
 		private var _loopable:Boolean = true;
 		private var _executeNow:Boolean = false;
 		private var _when:String = "loop";
@@ -39,17 +38,12 @@ package behavior_steps
 			
 			for each(var targetedEnt:EntityVO in reqs) {
 
-				if(targetedEnt is ITargeteable) {
-				
-					if(Point.distance(entity.position, targetedEnt.position) < 20){
-						GameManager.getInstance().removeEntity(entity);
-						targetedEnt.power -= entity.power;
-						
-						if(targetedEnt.power <= 0)
-							GameManager.getInstance().removeEntity(targetedEnt);
-						
-					}
+				if(Point.distance(entity.position, targetedEnt.position) < 20){
+					GameManager.getInstance().removeEntity(entity);
+					targetedEnt.power -= entity.power;
 					
+					if(targetedEnt.power <= 0)
+						GameManager.getInstance().removeEntity(targetedEnt);
 				}
 			}
 		}

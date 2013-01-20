@@ -9,7 +9,6 @@ package model
 	import flash.net.registerClassAlias;
 	
 	import interfaces.IBehavior;
-	import interfaces.ITargeteable;
 	
 	import managers.GameManager;
 	
@@ -18,7 +17,7 @@ package model
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 
-	public class Spawner2VO extends EntityVO implements ITargeteable
+	public class Spawner2VO extends EntityVO
 	{
 		private var _cost:int;
 		private var _rallypoint:Point;
@@ -29,8 +28,8 @@ package model
 		public function Spawner2VO(x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
-			//TODO temporary fix
 			cost = 3;
+			attackable = true;
 			type = "spawner2";
 			spawnRate = 60;
 			skinClass = new SkinClass("spawner2", "spawner2", false);

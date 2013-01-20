@@ -35,6 +35,7 @@ package model
 		private var _cost:int;
 		private var _tilesAffectedArray:Array;
 		private var _loopable:Boolean;
+		private var _attackable:Boolean;
 		
 		protected var _buffsDic:Dictionary;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
@@ -55,6 +56,16 @@ package model
 			//_positionDest = new Point();
 		}
 		
+		public function get attackable():Boolean
+		{
+			return _attackable;
+		}
+
+		public function set attackable(value:Boolean):void
+		{
+			_attackable = value;
+		}
+
 		public function get behaviorSteps():Vector.<IBehavior>
 		{
 			return _behaviorSteps;
