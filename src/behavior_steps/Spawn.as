@@ -22,12 +22,14 @@ package behavior_steps
 	{
 		private var _timePassed:int;
 		private var _entityType:String;
+		private var _spawnRate:int;
 		private var _req:String = "";
 		private var _loopable:Boolean = true;
 		private var _when:String = "loop";
 		
 		public function Spawn(...params){
-			_entityType = params[0];
+			_entityType = params[0][0];
+			_spawnRate  = params[0][1];
 		}
 		
 		public function execute(entity:EntityVO, reqs:* = null):void {
@@ -58,7 +60,7 @@ package behavior_steps
 		
 		private function advanceTime(entity:EntityVO):void {
 			_timePassed ++;
-			if ((_timePassed > entity.spawnRate)) {
+			if ((_timePassed > _spawnRate)) {
 				spawnEntity(entity);
 				_timePassed = 0;				
 			}

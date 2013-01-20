@@ -27,7 +27,6 @@ package model
 		private var _entityTypeSpawned:String;
 		private var _spawningPoint:Point;
 		private var _forwardAngle:int;
-		private var _spawnRate:int;
 		private var _power:int;
 		private var _rallypoint:Point;
 		private var _spawningpoint:Point;
@@ -149,16 +148,6 @@ package model
 		public function get behaviorReqs():Array
 		{
 			return _behaviorReqs;
-		}
-
-		public function get spawnRate():int
-		{
-			return _spawnRate;
-		}
-
-		public function set spawnRate(value:int):void
-		{
-			_spawnRate = value;
 		}
 
 		public function get forwardAngle():int

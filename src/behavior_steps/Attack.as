@@ -40,10 +40,10 @@ package behavior_steps
 
 				if(Point.distance(entity.position, targetedEnt.position) < 20){
 					GameManager.getInstance().removeEntity(entity);
-					targetedEnt.power -= entity.power;
-					
-					if(targetedEnt.power <= 0)
-						GameManager.getInstance().removeEntity(targetedEnt);
+					GameManager.getInstance().removeEntity(targetedEnt);
+					//TODO
+					/*targetedEnt.power -= entity.power;
+					if(targetedEnt.power <= 0)*/
 				}
 			}
 		}

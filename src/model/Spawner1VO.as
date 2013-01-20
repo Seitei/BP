@@ -32,7 +32,6 @@ package model
 			cost = 3;
 			attackable = true;
 			type = "spawner1";
-			spawnRate = 60;
 			skinClass = new SkinClass("spawner1", "spawner1", false);
 			skinClass.animationsDic["spawner1"] = true;
 			power = 500;
@@ -42,7 +41,7 @@ package model
 			initActionButtons();
 			
 			//behavior:
-			_behavior[0] = [Spawn, "bullet"];
+			_behavior[0] = [Spawn, "bullet", 120];
 			
 			for (var i:int = 0; i < _behavior.length; i ++){
 				

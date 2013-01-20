@@ -20,7 +20,7 @@ package behavior_steps
 		private var _speed:int = 0;
 		
 	   	public function Move(...params){
-			_speed = params[0];   
+			_speed = params[0][0];   
 	   	}
 		
 		public function get when():String

@@ -122,10 +122,11 @@ package model
 			_entitiesArray.splice(_entitiesArray.indexOf(entity, 0), 1);
 			
 			for each(var entityVector:Vector.<EntityVO> in _entitiesSubgroupsDic){
-				entityVector.splice(entityVector.indexOf(entity, 0), 1);
+				
+				if(entityVector.indexOf(entity, 0) != -1)
+					entityVector.splice(entityVector.indexOf(entity, 0), 1);
+					
 			}
-			
-			
 			
 			
 		}
