@@ -6,8 +6,6 @@ package view
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
-	import interfaces.IBuildeable;
-	
 	import managers.Manager;
 	
 	import model.EntityVO;
@@ -96,14 +94,6 @@ package view
 			//}
 			
 			addChild(mcc);
-			
-			if(entity.status == UnitStatus.BUILDING) {
-				var frames2:Vector.<Texture> = ResourceManager.getInstance().getTextures("building");
-				var mc3:MovieClip = new MovieClip(frames2, (IBuildeable(entity).constructionTime)/60);
-				mcc.addMovieClip(mc3, "building", true, true);
-				mcc.loop(false);
-				_stateChangeRelatedAnimationsDic[entity.id] = entity.id;
-			}
 			
 			mcc.setCurrentMovieClip(mcc.skinClass.originalMcc);
 			

@@ -22,6 +22,7 @@ package behavior_steps
 	{
 		private var _timePassed:int;
 		private var _entityType:String;
+		private var _entityLevel:int;
 		private var _spawnRate:int;
 		private var _req:String = "";
 		private var _loopable:Boolean = true;
@@ -29,7 +30,8 @@ package behavior_steps
 		
 		public function Spawn(...params){
 			_entityType = params[0][0];
-			_spawnRate  = params[0][1];
+			_entityLevel = params[0][1];
+			_spawnRate  = params[0][2];
 		}
 		
 		public function execute(entity:EntityVO, reqs:* = null):void {
@@ -68,7 +70,7 @@ package behavior_steps
 			
 		
 		private function spawnEntity(entity:EntityVO):void {
-			var spawnedEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(entity.owner, _entityType, new Point(entity.position.x + entity.spawningPoint.x, entity.position.y + entity.spawningPoint.y));
+			var spawnedEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(entity.owner, _entityType, _entityLevel, new Point(entity.position.x + entity.spawningPoint.x, entity.position.y + entity.spawningPoint.y));
 			spawnedEntity.forwardAngle += entity.forwardAngle;
 			spawnedEntity.parentContainer = entity.id;
 			spawnedEntity.positionDest = entity.rallypoint;

@@ -132,11 +132,11 @@ package managers
 				}
 			}
 		
-			var bgEntity:EntityVO = new BackgroundVO(350, 350);
+			var bgEntity:EntityVO = new BackgroundVO(1, 350, 350);
 			var bg_action:Action = new Action("addEntity", bgEntity);
 			handler(bg_action, online);
 			
-			var shipEntity:EntityVO = new ShipVO(182.5, 700 - 182.5); 
+			var shipEntity:EntityVO = new ShipVO(1, 182.5, 700 - 182.5); 
 			shipEntity.id = _playerName + shipEntity.type + 666;
 			var ship_action:Action = new Action("addEntity", shipEntity);
 			shipEntity.owner = _playerName;
@@ -169,14 +169,14 @@ package managers
 						
 						var tile:EntityVO;
 						
-						tile = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
+						tile = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", 1, point);
 						TileVO(tile).row = j + i;
 						var tile_action:Action = new Action("addEntity", tile);
 						handler(tile_action, online);
 						
 						//if not online, we force a send with different id and owner to recreate the complete map
 						if(!online){
-							var tile_offline:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", point);
+							var tile_offline:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", 1, point);
 							TileVO(tile_offline).row = j + i;
 							tile_offline.owner = "TEST";
 							tile_offline.id = "TEST" + tile_offline.id.substring(tile_offline.id.indexOf("_"));

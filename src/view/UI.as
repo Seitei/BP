@@ -157,7 +157,7 @@ package view
 				stage.addEventListener(TouchEvent.TOUCH, onMove);
 			}
 			
-			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, null);
+			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, 1, null);
 			_actionIssued = new Action(e.actionType, newEntity);
 			
 			
@@ -237,11 +237,11 @@ package view
 					_actionIssued.entity.rotation = _clickedEntity.rotation;
 					dispatchSignal(_actionIssued);
 					
+					//if we are pressing shift then we can place the same unit in another slot
 					if(_pressingShift){
-						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.type, null);
+						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.type, 1, null);
 						_actionIssued = new Action(_actionIssued.type, newEntity);	
 					}
-					//if we are pressing shift then we can place the same unit in another slot
 					else {
 						//restoring the mouse appearance
 						Mouse.show();
@@ -338,12 +338,12 @@ package view
 						removeEntityUI();
 						return;
 						break;
-					case "upgrade":
+					/*case "upgrade":
 						var entity2:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, _clickedEntity.position);
 						entity2.id = _clickedEntity.id;
 						entity2.parentContainer = _clickedEntity.parentContainer;
 						action = new Action(e.actionType, entity2);
-						break;
+						break;*/
 				}
 			//dispatchSignal(action);
 			removeEntityUI();

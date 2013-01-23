@@ -25,7 +25,7 @@ package model
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
 			
-		public function Spawner2VO(x:int = 0, y:int = 0)
+		public function Spawner2VO(level:int, x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
 			cost = 3;
@@ -34,17 +34,17 @@ package model
 			skinClass = new SkinClass("spawner2", "spawner2", false);
 			skinClass.animationsDic["spawner2"] = true;
 			power = 500;
-			entityTypeSpawned = "bullet";
+			entityToSpawn = ["bullet", 1];
 			spawningPoint = new Point(18, -18);
 			//set what the entity has to show in the selector panel
 			initActionButtons();
 			
 			//behavior:
-			_behavior[0] = [Spawn, "bullet", 60];
+			behavior[0] = [Spawn, "bullet", 60];
 			
-			for (var i:int = 0; i < _behavior.length; i ++){
+			for (var i:int = 0; i < behavior.length; i ++){
 				
-				_behaviorSteps[i] = new _behavior[i][0](_behavior[i].slice(1));
+				_behaviorSteps[i] = new behavior[i][0](behavior[i].slice(1));
 				_behaviorReqs.push(_behaviorSteps[i].req);
 				//if at least one behavior step needs to loop, then the entity is a loopable entity and
 				//we need to include it in the loopable entities array
@@ -54,7 +54,7 @@ package model
 		}
 		
 		override public function loop(behaviorReqsContent:Array):void {
-			for (var i:int = 0; i < _behavior.length; i ++){
+			for (var i:int = 0; i < behavior.length; i ++){
 				_behaviorSteps[i].execute(this, behaviorReqsContent[i]);
 			}
 		}

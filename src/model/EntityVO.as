@@ -24,7 +24,7 @@ package model
 		private var _status:int;
 		private var _owner:String;
 		private var _rotation:Number;
-		private var _entityTypeSpawned:String;
+		private var _entityToSpawn:Object;
 		private var _spawningPoint:Point;
 		private var _forwardAngle:int;
 		private var _power:int;
@@ -35,10 +35,12 @@ package model
 		private var _tilesAffectedArray:Array;
 		private var _loopable:Boolean;
 		private var _attackable:Boolean;
+		private var _levelData:Array;
+		private var _behavior:Array;
+		private var _level:int;
 		
 		protected var _buffsDic:Dictionary;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
-		protected var _behavior:Array;
 		protected var _behaviorSteps:Vector.<IBehavior>;
 		protected var _behaviorReqs:Array;
 		
@@ -50,11 +52,41 @@ package model
 			_behavior = new Array();
 			_behaviorSteps = new Vector.<IBehavior>;
 			_behaviorReqs = new Array();
-			//_rallypoint = new Point();
 			_spawningpoint = new Point();
-			//_positionDest = new Point();
+			_levelData = new Array();
+			
 		}
 		
+		public function get level():int
+		{
+			return _level;
+		}
+
+		public function set level(value:int):void
+		{
+			_level = value;
+		}
+
+		public function get behavior():Array
+		{
+			return _behavior;
+		}
+
+		public function set behavior(value:Array):void
+		{
+			_behavior = value;
+		}
+
+		public function get levelData():Array
+		{
+			return _levelData;
+		}
+
+		public function set levelData(value:Array):void
+		{
+			_levelData = value;
+		}
+
 		public function get attackable():Boolean
 		{
 			return _attackable;
@@ -168,14 +200,14 @@ package model
 			return _spawningPoint;
 		}	
 		
-		public function get entityTypeSpawned():String
+		public function get entityToSpawn():Object
 		{
-			return _entityTypeSpawned;
+			return _entityToSpawn;
 		}
 
-		public function set entityTypeSpawned(value:String):void
+		public function set entityToSpawn(value:Object):void
 		{
-			_entityTypeSpawned = value;
+			_entityToSpawn = value;
 		}
 
 		public function get y():Number

@@ -7,7 +7,7 @@ package model
 	public class BackgroundVO extends EntityVO
 	{
 			
-		public function BackgroundVO(x:int = 0, y:int = 0)
+		public function BackgroundVO(level:int, x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
 			type = "background";

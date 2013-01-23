@@ -9,8 +9,6 @@ package managers
 	import flash.utils.Dictionary;
 	
 	import interfaces.*;
-	import interfaces.IBuildeable;
-	import interfaces.ITargeter;
 	
 	import model.BulletVO;
 	import model.EntityFactoryVO;

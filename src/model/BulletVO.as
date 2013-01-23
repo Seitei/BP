@@ -12,8 +12,9 @@ package model
 		private var _damage:int;
 		private var _forwardAngle:int;
 		
-		public function BulletVO(x:int = 0, y:int = 0)
+		public function BulletVO(level:int, x:int = 0, y:int = 0)
 		{
+			this.level = level;
 			position.x = x, position.y = y;
 			power = 3;
 			type = "bullet";
@@ -23,12 +24,12 @@ package model
 			attackable = true;
 			
 			//behavior:
-			_behavior[0] = [Move, 2];
-			_behavior[1] = [Attack];
+			behavior[0] = [Move, 2];
+			behavior[1] = [Attack];
 			
-			for (var i:int = 0; i < _behavior.length; i ++){
+			for (var i:int = 0; i < behavior.length; i ++){
 				
-				_behaviorSteps[i] = new _behavior[i][0](_behavior[i].slice(1));
+				_behaviorSteps[i] = new behavior[i][0](behavior[i].slice(1));
 				_behaviorReqs.push(_behaviorSteps[i].req);
 				//if at least one behavior step needs to loop, then the entity is a loopable entity and
 				//we need to include it in the loopable entities array
@@ -38,7 +39,7 @@ package model
 		}
 		
 		override public function loop(behaviorReqsContent:Array):void {
-			for (var i:int = 0; i < _behavior.length; i ++){
+			for (var i:int = 0; i < behavior.length; i ++){
 				_behaviorSteps[i].execute(this, behaviorReqsContent[i]);
 			}
 		}
