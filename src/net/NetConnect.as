@@ -8,7 +8,6 @@ package net
 	
 	import flash.net.Responder;
 	
-	import model.BackgroundVO;
 	import model.BuildingImprovementGoldVO;
 	import model.BulletVO;
 	import model.EntityVO;
@@ -46,7 +45,6 @@ package net
 		registerClassAlias("Point", Point);
 		registerClassAlias("Dictionary", Dictionary);
 		registerClassAlias("Array", Array);
-		registerClassAlias("BackgroundVO", BackgroundVO);
 		registerClassAlias("TileVO", TileVO);
 		registerClassAlias("SkinClass", SkinClass);
 		registerClassAlias("Boolean", Boolean);

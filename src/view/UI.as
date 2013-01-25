@@ -338,14 +338,12 @@ package view
 						removeEntityUI();
 						return;
 						break;
-					/*case "upgrade":
-						var entity2:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, _clickedEntity.position);
-						entity2.id = _clickedEntity.id;
-						entity2.parentContainer = _clickedEntity.parentContainer;
-						action = new Action(e.actionType, entity2);
-						break;*/
+					case "upgrade":
+						action = new Action(e.actionType, _clickedEntity);
+						break;
 				}
-			//dispatchSignal(action);
+				
+			dispatchSignal(action);
 			removeEntityUI();
 		}
 		

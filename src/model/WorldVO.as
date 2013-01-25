@@ -88,18 +88,16 @@ package model
 		
 		public function addEntity(entity:EntityVO):void {
 			
-			//TODO -> change this when ship and background gets implemented
-			if(entity.owner){
-				if(_playersNamesArray.length < 2){
-					createSubgroupVectors(entity.owner);
-				}
-				
-				_entitiesSubgroupsDic[entity.owner].push(entity);
-				
-				if(entity.attackable){
-					_entitiesSubgroupsDic[entity.owner + "_attackable_entities"].push(entity);
-				}
+			if(_playersNamesArray.length < 2){
+				createSubgroupVectors(entity.owner);
 			}
+			
+			_entitiesSubgroupsDic[entity.owner].push(entity);
+			
+			if(entity.attackable){
+				_entitiesSubgroupsDic[entity.owner + "_attackable_entities"].push(entity);
+			}
+			
 
 			if(entity.parentContainer)
 				_entitiesDic[entity.parentContainer].childEntity = entity.id;

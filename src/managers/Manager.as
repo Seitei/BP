@@ -16,7 +16,6 @@ package managers
 	
 	import interfaces.IBehavior;
 	
-	import model.BackgroundVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
 	import model.ShipVO;
@@ -132,9 +131,7 @@ package managers
 				}
 			}
 		
-			var bgEntity:EntityVO = new BackgroundVO(1, 350, 350);
-			var bg_action:Action = new Action("addEntity", bgEntity);
-			handler(bg_action, online);
+			Main.getInstance().getRenderer().addBackground();
 			
 			var shipEntity:EntityVO = new ShipVO(1, 182.5, 700 - 182.5); 
 			shipEntity.id = _playerName + shipEntity.type + 666;
@@ -241,6 +238,7 @@ package managers
 				return;
 			}
 			
+			//cost related stuff
 			switch(action.type) {
 				case "addEntity":
 					updatePlayerGold(-action.entity.cost);
@@ -262,7 +260,7 @@ package managers
 			
 			_gameManager.updateWorld(action);
 			
-			if(action.entity.type != "background" && sendActionBuffer) {
+			if(sendActionBuffer) {
 				_player.addToActionBuffer(action);
 			}
 			

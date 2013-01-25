@@ -40,7 +40,7 @@ package model
 			entityToSpawn.level = 1;
 			
 			initLevelData();
-			applyLevel(level);
+			applyLevel = level;
 			initActionButtons();
 			
 		}
@@ -62,10 +62,11 @@ package model
 				
 		}
 		
-		public function applyLevel(level:int):void {
+		override public function set applyLevel(level:int):void {
 			
-			this.power     = levelData[level][0];
-			this.behavior  = levelData[level][1];
+			power     = power / maxPower * levelData[level][0]; 
+			maxPower  = levelData[level][0];
+			behavior  = levelData[level][1];
 			//TODO
 			//this.skinClass = levelData[level][2];
 
@@ -85,7 +86,8 @@ package model
 			_actionButtons = new Vector.<ActionButtonVO>;
 			var sell:ActionButtonVO = new ActionButtonVO("sell", "sell");
 			var setRallypoint:ActionButtonVO = new ActionButtonVO("set_rallypoint", "setRallypoint");
-			actionButtons.push(sell, setRallypoint);
+			var upgrade:ActionButtonVO = new ActionButtonVO("upgrade", "upgrade");
+			actionButtons.push(sell, setRallypoint, upgrade);
 		}
 		
 		public function get maxUnits():int

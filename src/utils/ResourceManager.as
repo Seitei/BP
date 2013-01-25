@@ -10,8 +10,20 @@ package utils
 	{
 		private static var _instance:ResourceManager;
 		
-		[Embed(source = "../assets/background.png")]
-		private static const Background:Class;
+		[Embed(source = "../assets/background_1.png")]
+		private static const Background1:Class;
+		
+		[Embed(source = "../assets/background_2.png")]
+		private static const Background2:Class;
+		
+		[Embed(source = "../assets/background_3.png")]
+		private static const Background3:Class;
+		
+		[Embed(source = "../assets/background_4.png")]
+		private static const Background4:Class;
+		
+		[Embed(source = "../assets/background_5.png")]
+		private static const Background5:Class;
 		
 		[Embed(source = "../assets/action_bar_bg.png")]
 		private static const ActionBarBg:Class;
@@ -139,7 +151,11 @@ package utils
 		
 		public function ResourceManager()
 		{
-			TextureAssets["background"] = Background;
+			TextureAssets["background_1"] = Background1;
+			TextureAssets["background_2"] = Background2;
+			TextureAssets["background_3"] = Background3;
+			TextureAssets["background_4"] = Background4;
+			TextureAssets["background_5"] = Background5;
 			TextureAssets["action_bar_bg"] = ActionBarBg;
 			TextureAssets["set_rallypoint"] = SetRallypoint;
 			TextureAssets["rallypoint"] = Rallypoint;

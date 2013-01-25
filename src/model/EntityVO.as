@@ -38,6 +38,7 @@ package model
 		private var _levelData:Array;
 		private var _behavior:Array;
 		private var _level:int;
+		private var _maxPower:int;
 		
 		protected var _buffsDic:Dictionary;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
@@ -57,9 +58,23 @@ package model
 			
 		}
 		
+		public function get maxPower():int
+		{
+			return _maxPower;
+		}
+
+		public function set maxPower(value:int):void
+		{
+			_maxPower = value;
+		}
+
 		public function get level():int
 		{
 			return _level;
+		}
+		
+		public function set applyLevel(level:int):void {
+			
 		}
 
 		public function set level(value:int):void

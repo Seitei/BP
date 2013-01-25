@@ -39,10 +39,6 @@ package model
 				position = new Point();
 			
 			switch(type) {
-				case "background":
-					entity = new BackgroundVO(level, position.x, position.y);
-					break;
-				
 				case "ship":
 					entity = new ShipVO(level, position.x, position.y);
 					break;

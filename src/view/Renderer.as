@@ -40,6 +40,11 @@ package view
 		private var _playerName:String;
 		private var _stateChangeRelatedAnimationsDic:Dictionary;
 		private var _hoveredEntity:MovieClipContainer;
+		private var _backgroundImagesArray:Array;
+		private var _prevBGImage:int;
+		private var _nextBGImage:int;
+		private var _bgContainer:Sprite;
+		private var _bgSpeed:int = 2;
 		
 		public function Renderer()
 		{
@@ -47,6 +52,8 @@ package view
 			_stateChangeRelatedAnimationsDic = new Dictionary();
 			_manager= Manager.getInstance();
 			_playerName = _manager.getPlayerName();
+			_bgContainer = new Sprite();
+			addChild(_bgContainer);
 		}
 		
 		public function set playerName(value:String):void
@@ -133,6 +140,49 @@ package view
 			if(!_spriteEntityDic[id].addedToJuggler) {
 				Starling.juggler.add(_spriteEntityDic[id]);
 				_spriteEntityDic[id].addedToJuggler = true;
+			}
+		}
+		
+		//add animated bg
+		public function addBackground():void {
+			
+			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			_backgroundImagesArray = new Array();
+			
+			for(var i:int = 0; i < 5; i++){
+				var image:Image = new Image(ResourceManager.getInstance().getTexture("background_" + (i + 1)));
+				image.pivotX = image.width / 2;
+				image.pivotY = image.height / 2;
+				image.rotation = Math.PI * 45 / 180;
+				_backgroundImagesArray.push(image);
+			}
+			
+			_bgContainer.addChild(_backgroundImagesArray[0]);
+			_backgroundImagesArray[0].x = 700 / 2;
+			_backgroundImagesArray[0].y = 700 / 2;
+			
+		}
+		
+		private function onEnterFrame(e:Event):void {
+	
+			if(_backgroundImagesArray[_nextBGImage].x <= 700 / 2){
+				_nextBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
+				_backgroundImagesArray[_nextBGImage].x = 1050;
+				_backgroundImagesArray[_nextBGImage].y = 1050;
+				_bgContainer.addChild(_backgroundImagesArray[_nextBGImage]);
+			}
+
+			_backgroundImagesArray[_prevBGImage].x -= _bgSpeed;
+			_backgroundImagesArray[_prevBGImage].y -= _bgSpeed;
+			_backgroundImagesArray[_nextBGImage].x -= _bgSpeed;
+			_backgroundImagesArray[_nextBGImage].y -= _bgSpeed;
+			
+			//trace(_backgroundImagesArray[_currentBGImage - 1].x);
+			
+			if(_backgroundImagesArray[_prevBGImage].x <= - 700 / 2){
+				_bgContainer.removeChild(_backgroundImagesArray[_prevBGImage]);
+				trace("remove!" + int(_prevBGImage)); 
+				_prevBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
 			}
 		}
 		

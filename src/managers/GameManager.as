@@ -86,8 +86,7 @@ package managers
 					_world.updateEntity(action.entity, "rallypoint", action.entity.rallypoint );
 					break;
 				case "upgrade":
-					Main.getInstance().getRenderer().removeEntity(action.entity.id);
-					_world.updateEntity(action.entity);
+					_world.updateEntity(action.entity, "applyLevel", action.entity.level + 1);
 					renderEntity(action.entity);
 					break;
 			}
