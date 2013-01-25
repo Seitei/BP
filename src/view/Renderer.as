@@ -44,7 +44,9 @@ package view
 		private var _prevBGImage:int;
 		private var _nextBGImage:int;
 		private var _bgContainer:Sprite;
-		private var _bgSpeed:int = 2;
+		private var _bgSpeed:Number = 0.5;
+		private var _myShip:Sprite;
+		private var _enemyShip:Sprite;
 		
 		public function Renderer()
 		{
@@ -100,7 +102,17 @@ package view
 				mcc.useHandCursor = true;
 			//}
 			
-			addChild(mcc);
+			if(entity.type == "tile"){
+				if(entity.owner == _playerName)
+					_myShip.addChild(mcc);
+				else {
+					_enemyShip.addChild(mcc);
+					mcc.x -= 335;
+					mcc.y -= 335;
+				}
+			}
+			else
+				addChild(mcc);
 			
 			mcc.setCurrentMovieClip(mcc.skinClass.originalMcc);
 			
@@ -143,6 +155,28 @@ package view
 			}
 		}
 		
+		public function addShips():void {
+			//my ship
+			_myShip = new Sprite();
+			addChild(_myShip);
+			var image:Image = new Image(ResourceManager.getInstance().getTexture("ship"));
+			image.rotation = 0;
+			_myShip.addChild(image);
+			_myShip.x = -365; _myShip.y = 700;
+			
+			//enemmy ship
+			_enemyShip = new Sprite();
+			addChild(_enemyShip);
+			var image2:Image = new Image(ResourceManager.getInstance().getTexture("ship"));
+			image2.pivotX = image2.width / 2; 
+			image2.pivotY = image2.height / 2;
+			image2.rotation = 180 * (Math.PI / 180);
+			image2.x = 182.5;
+			image2.y = 182.5;
+			_enemyShip.addChild(image2);
+			_enemyShip.x = 700; _enemyShip.y = -365;
+		}
+		
 		//add animated bg
 		public function addBackground():void {
 			
@@ -160,7 +194,6 @@ package view
 			_bgContainer.addChild(_backgroundImagesArray[0]);
 			_backgroundImagesArray[0].x = 700 / 2;
 			_backgroundImagesArray[0].y = 700 / 2;
-			
 		}
 		
 		private function onEnterFrame(e:Event):void {
@@ -184,6 +217,14 @@ package view
 				trace("remove!" + int(_prevBGImage)); 
 				_prevBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
 			}
+			
+			_myShip.x += 1;
+			_myShip.y -= 1;
+			
+			_enemyShip.x -= 1;
+			_enemyShip.y += 1;
+			
+			trace(_myShip.x, _myShip.y);
 		}
 		
 		public function getSpriteEntitiesDic():Dictionary {

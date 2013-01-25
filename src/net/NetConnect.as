@@ -11,7 +11,6 @@ package net
 	import model.BuildingImprovementGoldVO;
 	import model.BulletVO;
 	import model.EntityVO;
-	import model.ShipVO;
 	import model.SkinClass;
 	import model.Spawner1VO;
 	import model.Spawner2VO;
@@ -49,7 +48,6 @@ package net
 		registerClassAlias("SkinClass", SkinClass);
 		registerClassAlias("Boolean", Boolean);
 		registerClassAlias("BulletVO", BulletVO);
-		registerClassAlias("ShipVO", ShipVO);
 		registerClassAlias("Spawner1", Spawner1VO);
 		registerClassAlias("Spawner2", Spawner2VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);

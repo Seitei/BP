@@ -31,7 +31,7 @@ package
 			_name = name;
 			
 			//if we are working offline, then we dont init netConnect
-			if(mode) {
+			if(online) {
 				_nc = new NetConnect();
 				_nc.addEventListener(NotifyEvent.NOTIFY_PLAYER_READY_EVENT, dispatchReadyMessage);
 				_nc.addEventListener(NotifyEvent.NOTIFY_ACTION_EVENT, dispatchActionMessage);
@@ -65,16 +65,6 @@ package
 		}
 		
 		
-		public function get mode():Boolean
-		{
-			return _online;
-		}
-
-		public function set mode(value:Boolean):void
-		{
-			_online = value;
-		}
-
 		public function get hp():int
 		{
 			return _hp;

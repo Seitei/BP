@@ -18,7 +18,6 @@ package managers
 	
 	import model.EntityFactoryVO;
 	import model.EntityVO;
-	import model.ShipVO;
 	import model.SkinClass;
 	import model.TileVO;
 	import model.WorldVO;
@@ -133,18 +132,20 @@ package managers
 		
 			Main.getInstance().getRenderer().addBackground();
 			
-			var shipEntity:EntityVO = new ShipVO(1, 182.5, 700 - 182.5); 
+			Main.getInstance().getRenderer().addShips();
+			
+			/*var shipEntity:EntityVO = new ShipVO(1, 182.5, 700 - 182.5); 
 			shipEntity.id = _playerName + shipEntity.type + 666;
 			var ship_action:Action = new Action("addEntity", shipEntity);
 			shipEntity.owner = _playerName;
-			handler(ship_action, online);
+			handler(ship_action, online);*/
 			
-			if(!online){
+			/*if(!online){
 				shipEntity.id = "TEST" + shipEntity.id.substring(shipEntity.id.indexOf("_"));
 				var ship_action_offline:Action = new Action("addEntity", shipEntity);
 				shipEntity.owner = "TEST";
 				handler(ship_action_offline, true);
-			}
+			}*/
 				
 			
 			var shipConfigurationSlots:Array = new Array();
@@ -161,8 +162,8 @@ package managers
 					if(shipConfigurationSlots[i][j] == 1) {
 						
 						var point:Point = new Point();
-						point.x = (j * (30 + 2))  + 28;
-						point.y = (j * (30 + 2))  + 16 + 10 * 40 + i * 64;
+						point.x = (j * (30 + 2)) + 28;
+						point.y = (j * (30 + 2))  + 80 + i * 64;
 						
 						var tile:EntityVO;
 						
