@@ -11,6 +11,8 @@ package view
 	import model.EntityVO;
 	
 	import starling.animation.Juggler;
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -33,6 +35,7 @@ package view
 	{
 		private static const BOT:int = 1;
 		private static const TOP:int = 0;
+		private static var BGSPEED:Number = 0.5;
 		
 		private static var _instance:Renderer;
 		private var _manager:Manager;
@@ -44,7 +47,6 @@ package view
 		private var _prevBGImage:int;
 		private var _nextBGImage:int;
 		private var _bgContainer:Sprite;
-		private var _bgSpeed:Number = 0.5;
 		private var _myShip:Sprite;
 		private var _enemyShip:Sprite;
 		
@@ -52,8 +54,7 @@ package view
 		{
 			_spriteEntityDic = new Dictionary();
 			_stateChangeRelatedAnimationsDic = new Dictionary();
-			_manager= Manager.getInstance();
-			_playerName = _manager.getPlayerName();
+			_manager = Manager.getInstance();
 			_bgContainer = new Sprite();
 			addChild(_bgContainer);
 		}
@@ -162,7 +163,7 @@ package view
 			var image:Image = new Image(ResourceManager.getInstance().getTexture("ship"));
 			image.rotation = 0;
 			_myShip.addChild(image);
-			_myShip.x = -365; _myShip.y = 700;
+			_myShip.x = -365 / 2; _myShip.y = 700 - 365 / 2;
 			
 			//enemmy ship
 			_enemyShip = new Sprite();
@@ -174,8 +175,25 @@ package view
 			image2.x = 182.5;
 			image2.y = 182.5;
 			_enemyShip.addChild(image2);
-			_enemyShip.x = 700; _enemyShip.y = -365;
+			_enemyShip.x = 700 - 365 / 2; _enemyShip.y = -365 / 2;
+			
 		}
+		
+		public function enterShips():void {
+			
+			var tween1:Tween = new Tween(_myShip, 5, Transitions.EASE_OUT);
+			tween1.animate("x", _myShip.x + 365 / 2);
+			tween1.animate("y", _myShip.y - 365 / 2);
+			Starling.juggler.add(tween1);
+			
+			var tween2:Tween = new Tween(_enemyShip, 5, Transitions.EASE_OUT);
+			tween2.animate("x", _enemyShip.x - 365 / 2);
+			tween2.animate("y", _enemyShip.y + 365 / 2);
+			Starling.juggler.add(tween2);
+			
+		}
+		
+		
 		
 		//add animated bg
 		public function addBackground():void {
@@ -187,44 +205,35 @@ package view
 				var image:Image = new Image(ResourceManager.getInstance().getTexture("background_" + (i + 1)));
 				image.pivotX = image.width / 2;
 				image.pivotY = image.height / 2;
-				image.rotation = Math.PI * 45 / 180;
+				image.rotation = 45 * Math.PI / 180;
+				
 				_backgroundImagesArray.push(image);
 			}
 			
 			_bgContainer.addChild(_backgroundImagesArray[0]);
-			_backgroundImagesArray[0].x = 700 / 2;
+			_backgroundImagesArray[0].x = 800 / 2;
 			_backgroundImagesArray[0].y = 700 / 2;
 		}
 		
 		private function onEnterFrame(e:Event):void {
 	
-			if(_backgroundImagesArray[_nextBGImage].x <= 700 / 2){
+			if(_backgroundImagesArray[_nextBGImage].x <= 800 / 2){
 				_nextBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
-				_backgroundImagesArray[_nextBGImage].x = 1050;
-				_backgroundImagesArray[_nextBGImage].y = 1050;
+				_backgroundImagesArray[_nextBGImage].x = 800 / 2 + 750;
+				_backgroundImagesArray[_nextBGImage].y = 700 / 2 + 750;
 				_bgContainer.addChild(_backgroundImagesArray[_nextBGImage]);
 			}
 
-			_backgroundImagesArray[_prevBGImage].x -= _bgSpeed;
-			_backgroundImagesArray[_prevBGImage].y -= _bgSpeed;
-			_backgroundImagesArray[_nextBGImage].x -= _bgSpeed;
-			_backgroundImagesArray[_nextBGImage].y -= _bgSpeed;
+			_backgroundImagesArray[_prevBGImage].x -= BGSPEED;
+			_backgroundImagesArray[_prevBGImage].y -= BGSPEED;
+			_backgroundImagesArray[_nextBGImage].x -= BGSPEED;
+			_backgroundImagesArray[_nextBGImage].y -= BGSPEED;
 			
-			//trace(_backgroundImagesArray[_currentBGImage - 1].x);
-			
-			if(_backgroundImagesArray[_prevBGImage].x <= - 700 / 2){
+			if(_backgroundImagesArray[_prevBGImage].x <= - 800 / 2){
 				_bgContainer.removeChild(_backgroundImagesArray[_prevBGImage]);
 				trace("remove!" + int(_prevBGImage)); 
 				_prevBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
 			}
-			
-			_myShip.x += 1;
-			_myShip.y -= 1;
-			
-			_enemyShip.x -= 1;
-			_enemyShip.y += 1;
-			
-			trace(_myShip.x, _myShip.y);
 		}
 		
 		public function getSpriteEntitiesDic():Dictionary {

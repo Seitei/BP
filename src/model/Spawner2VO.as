@@ -25,7 +25,7 @@ package model
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
 			
-		public function Spawner2VO(level:int, x:int = 0, y:int = 0)
+		public function Spawner2VO(level:int = 1, x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
 			cost = 3;

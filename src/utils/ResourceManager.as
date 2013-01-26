@@ -112,6 +112,15 @@ package utils
 		[Embed(source = "../assets/ready_hover_btn.png")]
 		private static const ReadyHoverBtn:Class;
 		
+		[Embed(source = "../assets/play_up_btn.png")]
+		private static const PlayUpBtn:Class;
+		
+		[Embed(source = "../assets/play_down_btn.png")]
+		private static const PlayDownBtn:Class;
+		
+		[Embed(source = "../assets/play_hover_btn.png")]
+		private static const PlayHoverBtn:Class;
+		
 		[Embed(source = "../assets/cannon_bullet.png")]
 		private static const CannonBullet:Class;
 		
@@ -129,6 +138,12 @@ package utils
 		
 		[Embed(source = "../assets/arrow.png")]
 		private static const Arrow:Class;
+		
+		[Embed(source = "../assets/period.png")]
+		private static const Period:Class;
+		
+		[Embed(source = "../assets/waiting_for_players.png")]
+		private static const WaitingForPlayers:Class;
 
 		// XML //
 		
@@ -183,6 +198,9 @@ package utils
 			TextureAssets["ready_up_btn"] = ReadyUpBtn;
 			TextureAssets["ready_down_btn"] = ReadyDownBtn;
 			TextureAssets["ready_hover_btn"] = ReadyHoverBtn;
+			TextureAssets["play_up_btn"] = PlayUpBtn;
+			TextureAssets["play_down_btn"] = PlayDownBtn;
+			TextureAssets["play_hover_btn"] = PlayHoverBtn;
 			TextureAssets["spawner1"] = Spawner1;
 			TextureAssets["spawner2"] = Spawner2;
 			TextureAssets["cannon_bullet"] = CannonBullet;
@@ -191,6 +209,8 @@ package utils
 			TextureAssets["placement_slot_hover"] = PlacementSlotHover;
 			TextureAssets["planning_bg"] = PlanningBG;
 			TextureAssets["arrow"] = Arrow;
+			TextureAssets["waiting_for_players"] = WaitingForPlayers;
+			TextureAssets["period"] = Period;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;

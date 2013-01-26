@@ -10,7 +10,7 @@ package model
 	{
 		private var _cost:int;
 		
-		public function BuildingImprovementGoldVO(level:int, x:int = 0, y:int = 0)
+		public function BuildingImprovementGoldVO(level:int = 0, x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
 			_cost = 4;

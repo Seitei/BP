@@ -8,7 +8,7 @@ package model
 	{
 		private var _row:int;
 		
-		public function TileVO(level:int, x:int = 0, y:int = 0)
+		public function TileVO(level:int = 1, x:int = 0, y:int = 0)
 		{
 			this.level = level;
 			position.x = x, position.y = y;

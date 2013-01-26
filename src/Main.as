@@ -14,24 +14,27 @@ package
 	
 	import view.Renderer;
 	import view.UI;
+	import view.WelcomeScreen;
 	
 	public class Main extends Sprite 
 	{
+		private static const SHOW_DEBUG_INFO:Boolean = true;
+		private static const TURN_TIME:int = 998;
 		private static var _instance:Main;
 		private static var _renderer:Renderer;
+
+		private var _state:int = GameStatus.STOPPED;
 		private var _timer:Timer;
 		private var _uiTimer:Timer;
 		private var _ui:UI;
 		private var _manager:Manager;
 		private var _status:String;
-		private static const SHOW_DEBUG_INFO:Boolean = true;
-		private static const TURN_TIME:int = 998;
-		private var _state:int = GameStatus.STOPPED;
+		private var _welcomeScreen:WelcomeScreen;
 		
 		//we use this to change the mode
 		//- ONLINE -> normal gameplay, you send actinos throught Cirrus to the other player
 		//- OFFLINE -> you act as two players in one screen, for tests purposes only
-		public var online:Boolean = false;
+		public var online:Boolean = true;
 		//public var mode:int = ONLINE;
 		
 		public function Main()
@@ -49,10 +52,27 @@ package
 		private function onAdded(e:Event):void
 		{
 			addChild(_renderer);
+			_renderer.addBackground();
 			addChild(_ui);
 			
-			if(!online)
+			if(!online){
+				_manager.init();
 				_manager.buildPlayersWorld();
+			}
+			
+			if(online){
+				_welcomeScreen = new WelcomeScreen();
+				addChild(_welcomeScreen);
+				addEventListener("onPlayTouched", onPlayTouched);
+			}
+		}
+		
+		private function onPlayTouched(e:Event):void {
+			_manager.init();
+		}
+		
+		public function removeWelcomeScreen():void {
+			removeChild(_welcomeScreen, true);
 		}
 		
 		public function startGame():void {
@@ -71,7 +91,7 @@ package
 		
 		private function onTimerEvent(event:TimerEvent):void {
 			_manager.advanceGameState();
-			_manager.sendActionBuffer();
+			//_manager.sendActionBuffer();
 		}
 		
 		public function reset():void {

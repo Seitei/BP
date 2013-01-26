@@ -12,7 +12,7 @@ package model
 		private var _damage:int;
 		private var _forwardAngle:int;
 		
-		public function BulletVO(level:int, x:int = 0, y:int = 0)
+		public function BulletVO(level:int = 1, x:int = 0, y:int = 0)
 		{
 			this.level = level;
 			position.x = x, position.y = y;

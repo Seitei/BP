@@ -63,6 +63,11 @@ package managers
 		
 		public function Manager()
 		{
+			
+		}
+		
+		public function init():void {
+			
 			//TODO receive from server
 			_playerName = "Player-" + String(int(1000 * Math.random())) + "_";
 			_player = new Player(_playerName, online); 
@@ -71,12 +76,12 @@ package managers
 			_myHp = _player.hp;
 			_gameManager = GameManager.getInstance();
 			_gameManager.playerName = _player.name;
-			
+			Main.getInstance().getRenderer().playerName = _playerName;
 			_main = Main.getInstance();
 			
 			_player.addEventListener(NotifyEvent.NOTIFY_PLAYER_READY_EVENT, receiveReadyMessage);
 			_player.addEventListener(NotifyEvent.NOTIFY_ACTION_EVENT, receiveActionMessage);
-			_player.addEventListener(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, buildPlayersWorld);
+			_player.addEventListener(NotifyNeighborConnectedEvent.NOTIFY_NEIGHBOR_CONNECTED_EVENT, onNeighborConnected);
 			_player.addEventListener(NotifyStatusEvent.NOTIFY_STATUS, showStatus);
 			
 			_entityClickedSignal = new Signal(String, String);
@@ -118,6 +123,14 @@ package managers
 			UI.getInstance().entityClickedHandler(entity, operation);
 			
 		}
+		public function getUI():UI {
+			return _ui;	
+		}
+		
+		private function onNeighborConnected(e:NotifyNeighborConnectedEvent):void {
+			buildPlayersWorld(e);
+			Main.getInstance().removeWelcomeScreen();
+		}
 		
 		public function buildPlayersWorld(e:NotifyNeighborConnectedEvent = null):void {
 			
@@ -130,23 +143,7 @@ package managers
 				}
 			}
 		
-			Main.getInstance().getRenderer().addBackground();
-			
 			Main.getInstance().getRenderer().addShips();
-			
-			/*var shipEntity:EntityVO = new ShipVO(1, 182.5, 700 - 182.5); 
-			shipEntity.id = _playerName + shipEntity.type + 666;
-			var ship_action:Action = new Action("addEntity", shipEntity);
-			shipEntity.owner = _playerName;
-			handler(ship_action, online);*/
-			
-			/*if(!online){
-				shipEntity.id = "TEST" + shipEntity.id.substring(shipEntity.id.indexOf("_"));
-				var ship_action_offline:Action = new Action("addEntity", shipEntity);
-				shipEntity.owner = "TEST";
-				handler(ship_action_offline, true);
-			}*/
-				
 			
 			var shipConfigurationSlots:Array = new Array();
 			
@@ -170,7 +167,7 @@ package managers
 						tile = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", 1, point);
 						TileVO(tile).row = j + i;
 						var tile_action:Action = new Action("addEntity", tile);
-						handler(tile_action, online);
+						handler(tile_action, online, false);
 						
 						//if not online, we force a send with different id and owner to recreate the complete map
 						if(!online){
@@ -179,7 +176,7 @@ package managers
 							tile_offline.owner = "TEST";
 							tile_offline.id = "TEST" + tile_offline.id.substring(tile_offline.id.indexOf("_"));
 							var tile_action_offline:Action = new Action("addEntity", tile_offline);
-							handler(tile_action_offline, true);
+							handler(tile_action_offline, true, false);
 						}
 					}
 				}
@@ -192,7 +189,9 @@ package managers
 			
 			_main.startGame();
 			
-			UI.getInstance().showPlanningUI(true);
+			Main.getInstance().getRenderer().enterShips();
+			
+			//UI.getInstance().showPlanningUI(true);
 		}
 		
 		private function onTimer(e:TimerEvent):void {
@@ -223,33 +222,30 @@ package managers
 			
 		}
 			
-		
-		public function getUI():UI {
-			return _ui;
-		}
-		
 		private function showStatus(e:NotifyStatusEvent):void {
 			_main.storeStatusData(e.status);
 		}
 		
-		public function handler(action:Action, sendActionBuffer:Boolean):void {
+		public function handler(action:Action, addToActionBuffer:Boolean, computeCost:Boolean = true):void {
 			
-			if(!online && sendActionBuffer){
+			if(!online && addToActionBuffer){
 				_player.addToActionBuffer(action);
 				return;
 			}
 			
 			//cost related stuff
-			switch(action.type) {
-				case "addEntity":
-					updatePlayerGold(-action.entity.cost);
-					break;
-				case "sell":
-					updatePlayerGold(action.entity.cost / 2);
-					break;
-				case "upgrade":
-					updatePlayerGold(-action.entity.cost);
-					break;
+			if(computeCost){
+				switch(action.type) {
+					case "addEntity":
+						updatePlayerGold(-action.entity.cost);
+						break;
+					case "sell":
+						updatePlayerGold(action.entity.cost / 2);
+						break;
+					case "upgrade":
+						updatePlayerGold(-action.entity.cost);
+						break;
+				}
 			}
 			
 			for (var i:int = 0; i < action.entity.behaviorSteps.length; i ++){
@@ -261,7 +257,7 @@ package managers
 			
 			_gameManager.updateWorld(action);
 			
-			if(sendActionBuffer) {
+			if(addToActionBuffer) {
 				_player.addToActionBuffer(action);
 			}
 			

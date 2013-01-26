@@ -81,8 +81,6 @@ package view
 			_statusArray = new Array();
 			_slotPlacementGuide = SlotPlacementGuide.getInstance();
 			_slotPlacementGuide.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onPlacementSlotTouched);
-			/*_slotPlacementGuide.touchable = false;
-			_slotPlacementGuide.flatten();*/
 			initActionbar();
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 			if (showDebugData)
