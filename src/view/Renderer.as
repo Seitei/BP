@@ -64,7 +64,7 @@ package view
 			_playerName = value;
 		}
 
-		public function renderObject(entity:EntityVO):void {
+		public function renderEntity(entity:EntityVO):void {
 			
 			var mcc:MovieClipContainer = new MovieClipContainer();
 			mcc.id = entity.id;
@@ -210,14 +210,21 @@ package view
 				_backgroundImagesArray.push(image);
 			}
 			
-			_bgContainer.addChild(_backgroundImagesArray[0]);
-			_backgroundImagesArray[0].x = 800 / 2;
-			_backgroundImagesArray[0].y = 700 / 2;
+			_nextBGImage = _prevBGImage + 1;
+			
+			_backgroundImagesArray[_prevBGImage].x = 800 / 2;
+			_backgroundImagesArray[_prevBGImage].y = 700 / 2;
+			_backgroundImagesArray[_nextBGImage].x = 800 / 2 + 750;
+			_backgroundImagesArray[_nextBGImage].y = 700 / 2 + 750;
+			_bgContainer.addChild(_backgroundImagesArray[_prevBGImage]);
+			_bgContainer.addChild(_backgroundImagesArray[_nextBGImage]);
 		}
 		
 		private function onEnterFrame(e:Event):void {
 	
 			if(_backgroundImagesArray[_nextBGImage].x <= 800 / 2){
+				_bgContainer.removeChild(_backgroundImagesArray[_prevBGImage]);
+				_prevBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
 				_nextBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
 				_backgroundImagesArray[_nextBGImage].x = 800 / 2 + 750;
 				_backgroundImagesArray[_nextBGImage].y = 700 / 2 + 750;
@@ -229,11 +236,9 @@ package view
 			_backgroundImagesArray[_nextBGImage].x -= BGSPEED;
 			_backgroundImagesArray[_nextBGImage].y -= BGSPEED;
 			
-			if(_backgroundImagesArray[_prevBGImage].x <= - 800 / 2){
-				_bgContainer.removeChild(_backgroundImagesArray[_prevBGImage]);
-				trace("remove!" + int(_prevBGImage)); 
-				_prevBGImage = _prevBGImage == 4 ? 0 : _prevBGImage + 1;
-			}
+			
+			
+			
 		}
 		
 		public function getSpriteEntitiesDic():Dictionary {

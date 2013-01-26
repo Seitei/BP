@@ -212,7 +212,7 @@ package managers
 		
 		
 		private function renderEntity(ent:EntityVO):void {
-			Main.getInstance().getRenderer().renderObject(ent);
+			Main.getInstance().getRenderer().renderEntity(ent);
 		}
 		
 		public function removeEntity(ent:EntityVO):void {
