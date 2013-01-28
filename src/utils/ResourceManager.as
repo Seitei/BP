@@ -144,6 +144,15 @@ package utils
 		
 		[Embed(source = "../assets/waiting_for_players.png")]
 		private static const WaitingForPlayers:Class;
+		
+		[Embed(source = "../assets/top_bar.png")]
+		private static const TopBar:Class;
+		
+		[Embed(source = "../assets/bot_bar.png")]
+		private static const BotBar:Class;
+		
+		[Embed(source = "../assets/body_bg.png")]
+		private static const BodyBg:Class;
 
 		// XML //
 		
@@ -211,6 +220,9 @@ package utils
 			TextureAssets["arrow"] = Arrow;
 			TextureAssets["waiting_for_players"] = WaitingForPlayers;
 			TextureAssets["period"] = Period;
+			TextureAssets["top_bar"] = TopBar;
+			TextureAssets["bot_bar"] = BotBar;
+			TextureAssets["body_bg"] = BodyBg;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;

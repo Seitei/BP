@@ -56,6 +56,7 @@ package view
 			_stateChangeRelatedAnimationsDic = new Dictionary();
 			_manager = Manager.getInstance();
 			_bgContainer = new Sprite();
+			_bgContainer.touchable = false;
 			addChild(_bgContainer);
 		}
 		

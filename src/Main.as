@@ -14,6 +14,7 @@ package
 	
 	import view.Renderer;
 	import view.UI;
+	import view.VisualMessage;
 	import view.WelcomeScreen;
 	
 	public class Main extends Sprite 
@@ -35,7 +36,6 @@ package
 		//- ONLINE -> normal gameplay, you send actinos throught Cirrus to the other player
 		//- OFFLINE -> you act as two players in one screen, for tests purposes only
 		public var online:Boolean = true;
-		//public var mode:int = ONLINE;
 		
 		public function Main()
 		{
@@ -68,7 +68,8 @@ package
 		}
 		
 		private function onPlayTouched(e:Event):void {
-			_manager.init();
+			addChild(new VisualMessage("TEST"));
+			//_manager.init();
 		}
 		
 		public function removeWelcomeScreen():void {
