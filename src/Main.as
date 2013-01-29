@@ -68,7 +68,7 @@ package
 		}
 		
 		private function onPlayTouched(e:Event):void {
-			addChild(new VisualMessage("TEST"));
+			addChild(new VisualMessage("YOUR TURN!"));
 			//_manager.init();
 		}
 		
