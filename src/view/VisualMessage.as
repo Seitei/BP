@@ -14,7 +14,7 @@ package view
 	import starling.events.TouchEvent;
 	import starling.extensions.ClippedSprite;
 	import starling.text.TextField;
-	
+	3
 	import utils.ResourceManager;
 
 	public class VisualMessage extends Sprite
@@ -118,14 +118,18 @@ package view
 			bodyBgTween.animate("scaleY", 0);
 			Starling.juggler.add(bodyBgTween);
 			
-			
-			
+		}
+		
+		private function onTimerComplete(e:TimerEvent):void {
+			dispatchEvent(new Event("VisualMessageComplete"));
+			this.dispose();
 		}
 		
 		private function onEndingTweenStart():void {
 			
 			var timer:Timer = new Timer(20, 25);
 			timer.addEventListener(TimerEvent.TIMER, onTimerEndClipped);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 			timer.start();
 		}
 		

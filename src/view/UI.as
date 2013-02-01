@@ -82,17 +82,25 @@ package view
 			_slotPlacementGuide = SlotPlacementGuide.getInstance();
 			_slotPlacementGuide.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onPlacementSlotTouched);
 			initActionbar();
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
 			if (showDebugData)
 				showDebugInfo();
 		}
 		
 		//when the game state advance to the planning state, we show the planning UI
 		public function showPlanningUI(value:Boolean):void {
-			
 			addChild(_slotPlacementGuide);
-			
-			
+		}
+		
+		public function showVisualMessage(text:String, color:String):void {
+			var visualMessage:VisualMessage = new VisualMessage(text);
+			visualMessage.addEventListener("VisualMessageComplete", onVisualMessageComplete);
+			addChild(visualMessage);
+		}
+		
+		private function onVisualMessageComplete(e:Event):void {
+			dispatchEvent(new Event("VisualMessageComplete"));
 		}
 		
 		public function get enemyHp():int
@@ -161,8 +169,6 @@ package view
 			
 		}
 		
-		
-		
 		private function onMove(e:TouchEvent):void {
 			var touch:Touch = e.touches[0];
 			
@@ -178,6 +184,10 @@ package view
 			_playerName = value;
 		}
 
+		public function showHud(value:Boolean):void {
+			_actionBar.visible = value;			
+		}
+		
 		public function set gold(value:int):void {
 			_gold = value;
 			_actionBar.gold = value;		

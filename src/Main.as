@@ -24,7 +24,7 @@ package
 		private static var _instance:Main;
 		private static var _renderer:Renderer;
 
-		private var _state:int = GameStatus.STOPPED;
+		private var _state:int = GameStatus.INIT;
 		private var _timer:Timer;
 		private var _uiTimer:Timer;
 		private var _ui:UI;
@@ -44,7 +44,7 @@ package
 			_renderer = Renderer.getInstance();
 			_ui = UI.getInstance(true);
 			_ui.online = online;
-			_ui.visible = false;
+			_ui.showHud(false);
 			_manager = Manager.getInstance();
 			_manager.online = online;
 		}
@@ -68,8 +68,7 @@ package
 		}
 		
 		private function onPlayTouched(e:Event):void {
-			addChild(new VisualMessage("YOUR TURN!"));
-			//_manager.init();
+			_manager.init();
 		}
 		
 		public function removeWelcomeScreen():void {
@@ -95,20 +94,11 @@ package
 			//_manager.sendActionBuffer();
 		}
 		
-		public function reset():void {
-			_state = GameStatus.STOPPED;
-			_timer.stop();
-			_timer.removeEventListener(TimerEvent.TIMER, onTimerEvent);
-			
-			_uiTimer.stop();
-			_uiTimer.removeEventListener(TimerEvent.TIMER, onTimerEvent);
-		}
-		
 		public function set state(state:int):void {
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER, onTimerEvent);
 			_uiTimer.stop();
-			_uiTimer.removeEventListener(TimerEvent.TIMER, onTimerEvent);
+			_uiTimer.removeEventListener(TimerEvent.TIMER, onUITimerEvent);
 			
 			_state = state;
 			

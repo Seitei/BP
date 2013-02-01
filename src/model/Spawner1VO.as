@@ -33,8 +33,8 @@ package model
 			type = "spawner1";
 			skinClass = new SkinClass("spawner1", "spawner1", false);
 			skinClass.animationsDic["spawner1"] = true;
-			spawningPoint = new Point(18, -18);
 			//set what the entity has to show in the selector panel
+			spawningPoint = new Point(18, -18);
 			entityToSpawn = new Object();
 			entityToSpawn.type = "bullet";
 			entityToSpawn.level = 1;

@@ -2,11 +2,15 @@ package net
 {
 	import actions.Action;
 	
+	import behavior_steps.Spawn;
+	
 	import events.NotifyEvent;
 	import events.NotifyNeighborConnectedEvent;
 	import events.NotifyStatusEvent;
 	
 	import flash.net.Responder;
+	
+	import interfaces.IBehavior;
 	
 	import model.BuildingImprovementGoldVO;
 	import model.BulletVO;
@@ -51,6 +55,8 @@ package net
 		registerClassAlias("Spawner1", Spawner1VO);
 		registerClassAlias("Spawner2", Spawner2VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);
+		registerClassAlias("IBehavior", IBehavior);
+		registerClassAlias("Spawn", Spawn);
 		
 		private const SERVER:String = "rtmfp://p2p.rtmfp.net/"; 
 		private const DEVKEY:String = "cde41fe05bb01817e82e5398-2ab5d983d09f"; 
@@ -180,11 +186,6 @@ package net
 		}
 		
 		public function handler(message:Object):void {
-			
-			for each ( var action:Action in message.data) {
-				if(action.entity.type == "spawner1")
-					sendStatus("SPAWNER!");
-			}
 			
 			if(message.type == "action")
 				dispatchEvent(new NotifyEvent(NotifyEvent.NOTIFY_ACTION_EVENT, message.data));

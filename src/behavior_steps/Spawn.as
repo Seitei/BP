@@ -28,10 +28,12 @@ package behavior_steps
 		private var _loopable:Boolean = true;
 		private var _when:String = "loop";
 		
-		public function Spawn(...params){
-			_entityType = params[0][0];
-			_entityLevel = params[0][1];
-			_spawnRate  = params[0][2];
+		public function Spawn(params:Array = null){
+			if(params){
+				_entityType = params[0];
+				_entityLevel = params[1];
+				_spawnRate  = params[2];
+			}
 		}
 		
 		public function execute(entity:EntityVO, reqs:* = null):void {

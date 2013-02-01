@@ -37,6 +37,7 @@ package managers
 	
 	import view.SpriteEntity;
 	import view.UI;
+	import view.VisualMessage;
 	
 	
 	public class Manager
@@ -47,7 +48,7 @@ package managers
 		private var _nc:NetConnect;
 		private var _gameManager:GameManager;
 		private static var _instance:Manager;
-		private var _state:int = GameStatus.STOPPED;
+		private var _state:int = GameStatus.INIT;
 		private var _main:Main;
 		private var _entityClickedSignal:Signal;
 		private var _playerName:String;
@@ -55,6 +56,8 @@ package managers
 		private var _hesReady:Boolean;
 		private var _myHp:int;
 		private var _ui:UI;
+		private var _connectionOrder:String;
+		private var _turn:String;
 		
 		public var online:Boolean;
 		
@@ -97,6 +100,7 @@ package managers
 			UI.getInstance().playerName = _playerName;
 			_ui = UI.getInstance();
 			_ui.online = online;
+			_ui.addEventListener("VisualMessageComplete", onVisualMessageComplete);
 		}
 		
 		public function get imReady():Boolean
@@ -128,19 +132,36 @@ package managers
 		}
 		
 		private function onNeighborConnected(e:NotifyNeighborConnectedEvent):void {
-			buildPlayersWorld(e);
-			Main.getInstance().removeWelcomeScreen();
+			_connectionOrder = e.connectionOrder;
+			_ui.showVisualMessage("A NEW CHALLENGER APPEARS!", "neutral");
 		}
 		
-		public function buildPlayersWorld(e:NotifyNeighborConnectedEvent = null):void {
+		private function onVisualMessageComplete(e:Event):void {
 			
-			UI.getInstance().visible = true;
+			switch(_state){
+				case GameStatus.INIT:
+					trace("INIT");
+					buildPlayersWorld();
+					Main.getInstance().removeWelcomeScreen();
+					break;
+				
+				
+			}
+		}
+		
+		
+		public function buildPlayersWorld():void {
+			
+			
+			UI.getInstance().showHud(true);
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
 			
-			if(e){
-				if(e.connectionOrder == "second"){
-					UI.getInstance().enableButtons(false);
-				}
+			if(_connectionOrder == "second"){
+				_turn = "enemyTurn";
+				UI.getInstance().enableButtons(false);
+			}
+			else{
+				_turn = "myTurn";
 			}
 		
 			Main.getInstance().getRenderer().addShips();
@@ -191,7 +212,17 @@ package managers
 			
 			Main.getInstance().getRenderer().enterShips();
 			
-			//UI.getInstance().showPlanningUI(true);
+		}
+		
+		public function onEnterShipsComplete():void {
+			
+			UI.getInstance().showPlanningUI(true);
+			advanceGameState();
+			
+			if(_turn == "enemyTurn")
+				_ui.showVisualMessage("ENEMY TURN", "enemy");
+			else
+				_ui.showVisualMessage("YOUR TURN", "me");
 		}
 		
 		private function onTimer(e:TimerEvent):void {
@@ -213,8 +244,12 @@ package managers
 			}
 			else{
 				_imReady = true;
+				
 				if(_hesReady)
 					advanceGameState();
+				else
+					_turn = "enemyTurn";
+				
 				UI.getInstance().enableButtons(false);
 				_player.sendReadyMessage(_playerName);
 				
@@ -356,12 +391,15 @@ package managers
 		
 		private function receiveReadyMessage(event:NotifyEvent):void {
 			_hesReady = true;
-			if(_imReady){
+			if(_imReady) {
 				advanceGameState();
 				UI.getInstance().enableButtons(false);
 			}
-			else
+			else {
 				UI.getInstance().enableButtons(true);
+				_turn = "myTurn";
+				_ui.showVisualMessage("YOUR TURN", "me");
+			}
 		}
 		
 		

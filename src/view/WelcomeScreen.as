@@ -46,7 +46,6 @@ package view
 		
 		private function onReadyButtonTouched(e:ButtonTriggeredEvent):void {
 			
-			trace(this.width);
 			removeChild(_playButton, true);
 		
 			var image:Image = new Image(ResourceManager.getInstance().getTexture("waiting_for_players"));

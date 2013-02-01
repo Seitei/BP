@@ -182,19 +182,23 @@ package view
 		
 		public function enterShips():void {
 			
-			var tween1:Tween = new Tween(_myShip, 5, Transitions.EASE_OUT);
-			tween1.animate("x", _myShip.x + 365 / 2);
-			tween1.animate("y", _myShip.y - 365 / 2);
-			Starling.juggler.add(tween1);
+			var tweenMyShip:Tween = new Tween(_myShip, 5, Transitions.EASE_OUT);
+			tweenMyShip.animate("x", _myShip.x + 365 / 2);
+			tweenMyShip.animate("y", _myShip.y - 365 / 2);
+			Starling.juggler.add(tweenMyShip);
 			
-			var tween2:Tween = new Tween(_enemyShip, 5, Transitions.EASE_OUT);
-			tween2.animate("x", _enemyShip.x - 365 / 2);
-			tween2.animate("y", _enemyShip.y + 365 / 2);
-			Starling.juggler.add(tween2);
+			var tweenEnemyShip:Tween = new Tween(_enemyShip, 5, Transitions.EASE_OUT);
+			tweenEnemyShip.animate("x", _enemyShip.x - 365 / 2);
+			tweenEnemyShip.animate("y", _enemyShip.y + 365 / 2);
+			Starling.juggler.add(tweenEnemyShip);
+			
+			tweenMyShip.onComplete = onShipAnimationComplete;
 			
 		}
 		
-		
+		private function onShipAnimationComplete():void {
+			_manager.onEnterShipsComplete();
+		}
 		
 		//add animated bg
 		public function addBackground():void {
