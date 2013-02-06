@@ -21,6 +21,8 @@ package view
 	import model.EntityVO;
 	import model.TileVO;
 	
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.Button;
 	import starling.display.Image;
@@ -31,6 +33,7 @@ package view
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
@@ -74,6 +77,7 @@ package view
 		private var _actionIssued:Action;
 		private var _slotPlacementGuide:SlotPlacementGuide;
 		private var _pressingShift:Boolean;
+		private var _touchedPoint:Point;
 		public var online:Boolean;
 		
 		public function UI(showDebugData:Boolean)
@@ -94,7 +98,7 @@ package view
 		}
 		
 		public function showVisualMessage(text:String, color:String):void {
-			var visualMessage:VisualMessage = new VisualMessage(text);
+			var visualMessage:VisualMessage = new VisualMessage(text, color);
 			visualMessage.addEventListener("VisualMessageComplete", onVisualMessageComplete);
 			addChild(visualMessage);
 		}
@@ -117,6 +121,7 @@ package view
 		private function onAddedToStage(e:Event):void {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyPressed);
+			//this.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
 		public function set myHp(value:int):void
@@ -127,7 +132,8 @@ package view
 		
 		private function initActionbar():void {
 			_actionBar = new ActionBar();
-			_actionBar.x = 700;
+			//this way the starting position of the action bar is "hidden"
+			_actionBar.x = 800;
 			_actionBar.gold = _gold;
 			_actionBar.goldIncome = _goldIncome;
 			_actionBar.myHp = _myHp;
@@ -184,10 +190,6 @@ package view
 			_playerName = value;
 		}
 
-		public function showHud(value:Boolean):void {
-			_actionBar.visible = value;			
-		}
-		
 		public function set gold(value:int):void {
 			_gold = value;
 			_actionBar.gold = value;		
@@ -232,6 +234,16 @@ package view
 			}
 		}
 		
+		private function onTouch(e:TouchEvent):void {
+			
+			var touch:Touch = e.touches[0];
+			
+			if(touch.phase == TouchPhase.BEGAN){
+				_touchedPoint = new Point(touch.globalX, touch.globalY);
+				trace(touch.globalX, touch.globalY);
+			}
+		}
+		
 		public function entityClickedHandler(entity:EntityVO, operation:String):void {
 		
 			if(operation == "click") {
@@ -240,9 +252,8 @@ package view
 				
 				if(_actionIssued && entity.owner == _playerName) {
 				
-					_actionIssued.entity.position = _clickedEntity.position.clone();
-					_actionIssued.entity.forwardAngle = _clickedEntity.forwardAngle;
-					_actionIssued.entity.rotation = _clickedEntity.rotation;
+					_actionIssued.entity.position = entity.position;
+					
 					dispatchSignal(_actionIssued);
 					
 					//if we are pressing shift then we can place the same unit in another slot
@@ -273,6 +284,20 @@ package view
 			}*/
 		}
 		
+		
+		//animate action bar entering the stage
+		public function enterActionBar():void {
+			
+			var tween:Tween = new Tween(_actionBar, 1.5, Transitions.EASE_OUT);
+			tween.animate("x", _actionBar.x - 100);
+			Starling.juggler.add(tween);
+			tween.onComplete = onEnterActionBarTweenComplete;
+			
+		}
+		
+		private function onEnterActionBarTweenComplete():void {
+			dispatchEvent(new Event("actionBarTweenCompleted"));
+		}
 		
 		private function showEntityUI(entity:EntityVO):void {
 			if(entity.actionButtons == null) return;

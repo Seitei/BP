@@ -39,6 +39,7 @@ package model
 		private var _behavior:Array;
 		private var _level:int;
 		private var _maxPower:int;
+		private var _visible:Boolean;
 		
 		protected var _buffsDic:Dictionary;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
@@ -58,6 +59,16 @@ package model
 			
 		}
 		
+		public function get visible():Boolean
+		{
+			return _visible;
+		}
+
+		public function set visible(value:Boolean):void
+		{
+			_visible = value;
+		}
+
 		public function get maxPower():int
 		{
 			return _maxPower;

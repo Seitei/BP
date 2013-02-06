@@ -16,18 +16,19 @@ package view
 	import starling.text.TextField;
 	3
 	import utils.ResourceManager;
+	import starling.utils.Color;
 
 	public class VisualMessage extends Sprite
 	{
 		private var _textToShow:String;
 		private var _textToShowTxt:TextField;
-		private static var ANIMATION_TIME:Number = 1.0;
+		private static var ANIMATION_TIME:Number = 0.5;
 		private var _topBar:Image;
 		private var _botBar:Image;
 		private var _bodyBg:Image;
 		private var _clippedText:ClippedSprite;
 		
-		public function VisualMessage(text:String)
+		public function VisualMessage(text:String, color:String)
 		{
 			this.x = 400;
 			this.y = 350;
@@ -35,26 +36,29 @@ package view
 			_textToShow = text;
 			
 			_bodyBg = new Image(ResourceManager.getInstance().getTexture("body_bg"));
+			_bodyBg.color = 0x00ADEE;
 			_bodyBg.pivotX = _bodyBg.width / 2;
 			_bodyBg.pivotY = _bodyBg.height / 2;
-			_bodyBg.scaleY = 0;
+			_bodyBg.scaleY = 1;
 			addChild(_bodyBg);
 			
-			_topBar = new Image(ResourceManager.getInstance().getTexture("top_bar"));
+			_topBar = new Image(ResourceManager.getInstance().getTexture("bar"));
 			_topBar.pivotX = _topBar.width / 2;
 			_topBar.pivotY = _topBar.height / 2;
-			_topBar.y = -100;
+			_topBar.color = 0x00ADEE;
+			_topBar.y = -60;
 			_topBar.x = -750;
 			addChild(_topBar);
 			
-			_botBar = new Image(ResourceManager.getInstance().getTexture("bot_bar"));
+			_botBar = new Image(ResourceManager.getInstance().getTexture("bar"));
 			_botBar.pivotX = _botBar.width / 2;
 			_botBar.pivotY = _botBar.height / 2;
-			_botBar.y = 100;
+			_botBar.color = 0x00ADEE;
+			_botBar.y = 60;
 			_botBar.x = 750;
 			addChild(_botBar);
 			
-			_textToShowTxt = new TextField(700, 200, _textToShow, "Verdana", 60, 0);
+			_textToShowTxt = new TextField(700, 120, _textToShow, "Verdana", 60, 0);
 			
 			_clippedText = new ClippedSprite();
 			_clippedText.addChild(_textToShowTxt);
@@ -102,19 +106,19 @@ package view
 		
 		private function onTweenComplete():void {
 			
-			var topBarTeen:Tween = new Tween(_topBar, ANIMATION_TIME, Transitions.EASE_IN);
+			var topBarTeen:Tween = new Tween(_topBar, ANIMATION_TIME, Transitions.EASE_IN_OUT);
 			topBarTeen.animate("x", 750);
-			topBarTeen.delay = 0.5;
+			topBarTeen.delay = 1;
 			topBarTeen.onStart = onEndingTweenStart;
 			Starling.juggler.add(topBarTeen);
 			
-			var botBarTween:Tween = new Tween(_botBar, ANIMATION_TIME, Transitions.EASE_IN);
-			botBarTween.delay = 0.5;
+			var botBarTween:Tween = new Tween(_botBar, ANIMATION_TIME, Transitions.EASE_IN_OUT);
+			botBarTween.delay = 1.5;
 			botBarTween.animate("x", -750);
 			Starling.juggler.add(botBarTween);
 		
 			var bodyBgTween:Tween = new Tween(_bodyBg, ANIMATION_TIME, Transitions.EASE_IN_OUT);
-			bodyBgTween.delay = 0.5;
+			bodyBgTween.delay = 1.5;
 			bodyBgTween.animate("scaleY", 0);
 			Starling.juggler.add(bodyBgTween);
 			

@@ -49,6 +49,7 @@ package view
 		private var _bgContainer:Sprite;
 		private var _myShip:Sprite;
 		private var _enemyShip:Sprite;
+		private var _tilesArray:Array;
 		
 		public function Renderer()
 		{
@@ -57,6 +58,7 @@ package view
 			_manager = Manager.getInstance();
 			_bgContainer = new Sprite();
 			_bgContainer.touchable = false;
+			_tilesArray = new Array();
 			addChild(_bgContainer);
 		}
 		
@@ -90,36 +92,34 @@ package view
 				
 			mcc.x = entity.position.x; mcc.y = entity.position.y;
 			
-			
-			
 			mcc.pivotX = mcc.width/2; mcc.pivotY = mcc.height/2;
 
+			mcc.visible = entity.visible;
+			
 			if(entity.rotation)
 				mcc.rotation = entity.rotation; 
 			
 			_spriteEntityDic[entity.id] = mcc;
 			
-			//if(entity.owner == _playerName) {
-				mcc.addEventListener(TouchEvent.TOUCH, onTouch);
-				mcc.useHandCursor = true;
-			//}
+			mcc.addEventListener(TouchEvent.TOUCH, onTouch);
+			mcc.useHandCursor = true;
 			
-			if(entity.type == "tile"){
-				if(entity.owner == _playerName)
-					_myShip.addChild(mcc);
-				else {
-					_enemyShip.addChild(mcc);
-					mcc.x -= 335;
-					mcc.y -= 335;
-				}
-			}
-			else
-				addChild(mcc);
+			
+			addChild(mcc);
 			
 			mcc.setCurrentMovieClip(mcc.skinClass.originalMcc);
 			
+			if(entity.type == "tile"){
+				_tilesArray.push(mcc);
+			}
 			/*var quad:Quad = new Quad(2, 2);
 			addChild(quad); quad.x = entity.position.x; quad.y = entity.position.y;*/
+		}
+		
+		public function showTiles():void {
+			for(var i:int = 0; i < _tilesArray.length; i++){
+				_tilesArray[i].visible = true;
+			}
 		}
 		
 		public function pauseOrResumeAnimations():void {
@@ -279,6 +279,7 @@ package view
 				if(mcc.skinClass.animationsDic["selected"] == true)
 					playAnimation(mcc.id, "selected");
 				
+				trace(mcc.localToGlobal(new Point()));
 				_manager.dispatchHandler(mcc.id, "click");
 				
 			}

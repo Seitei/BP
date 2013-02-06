@@ -35,7 +35,9 @@ package
 		//we use this to change the mode
 		//- ONLINE -> normal gameplay, you send actinos throught Cirrus to the other player
 		//- OFFLINE -> you act as two players in one screen, for tests purposes only
-		public var online:Boolean = true;
+		
+		//public var online:Boolean = true;
+		public var online:Boolean = false;
 		
 		public function Main()
 		{
@@ -44,7 +46,6 @@ package
 			_renderer = Renderer.getInstance();
 			_ui = UI.getInstance(true);
 			_ui.online = online;
-			_ui.showHud(false);
 			_manager = Manager.getInstance();
 			_manager.online = online;
 		}

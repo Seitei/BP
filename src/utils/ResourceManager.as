@@ -61,18 +61,12 @@ package utils
 		[Embed(source = "../assets/tile.png")]
 		private static const Tile:Class;
 		
-		[Embed(source = "../assets/bg_menu_bar.png")]
-		private static const BgMenuBar:Class;
-
 		[Embed(source = "../assets/ship.png")]
 		private static const Ship:Class;
 		
 		[Embed(source = "../assets/timon.png")]
 		private static const Timon:Class;
 		
-		[Embed(source = "../assets/building.png")]
-		private static const Building:Class;
-
 		[Embed(source = "../assets/spawner1_down_btn.png")]
 		private static const Spawner1DownBtn:Class;
 		
@@ -145,11 +139,8 @@ package utils
 		[Embed(source = "../assets/waiting_for_players.png")]
 		private static const WaitingForPlayers:Class;
 		
-		[Embed(source = "../assets/top_bar.png")]
-		private static const TopBar:Class;
-		
-		[Embed(source = "../assets/bot_bar.png")]
-		private static const BotBar:Class;
+		[Embed(source = "../assets/bar.png")]
+		private static const Bar:Class;
 		
 		[Embed(source = "../assets/body_bg.png")]
 		private static const BodyBg:Class;
@@ -161,9 +152,6 @@ package utils
 		
 		[Embed(source="../assets/tile.xml", mimeType="application/octet-stream")]
 		public static const TileXML:Class;
-		
-		[Embed(source="../assets/building.xml", mimeType="application/octet-stream")]
-		public static const BuildingXML:Class;
 		
 		[Embed(source="../assets/cannon_bullet.xml", mimeType="application/octet-stream")]
 		public static const CannonBulletXML:Class;
@@ -187,10 +175,8 @@ package utils
 			TextureAssets["sell"] = Sell;
 			TextureAssets["upgrade"] = Upgrade;
 			TextureAssets["tile"] = Tile;
-			TextureAssets["bg_menu_bar"] = BgMenuBar;
 			TextureAssets["ship"] = Ship;
 			TextureAssets["timon"] = Timon;
-			TextureAssets["building"] = Building;
 			TextureAssets["spawner1_up_btn"] = Spawner1UpBtn;
 			TextureAssets["spawner1_hover_btn"] = Spawner1HoverBtn;
 			TextureAssets["spawner1_down_btn"] = Spawner1DownBtn;
@@ -220,15 +206,13 @@ package utils
 			TextureAssets["arrow"] = Arrow;
 			TextureAssets["waiting_for_players"] = WaitingForPlayers;
 			TextureAssets["period"] = Period;
-			TextureAssets["top_bar"] = TopBar;
-			TextureAssets["bot_bar"] = BotBar;
+			TextureAssets["bar"] = Bar;
 			TextureAssets["body_bg"] = BodyBg;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
 			XMLAssets["cannon_bullet"] = CannonBulletXML;
 			XMLAssets["tile"] = TileXML;
-			XMLAssets["building"] = BuildingXML;
 			
 		}
 		

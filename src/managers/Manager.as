@@ -101,7 +101,15 @@ package managers
 			_ui = UI.getInstance();
 			_ui.online = online;
 			_ui.addEventListener("VisualMessageComplete", onVisualMessageComplete);
+			_ui.addEventListener("actionBarTweenCompleted", onActionBarTweenCompleted);
 		}
+		
+		private function onActionBarTweenCompleted(e:Event):void {
+
+			Main.getInstance().getRenderer().enterShips();
+		}
+		
+		
 		
 		public function get imReady():Boolean
 		{
@@ -133,7 +141,7 @@ package managers
 		
 		private function onNeighborConnected(e:NotifyNeighborConnectedEvent):void {
 			_connectionOrder = e.connectionOrder;
-			_ui.showVisualMessage("A NEW CHALLENGER APPEARS!", "neutral");
+			_ui.showVisualMessage("CHALLENGER APPEARS!", "neutral");
 		}
 		
 		private function onVisualMessageComplete(e:Event):void {
@@ -153,7 +161,6 @@ package managers
 		public function buildPlayersWorld():void {
 			
 			
-			UI.getInstance().showHud(true);
 			// TODO ********************* CHANGE FOR EXTERNAL INPUT //
 			
 			if(_connectionOrder == "second"){
@@ -181,7 +188,7 @@ package managers
 						
 						var point:Point = new Point();
 						point.x = (j * (30 + 2)) + 28;
-						point.y = (j * (30 + 2))  + 80 + i * 64;
+						point.y = (j * (30 + 2))  + 415 + i * 64;
 						
 						var tile:EntityVO;
 						
@@ -189,6 +196,7 @@ package managers
 						TileVO(tile).row = j + i;
 						var tile_action:Action = new Action("addEntity", tile);
 						handler(tile_action, online, false);
+						tile.visible = false;
 						
 						//if not online, we force a send with different id and owner to recreate the complete map
 						if(!online){
@@ -196,6 +204,7 @@ package managers
 							TileVO(tile_offline).row = j + i;
 							tile_offline.owner = "TEST";
 							tile_offline.id = "TEST" + tile_offline.id.substring(tile_offline.id.indexOf("_"));
+							tile_offline.visible = false;
 							var tile_action_offline:Action = new Action("addEntity", tile_offline);
 							handler(tile_action_offline, true, false);
 						}
@@ -210,13 +219,16 @@ package managers
 			
 			_main.startGame();
 			
-			Main.getInstance().getRenderer().enterShips();
+			_ui.enterActionBar();
+			
 			
 		}
 		
 		public function onEnterShipsComplete():void {
 			
 			UI.getInstance().showPlanningUI(true);
+			Main.getInstance().getRenderer().showTiles();
+			
 			advanceGameState();
 			
 			if(_turn == "enemyTurn")
