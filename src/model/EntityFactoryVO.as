@@ -48,8 +48,8 @@ package model
 					entity = new TileVO(level, position.x, position.y);
 					break;
 				
-				case "spawner1":
-					entity = new Spawner1VO(level, position.x, position.y);
+				case "good_old_cannon":
+					entity = new GoodOldCannonVO(level, position.x, position.y);
 					break;
 				
 				case "spawner2":

@@ -194,9 +194,10 @@ package managers
 						
 						tile = EntityFactoryVO.getInstance().makeEntity(_playerName,"tile", 1, point);
 						TileVO(tile).row = j + i;
+						//this way, we make the tiles "appear" at the match's start
+						tile.visible = false;
 						var tile_action:Action = new Action("addEntity", tile);
 						handler(tile_action, online, false);
-						tile.visible = false;
 						
 						//if not online, we force a send with different id and owner to recreate the complete map
 						if(!online){

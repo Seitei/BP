@@ -67,35 +67,20 @@ package utils
 		[Embed(source = "../assets/timon.png")]
 		private static const Timon:Class;
 		
-		[Embed(source = "../assets/spawner1_down_btn.png")]
-		private static const Spawner1DownBtn:Class;
+		[Embed(source = "../assets/good_old_cannon_down_btn.png")]
+		private static const OldGoodCannonDownBtn:Class;
 		
-		[Embed(source = "../assets/spawner1_hover_btn.png")]
-		private static const Spawner1HoverBtn:Class;
+		[Embed(source = "../assets/good_old_cannon_hover_btn.png")]
+		private static const OldGoodCannonHoverBtn:Class;
 		
-		[Embed(source = "../assets/spawner1_up_btn.png")]
-		private static const Spawner1UpBtn:Class;
+		[Embed(source = "../assets/good_old_cannon_up_btn.png")]
+		private static const OldGoodCannonUpBtn:Class;
 		
-		[Embed(source = "../assets/spawner1_mouse_btn.png")]
-		private static const Spawner1MouseBtn:Class;
+		[Embed(source = "../assets/good_old_cannon_mouse_btn.png")]
+		private static const OldGoodCannonMouseBtn:Class;
 		
-		[Embed(source = "../assets/spawner2_down_btn.png")]
-		private static const Spawner2DownBtn:Class;
-		
-		[Embed(source = "../assets/spawner2_hover_btn.png")]
-		private static const Spawner2HoverBtn:Class;
-		
-		[Embed(source = "../assets/spawner2_up_btn.png")]
-		private static const Spawner2UpBtn:Class;
-		
-		[Embed(source = "../assets/spawner2_mouse_btn.png")]
-		private static const Spawner2MouseBtn:Class;
-		
-		[Embed(source = "../assets/spawner1.png")]
-		private static const Spawner1:Class;
-		
-		[Embed(source = "../assets/spawner2.png")]
-		private static const Spawner2:Class;
+		[Embed(source = "../assets/good_old_cannon.png")]
+		private static const OldGoodCannon:Class;
 		
 		[Embed(source = "../assets/ready_up_btn.png")]
 		private static const ReadyUpBtn:Class;
@@ -177,14 +162,10 @@ package utils
 			TextureAssets["tile"] = Tile;
 			TextureAssets["ship"] = Ship;
 			TextureAssets["timon"] = Timon;
-			TextureAssets["spawner1_up_btn"] = Spawner1UpBtn;
-			TextureAssets["spawner1_hover_btn"] = Spawner1HoverBtn;
-			TextureAssets["spawner1_down_btn"] = Spawner1DownBtn;
-			TextureAssets["spawner1_mouse_btn"] = Spawner1MouseBtn;
-			TextureAssets["spawner2_up_btn"] = Spawner2UpBtn;
-			TextureAssets["spawner2_hover_btn"] = Spawner2HoverBtn;
-			TextureAssets["spawner2_down_btn"] = Spawner2DownBtn;
-			TextureAssets["spawner2_mouse_btn"] = Spawner2MouseBtn;
+			TextureAssets["good_old_cannon_up_btn"] = OldGoodCannonUpBtn;
+			TextureAssets["good_old_cannon_hover_btn"] = OldGoodCannonHoverBtn;
+			TextureAssets["good_old_cannon_down_btn"] = OldGoodCannonDownBtn;
+			TextureAssets["good_old_cannon_mouse_btn"] = OldGoodCannonMouseBtn;
 			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
 			TextureAssets["building_improvement_gold_up_btn"] = buildingImprovementGoldUpBtn;
 			TextureAssets["building_improvement_gold_hover_btn"] = buildingImprovementGoldHoverBtn;
@@ -196,8 +177,7 @@ package utils
 			TextureAssets["play_up_btn"] = PlayUpBtn;
 			TextureAssets["play_down_btn"] = PlayDownBtn;
 			TextureAssets["play_hover_btn"] = PlayHoverBtn;
-			TextureAssets["spawner1"] = Spawner1;
-			TextureAssets["spawner2"] = Spawner2;
+			TextureAssets["good_old_cannon"] = OldGoodCannon;
 			TextureAssets["cannon_bullet"] = CannonBullet;
 			TextureAssets["placement_slot_up"] = PlacementSlotUp;
 			TextureAssets["placement_slot_down"] = PlacementSlotDown;

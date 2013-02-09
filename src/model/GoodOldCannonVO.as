@@ -17,7 +17,7 @@ package model
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 
-	public class Spawner1VO extends EntityVO
+	public class GoodOldCannonVO extends EntityVO
 	{
 		private var _cost:int;
 		private var _rallypoint:Point;
@@ -25,14 +25,14 @@ package model
 		private var _maxUnits:int = 1;
 		private var _currentUnits:int = 0;
 			
-		public function Spawner1VO(level:int = 1, x:int = 0, y:int = 0)
+		public function GoodOldCannonVO(level:int = 1, x:int = 0, y:int = 0)
 		{
 			position.x = x, position.y = y;
 			cost = 3;
 			attackable = true;
-			type = "spawner1";
-			skinClass = new SkinClass("spawner1", "spawner1", false);
-			skinClass.animationsDic["spawner1"] = true;
+			type = "good_old_cannon";
+			skinClass = new SkinClass("good_old_cannon", "good_old_cannon", false);
+			skinClass.animationsDic["good_old_cannon"] = true;
 			//set what the entity has to show in the selector panel
 			spawningPoint = new Point(18, -18);
 			entityToSpawn = new Object();
@@ -54,10 +54,10 @@ package model
 		
 		private function initLevelData():void {
 		 
-			levelData[1] = [500,  [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level, 120]], "spawner1_level1"];
-			levelData[2] = [1000, [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level,  90]], "spawner1_level2"];
-			levelData[3] = [2000, [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level,  80]], "spawner1_level3"];
-			levelData[4] = [5000, [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level,  60]], "spawner1_level4"];
+			levelData[1] = [500,  [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level, 120]], "good_old_cannon_level1"];
+			levelData[2] = [1000, [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level,  90]], "good_old_cannon_level2"];
+			levelData[3] = [2000, [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level,  80]], "good_old_cannon_level3"];
+			levelData[4] = [5000, [[Spawn, this.entityToSpawn.type, this.entityToSpawn.level,  60]], "good_old_cannon_level4"];
 				
 				
 		}

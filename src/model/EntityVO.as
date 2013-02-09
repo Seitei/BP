@@ -56,6 +56,7 @@ package model
 			_behaviorReqs = new Array();
 			_spawningpoint = new Point();
 			_levelData = new Array();
+			_visible = true;
 			
 		}
 		

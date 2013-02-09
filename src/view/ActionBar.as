@@ -44,6 +44,22 @@ package view
 		private var _hesReady:Boolean;
 		private var _buttonsVector:Vector.<ExtendedButton>;
 		
+		//entities arrays
+		private var _cannonsArray:Array;
+		private var _bulletsArray:Array;
+		private var _buffsArray:Array;
+		private var _shipsArray:Array;
+		
+		public function setContent(cannonsArray:Array = null, bulletsArray:Array = null, buffsArray:Array = null, shipsArray:Array = null):void {
+			
+			_cannonsArray = cannonsArray;
+			_bulletsArray = bulletsArray;
+			_buffsArray = buffsArray;
+			_shipsArray = shipsArray;
+			
+			initContent();
+		}
+		
 		public function get enemyHp():int
 		{
 			return _enemyHp;
@@ -94,58 +110,38 @@ package view
 			initTurnCountdown();
 			initReadyButton();
 			initResourceButton();
-			//entities
-			
-			initCannonButton();
-			initCannon2Button();
-			
-			//enableButtons(false);
 		}
 		
-		private function initCannonButton():void {
+		private function initContent():void {
 			
-			var spawner1Btn:ActionButton = new ActionButton(
-				ResourceManager.getInstance().getTexture("spawner1_up_btn"), 
-				"addEntity", 
-				"spawner1",
-				null,
-				null,
-				"",
-				ResourceManager.getInstance().getTexture("spawner1_down_btn"), 
-				ResourceManager.getInstance().getTexture("spawner1_hover_btn"),
-				ResourceManager.getInstance().getTexture("spawner1_mouse_btn")
-			);
+			//cannons
 			
-			spawner1Btn.x = 3;
-			spawner1Btn.y = 81;
-			addChild(spawner1Btn);
-			spawner1Btn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
-
-			_buttonsVector.push(spawner1Btn);
+			for each(var cannon:String in _cannonsArray){
+				
+				var cannonBtn:ActionButton = new ActionButton(
+					ResourceManager.getInstance().getTexture(cannon + "_up_btn"), 
+					"addEntity", 
+					cannon,
+					null,
+					null,
+					"",
+					ResourceManager.getInstance().getTexture(cannon + "_down_btn"), 
+					ResourceManager.getInstance().getTexture(cannon + "_hover_btn"),
+					ResourceManager.getInstance().getTexture(cannon + "_mouse_btn")
+				);
+				
+				cannonBtn.x = 3;
+				cannonBtn.y = 81;
+				addChild(cannonBtn);
+				cannonBtn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
+				
+				_buttonsVector.push(cannonBtn);
+				
+				
+				
+			}
 			
 			
-		}
-
-		private function initCannon2Button():void {
-			
-			var spawner2Btn:ActionButton = new ActionButton(
-				ResourceManager.getInstance().getTexture("spawner2_up_btn"), 
-				"addEntity", 
-				"spawner2",
-				null,
-				null,
-				"",
-				ResourceManager.getInstance().getTexture("spawner2_down_btn"), 
-				ResourceManager.getInstance().getTexture("spawner2_hover_btn"),
-				ResourceManager.getInstance().getTexture("spawner2_mouse_btn")
-			);
-			
-			spawner2Btn.x = 51;
-			spawner2Btn.y = 81;
-			addChild(spawner2Btn);
-			spawner2Btn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
-			
-			_buttonsVector.push(spawner2Btn);
 			
 			
 		}

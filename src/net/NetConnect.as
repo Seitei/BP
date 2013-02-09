@@ -16,7 +16,7 @@ package net
 	import model.BulletVO;
 	import model.EntityVO;
 	import model.SkinClass;
-	import model.Spawner1VO;
+	import model.GoodOldCannonVO;
 	import model.Spawner2VO;
 	import model.TileVO;
 	
@@ -52,7 +52,7 @@ package net
 		registerClassAlias("SkinClass", SkinClass);
 		registerClassAlias("Boolean", Boolean);
 		registerClassAlias("BulletVO", BulletVO);
-		registerClassAlias("Spawner1", Spawner1VO);
+		registerClassAlias("GoodOldCannon", GoodOldCannonVO);
 		registerClassAlias("Spawner2", Spawner2VO);
 		registerClassAlias("BuildingImprovementVO", BuildingImprovementGoldVO);
 		registerClassAlias("IBehavior", IBehavior);
@@ -200,11 +200,6 @@ package net
 			byteArray.writeObject(data);
 			byteArray.position = 0;
 			var object:Object = byteArray.readObject();*/ 
-			
-			for each ( var action:Action in data) {
-			if(action.entity.type == "spawner1")
-				sendStatus("SPAWNER!");
-			}
 			
 			_message = new Object();
 			_message.data = data;
