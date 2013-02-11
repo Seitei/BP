@@ -50,12 +50,27 @@ package view
 		private var _buffsArray:Array;
 		private var _shipsArray:Array;
 		
+		//entities containers
+		private var _cannonsContainer:Sprite;
+		private var _bulletsContainer:Sprite;
+		private var _buffsContainer:Sprite;
+		private var _shipsContainer:Sprite;
+		
+		//content array
+		private var _contentArray:Array;
+		private var _contentContainersArray:Array;
+		
 		public function setContent(cannonsArray:Array = null, bulletsArray:Array = null, buffsArray:Array = null, shipsArray:Array = null):void {
 			
 			_cannonsArray = cannonsArray;
 			_bulletsArray = bulletsArray;
 			_buffsArray = buffsArray;
 			_shipsArray = shipsArray;
+			
+			if(_cannonsArray != null) { _contentArray.push(_cannonsArray); _cannonsContainer = new Sprite(); _contentContainersArray.push(_cannonsContainer); }
+			if(_bulletsArray != null) { _contentArray.push(_bulletsArray); _bulletsContainer = new Sprite(); _contentContainersArray.push(_bulletsContainer); }
+			if(_buffsArray != null)   { _contentArray.push(_buffsArray);   _buffsContainer = new Sprite();   _contentContainersArray.push(_buffsContainer);   }
+			if(_shipsArray != null)   { _contentArray.push(_shipsArray);   _shipsContainer = new Sprite();   _contentContainersArray.push(_shipsContainer);   }
 			
 			initContent();
 		}
@@ -102,6 +117,9 @@ package view
 			//we store here the buttons, to have acess later when we disable/enable them.
 			_buttonsVector = new Vector.<ExtendedButton>;
 			
+			_contentArray = new Array();
+			_contentContainersArray = new Array();
+			
 			initGold();
 			initGoldIncome();
 			initMyHp();
@@ -109,67 +127,77 @@ package view
 			initPlusSeparator();
 			initTurnCountdown();
 			initReadyButton();
-			initResourceButton();
 		}
 		
 		private function initContent():void {
 			
 			//cannons
+			var globalCounter:int = 0;
+			var localCounter:int = 0;
 			
-			for each(var cannon:String in _cannonsArray){
+			var xpos:int;
+			var ypos:int;
+			
+			var newEntityGroup:Boolean;
+			var newEntityCounter:int = 0;
+			
+			var globalYpos:int;
+			
+			for each(var entitiesArray:Array in _contentArray){
 				
-				var cannonBtn:ActionButton = new ActionButton(
-					ResourceManager.getInstance().getTexture(cannon + "_up_btn"), 
-					"addEntity", 
-					cannon,
-					null,
-					null,
-					"",
-					ResourceManager.getInstance().getTexture(cannon + "_down_btn"), 
-					ResourceManager.getInstance().getTexture(cannon + "_hover_btn"),
-					ResourceManager.getInstance().getTexture(cannon + "_mouse_btn")
-				);
+				newEntityGroup = true;	
+				localCounter = 0;
+				ypos = 0;
 				
-				cannonBtn.x = 3;
-				cannonBtn.y = 81;
-				addChild(cannonBtn);
-				cannonBtn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
+				//place divisor bar
+				var divisorBarImage:Image = new Image(ResourceManager.getInstance().getTexture("action_bar_divisor"));
+				_contentContainersArray[newEntityCounter].addChild(divisorBarImage);
+				_contentContainersArray[newEntityCounter].y = 81 + globalYpos * 48 + newEntityCounter * 13;
+				_contentContainersArray[newEntityCounter].x = 3;
 				
-				_buttonsVector.push(cannonBtn);
+				addChild(_contentContainersArray[newEntityCounter]);
 				
+				for each(var entity:String in entitiesArray){
+					var entityBtn:ActionButton = new ActionButton(
+						ResourceManager.getInstance().getTexture(entity + "_up_btn"), 
+						"addEntity", 
+						entity,
+						null,
+						null,
+						"",
+						ResourceManager.getInstance().getTexture(entity + "_down_btn"), 
+						ResourceManager.getInstance().getTexture(entity + "_hover_btn"),
+						ResourceManager.getInstance().getTexture(entity + "_mouse_btn")
+					);
+					
+					
+					_buttonsVector.push(entityBtn);
+					
+					xpos = localCounter % 2 == 0 ? 0 : newEntityGroup == true ? 0 : 48;
+					ypos = 13 + Math.floor(localCounter / 2) * 48;
+					 
+					if(localCounter % 2 == 0) globalYpos ++;
+					
+					entityBtn.x = xpos;
+					entityBtn.y = ypos;
+					
+					_contentContainersArray[newEntityCounter].addChild(entityBtn);
+					entityBtn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
+					
+					globalCounter ++;
+					localCounter ++;
+					newEntityGroup = false;
+							
+					
+				}
 				
+				newEntityCounter ++;
 				
 			}
 			
 			
-			
-			
 		}
 		
-		private function initResourceButton():void {
-			
-			var resourceBtn:ActionButton = new ActionButton(
-				ResourceManager.getInstance().getTexture("building_improvement_gold_up_btn"), 
-				"addEntity", 
-				"buildingImprovementGold",
-				null,
-				null,
-				"",
-				ResourceManager.getInstance().getTexture("building_improvement_gold_down_btn"), 
-				ResourceManager.getInstance().getTexture("building_improvement_gold_hover_btn"),
-				ResourceManager.getInstance().getTexture("building_improvement_gold_mouse_btn")
-			);
-			
-			resourceBtn.x = 3;
-			resourceBtn.y = 129;
-			addChild(resourceBtn);
-			resourceBtn.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onEntityButtonTouched);
-			
-			_buttonsVector.push(resourceBtn);
-			
-			
-		}
-
 		private function initReadyButton():void {
 			var readyButton:ActionButton = new ActionButton(
 				ResourceManager.getInstance().getTexture("ready_up_btn"), 

@@ -138,7 +138,7 @@ package view
 			_actionBar.goldIncome = _goldIncome;
 			_actionBar.myHp = _myHp;
 			_actionBar.enemyHp = _enemyHp;
-			_actionBar.setContent(["good_old_cannon"]);
+			_actionBar.setContent(["good_old_cannon", "good_old_cannon", "building_improvement_gold", "good_old_cannon", "good_old_cannon"], ["good_old_cannon"],[ "good_old_cannon", "building_improvement_gold", "good_old_cannon", "good_old_cannon"]);
 			addChild(_actionBar);
 			_actionBar.addEventListener(ButtonClickedEvent.BUTTON_CLICKED_EVENT, onButtonClicked);
 			_actionBar.addEventListener("ReadyEvent", sendReadyEvent);

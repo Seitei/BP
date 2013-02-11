@@ -40,7 +40,7 @@ package model
 			
 			switch(type) {
 				
-				case "buildingImprovementGold":
+				case "building_improvement_gold":
 					entity = new BuildingImprovementGoldVO(level, position.x, position.y);
 					break;
 				
@@ -50,10 +50,6 @@ package model
 				
 				case "good_old_cannon":
 					entity = new GoodOldCannonVO(level, position.x, position.y);
-					break;
-				
-				case "spawner2":
-					entity = new Spawner2VO(level, position.x, position.y);
 					break;
 				
 				case "bullet":

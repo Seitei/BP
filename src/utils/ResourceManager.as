@@ -129,6 +129,9 @@ package utils
 		
 		[Embed(source = "../assets/body_bg.png")]
 		private static const BodyBg:Class;
+		
+		[Embed(source = "../assets/action_bar_divisor.png")]
+		private static const ActionBarDivisor:Class;
 
 		// XML //
 		
@@ -188,6 +191,7 @@ package utils
 			TextureAssets["period"] = Period;
 			TextureAssets["bar"] = Bar;
 			TextureAssets["body_bg"] = BodyBg;
+			TextureAssets["action_bar_divisor"] = ActionBarDivisor;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
