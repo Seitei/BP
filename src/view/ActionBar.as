@@ -10,6 +10,7 @@ package view
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	import flash.ui.MouseCursorData;
+	import flash.utils.Dictionary;
 	
 	import model.ActionButtonVO;
 	import model.EntityVO;
@@ -65,6 +66,9 @@ package view
 		
 		//visor
 		private var _visorContainer:ClippedSprite;
+		
+		private var _entitiesRequiredDic:Dictionary;
+		private var _entityImagesRequiredDic:Dictionary;
 		
 		public function setContent(cannonsArray:Array = null, bulletsArray:Array = null, buffsArray:Array = null, shipsArray:Array = null):void {
 			
@@ -195,7 +199,6 @@ package view
 			
 			_contentArray = new Array();
 			_contentContainersArray = new Array();
-			_visorContainer = new ClippedSprite();
 			
 			initGold();
 			initGoldIncome();
@@ -204,56 +207,86 @@ package view
 			initPlusSeparator();
 			initTurnCountdown();
 			initReadyButton();
-			initVisor();
 		}
 		
-		private function initVisor():void {
+		public function showVisor(entity:EntityVO):Boolean {
 			
-			_visorContainer.y = 539;
-			addChild(_visorContainer);
-			_visorContainer.visible = false;
-		}
-		
-		public function showVisor(entity:EntityVO):void {
-			
-			_visorContainer.visible = true;
-			var posX:int = _visorContainer.localToGlobal(new Point()).x;
-			var posY:int = _visorContainer.localToGlobal(new Point()).y;
-			_visorContainer.clipRect = new Rectangle(posX, posY, 100, 100);
-			var visorBg:Image = new Image(ResourceManager.getInstance().getTexture("visor_bg"));
-			visorBg.pivotX = visorBg.width / 2;
-			visorBg.pivotY = visorBg.height / 2;
-			visorBg.x = 50;
-			visorBg.y = 50;
-			_visorContainer.addChild(visorBg);
-			
-			var entityImage:Image = new Image(ResourceManager.getInstance().getTexture(entity.name));
-			
-			switch(entity.occupiedSlots + " " + entity.entitiesRequired){
+			if(!_entitiesRequiredDic){
 				
-				case "1x1 bullet":
-					entityImage.pivotX = entityImage.width / 2;
-					entityImage.pivotY = entityImage.height / 2;
-					entityImage.x = 50;
-					entityImage.y = 60;
-					entityImage.scaleX = 1.4;
-					entityImage.scaleY = 1.4;
-					_visorContainer.addChild(entityImage);
-					visorBg.scaleX = 1.4;
-					visorBg.scaleY = 1.4;
-					visorBg.y += 10;
-					
-					var bulletImage:Image = new Image(ResourceManager.getInstance().getTexture("bullet_place_holder"));
-					bulletImage.pivotX = bulletImage.width / 2;
-					bulletImage.pivotY = bulletImage.height / 2;
-					bulletImage.x = 50;
-					bulletImage.y = 15;
-					_visorContainer.addChild(bulletImage);
-					break;
+				var stayHere:Boolean = false;
+				
+				if(!_entitiesRequiredDic){
+					_entitiesRequiredDic = new Dictionary();
+					_entityImagesRequiredDic = new Dictionary();					
+				}
+
+				for each(var entityTypeRequired:String in entity.entitiesRequired){
+					_entitiesRequiredDic[entityTypeRequired] = false;
+					_entityImagesRequiredDic[entityTypeRequired] = null;
+				}	
+			}
+			else {
+				for (var entityTypeRequired:String in _entitiesRequiredDic){
+					if(entityTypeRequired == entity.type && _entitiesRequiredDic[entityTypeRequired] == false){
+						_entitiesRequiredDic[entityTypeRequired] = true;
+						//show image
+						_entityImagesRequiredDic[entityTypeRequired].texture = ResourceManager.getInstance().getTexture(entity.name);
+					}	
+				}
 			}
 			
+			if(!_visorContainer){
+				_visorContainer = new ClippedSprite();
+				_visorContainer.y = 539;
+				addChild(_visorContainer);
+				var posX:int = _visorContainer.localToGlobal(new Point()).x;
+				var posY:int = _visorContainer.localToGlobal(new Point()).y;
+				_visorContainer.clipRect = new Rectangle(posX, posY, 100, 100);
+				var visorBg:Image = new Image(ResourceManager.getInstance().getTexture("visor_bg"));
+				visorBg.pivotX = visorBg.width / 2;
+				visorBg.pivotY = visorBg.height / 2;
+				visorBg.x = 50;
+				visorBg.y = 50;
+				_visorContainer.addChild(visorBg);
+				
+				var entityImage:Image = new Image(ResourceManager.getInstance().getTexture(entity.name));
+				
+				switch(entity.occupiedSlots + " " + entity.entitiesRequired){
+					
+					case "1x1 bullet":
+						entityImage.pivotX = entityImage.width / 2;
+						entityImage.pivotY = entityImage.height / 2;
+						entityImage.x = 50;
+						entityImage.y = 60;
+						entityImage.scaleX = 1.4;
+						entityImage.scaleY = 1.4;
+						_visorContainer.addChild(entityImage);
+						visorBg.scaleX = 1.4;
+						visorBg.scaleY = 1.4;
+						visorBg.y += 10;
+						
+						var bulletImage:Image = new Image(ResourceManager.getInstance().getTexture("bullet_place_holder"));
+						bulletImage.pivotX = bulletImage.width / 2;
+						bulletImage.pivotY = bulletImage.height / 2;
+						bulletImage.x = 50;
+						bulletImage.y = 15;
+						_visorContainer.addChild(bulletImage);
+						
+						_entityImagesRequiredDic["bullet"] = bulletImage;
+						break;
+				}
+			}
 			
+			//here we check if we still have entities to add
+			stayHere = false;
+			for (var entityTypeRequired:String in _entitiesRequiredDic){
+				if(_entitiesRequiredDic[entityTypeRequired] == false){
+					stayHere = true;
+					break;
+				}
+			}
 			
+			return stayHere;
 			
 		}
 		

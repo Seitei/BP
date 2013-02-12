@@ -160,23 +160,33 @@ package view
 		
 		private function onButtonClicked(e:ButtonClickedEvent):void {
 			
-			//here we hide the mouse and show the ghost image of the entity if the button had a mouse cursor texture set
-			if(e.mouseCursorTexture) {
-				Mouse.hide();
-				_mouseCursorImage = new Image(e.mouseCursorTexture);
-				
-				_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
-				_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
-				_mouseCursorImage.x = e.startingPosition.x;
-				_mouseCursorImage.y = e.startingPosition.y;
-				_mouseCursorImage.touchable = false;
-
-				addChild(_mouseCursorImage);
-				stage.addEventListener(TouchEvent.TOUCH, onMove);
-			}
+			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityName, 1, null);
 			
-			var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, e.entityType, 1, null);
-			_actionIssued = new Action(e.actionType, newEntity);
+			//first we check if the current issued entity to create requires something we just clicked on
+			if(_actionBar.showVisor(newEntity)){
+				
+				return;
+			}
+			else {
+				
+				_actionIssued = new Action(e.actionType, newEntity);
+				
+				if(e.mouseCursorTexture) {
+					//here we hide the mouse and show the ghost image of the entity if the button had a mouse cursor texture set
+					Mouse.hide();
+					_mouseCursorImage = new Image(e.mouseCursorTexture);
+					
+					_mouseCursorImage.pivotX = _mouseCursorImage.width / 2;
+					_mouseCursorImage.pivotY = _mouseCursorImage.height / 2;
+					_mouseCursorImage.x = e.startingPosition.x;
+					_mouseCursorImage.y = e.startingPosition.y;
+					_mouseCursorImage.touchable = false;
+	
+					addChild(_mouseCursorImage);
+					stage.addEventListener(TouchEvent.TOUCH, onMove);
+				}
+			
+			}
 			
 			
 		}
@@ -303,7 +313,6 @@ package view
 		
 		private function onEnterActionBarTweenComplete():void {
 			dispatchEvent(new Event("actionBarTweenCompleted"));
-			_actionBar.showVisor(new GoodOldCannonVO);
 		}
 		
 		private function showEntityUI(entity:EntityVO):void {

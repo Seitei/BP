@@ -38,6 +38,7 @@ package model
 			spawningPoint = new Point(18, -18);
 			entityToSpawn = new Object();
 			entityToSpawn.type = "bullet";
+			entityToSpawn.name = "bullet";
 			entityToSpawn.level = 1;
 			occupiedSlots = "1x1";
 			entitiesRequired = ["bullet"];
