@@ -12,7 +12,7 @@ package model
 		{
 			this.level = level;
 			position.x = x, position.y = y;
-			type = "tile";
+			name = "tile";
 			skinClass = new SkinClass("tile", "hover", true);
 			skinClass.animationsDic["hover"] = true;
 			skinClass.animationsDic["selected"] = true;

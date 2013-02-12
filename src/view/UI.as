@@ -19,6 +19,7 @@ package view
 	import model.ActionButtonVO;
 	import model.EntityFactoryVO;
 	import model.EntityVO;
+	import model.GoodOldCannonVO;
 	import model.TileVO;
 	
 	import starling.animation.Transitions;
@@ -138,10 +139,14 @@ package view
 			_actionBar.goldIncome = _goldIncome;
 			_actionBar.myHp = _myHp;
 			_actionBar.enemyHp = _enemyHp;
-			_actionBar.setContent(["good_old_cannon", "good_old_cannon", "building_improvement_gold", "good_old_cannon", "good_old_cannon"], ["good_old_cannon"],[ "good_old_cannon", "building_improvement_gold", "good_old_cannon", "good_old_cannon"]);
+			_actionBar.setContent(["good_old_cannon", "good_old_cannon", "good_old_cannon", "good_old_cannon", "good_old_cannon"], 
+								  [ "bullet", "bullet", "bullet", "bullet"],
+								  [ "building_improvement_gold", "building_improvement_gold", "building_improvement_gold", "building_improvement_gold"]);
 			addChild(_actionBar);
 			_actionBar.addEventListener(ButtonClickedEvent.BUTTON_CLICKED_EVENT, onButtonClicked);
 			_actionBar.addEventListener("ReadyEvent", sendReadyEvent);
+			
+				
 		}
 		
 		public function sendReadyEvent(e:Event):void {
@@ -259,7 +264,7 @@ package view
 					
 					//if we are pressing shift then we can place the same unit in another slot
 					if(_pressingShift){
-						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.type, 1, null);
+						var newEntity:EntityVO = EntityFactoryVO.getInstance().makeEntity(_playerName, _actionIssued.entity.name, 1, null);
 						_actionIssued = new Action(_actionIssued.type, newEntity);	
 					}
 					else {
@@ -298,6 +303,7 @@ package view
 		
 		private function onEnterActionBarTweenComplete():void {
 			dispatchEvent(new Event("actionBarTweenCompleted"));
+			_actionBar.showVisor(new GoodOldCannonVO);
 		}
 		
 		private function showEntityUI(entity:EntityVO):void {

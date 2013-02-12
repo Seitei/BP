@@ -31,14 +31,14 @@ package model
 			_playerName = value;
 		}
 		
-		public function makeEntity(player:String, type:String, level:int, position:Point = null):EntityVO {
+		public function makeEntity(player:String, name:String, level:int, position:Point = null):EntityVO {
 			
 			var entity:EntityVO;
 			//fix later when I know how to pass a point inside another class via the class alias net code.
 			if(!position) 
 				position = new Point();
 			
-			switch(type) {
+			switch(name) {
 				
 				case "building_improvement_gold":
 					entity = new BuildingImprovementGoldVO(level, position.x, position.y);
@@ -62,7 +62,7 @@ package model
 			}
 			_counter ++;
 			entity.owner = player;
-			entity.id = player + entity.type + _counter;
+			entity.id = player + entity.name + _counter;
 			entity.rotation = 45 * Math.PI / 180;
 			
 			return entity;	

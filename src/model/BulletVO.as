@@ -18,6 +18,7 @@ package model
 			position.x = x, position.y = y;
 			power = 3;
 			type = "bullet";
+			name = "bullet";
 			skinClass = new SkinClass("cannon_bullet", "walking", true);
 			skinClass.animationsDic["walking"] = true;
 			forwardAngle = -45;

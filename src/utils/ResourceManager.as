@@ -79,6 +79,18 @@ package utils
 		[Embed(source = "../assets/good_old_cannon_mouse_btn.png")]
 		private static const OldGoodCannonMouseBtn:Class;
 		
+		[Embed(source = "../assets/bullet_down_btn.png")]
+		private static const BulletDownBtn:Class;
+		
+		[Embed(source = "../assets/bullet_hover_btn.png")]
+		private static const BulletHoverBtn:Class;
+		
+		[Embed(source = "../assets/bullet_up_btn.png")]
+		private static const BulletUpBtn:Class;
+		
+		[Embed(source = "../assets/bullet_mouse_btn.png")]
+		private static const BulletMouseBtn:Class;
+		
 		[Embed(source = "../assets/good_old_cannon.png")]
 		private static const OldGoodCannon:Class;
 		
@@ -132,7 +144,16 @@ package utils
 		
 		[Embed(source = "../assets/action_bar_divisor.png")]
 		private static const ActionBarDivisor:Class;
-
+		
+		[Embed(source = "../assets/visor_bg.png")]
+		private static const VisorBg:Class;
+		
+		[Embed(source = "../assets/bullet_place_holder.png")]
+		private static const BulletPlaceHolder:Class;
+		
+		[Embed(source = "../assets/bullet.png")]
+		private static const Bullet:Class;
+		
 		// XML //
 		
 		[Embed(source="../assets/unit.xml", mimeType="application/octet-stream")]
@@ -169,6 +190,10 @@ package utils
 			TextureAssets["good_old_cannon_hover_btn"] = OldGoodCannonHoverBtn;
 			TextureAssets["good_old_cannon_down_btn"] = OldGoodCannonDownBtn;
 			TextureAssets["good_old_cannon_mouse_btn"] = OldGoodCannonMouseBtn;
+			TextureAssets["bullet_up_btn"] = BulletUpBtn;
+			TextureAssets["bullet_hover_btn"] = BulletHoverBtn;
+			TextureAssets["bullet_down_btn"] = BulletDownBtn;
+			TextureAssets["bullet_mouse_btn"] = BulletMouseBtn;
 			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
 			TextureAssets["building_improvement_gold_up_btn"] = buildingImprovementGoldUpBtn;
 			TextureAssets["building_improvement_gold_hover_btn"] = buildingImprovementGoldHoverBtn;
@@ -192,6 +217,9 @@ package utils
 			TextureAssets["bar"] = Bar;
 			TextureAssets["body_bg"] = BodyBg;
 			TextureAssets["action_bar_divisor"] = ActionBarDivisor;
+			TextureAssets["visor_bg"] = VisorBg;
+			TextureAssets["bullet_place_holder"] = BulletPlaceHolder;
+			TextureAssets["bullet"] = Bullet;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;

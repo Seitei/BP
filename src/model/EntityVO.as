@@ -17,7 +17,8 @@ package model
 		private var _y:Number;
 		private var _position:Point;
 		private var _skinClass:SkinClass;
-		private var _type:String = "";
+		private var _type:String;
+		private var _name:String = "";
 		private var _id:String;
 		private var _parentContainerId:String;
 		private var _childEntityId:String;
@@ -41,6 +42,9 @@ package model
 		private var _maxPower:int;
 		private var _visible:Boolean;
 		
+		private var _entitiesRequired:Array;
+		private var _occupiedSlots:String;
+		
 		protected var _buffsDic:Dictionary;
 		protected var _actionButtons:Vector.<ActionButtonVO>;
 		protected var _behaviorSteps:Vector.<IBehavior>;
@@ -60,6 +64,36 @@ package model
 			
 		}
 		
+		public function get type():String
+		{
+			return _type;
+		}
+
+		public function set type(value:String):void
+		{
+			_type = value;
+		}
+
+		public function get occupiedSlots():String
+		{
+			return _occupiedSlots;
+		}
+
+		public function set occupiedSlots(value:String):void
+		{
+			_occupiedSlots = value;
+		}
+
+		public function get entitiesRequired():Array
+		{
+			return _entitiesRequired;
+		}
+
+		public function set entitiesRequired(value:Array):void
+		{
+			_entitiesRequired = value;
+		}
+
 		public function get visible():Boolean
 		{
 			return _visible;
@@ -336,14 +370,14 @@ package model
 			_id = value;
 		}
 
-		public function get type():String
+		public function get name():String
 		{
-			return _type;
+			return _name;
 		}
 
-		public function set type(value:String):void
+		public function set name(value:String):void
 		{
-			_type = value;
+			_name = value;
 		}
 
 		public function get position():Point

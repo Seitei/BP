@@ -30,7 +30,8 @@ package model
 			position.x = x, position.y = y;
 			cost = 3;
 			attackable = true;
-			type = "good_old_cannon";
+			type = "cannon";
+			name = "good_old_cannon";
 			skinClass = new SkinClass("good_old_cannon", "good_old_cannon", false);
 			skinClass.animationsDic["good_old_cannon"] = true;
 			//set what the entity has to show in the selector panel
@@ -38,6 +39,8 @@ package model
 			entityToSpawn = new Object();
 			entityToSpawn.type = "bullet";
 			entityToSpawn.level = 1;
+			occupiedSlots = "1x1";
+			entitiesRequired = ["bullet"];
 			
 			initLevelData();
 			applyLevel = level;

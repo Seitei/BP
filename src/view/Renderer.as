@@ -109,7 +109,7 @@ package view
 			
 			mcc.setCurrentMovieClip(mcc.skinClass.originalMcc);
 			
-			if(entity.type == "tile"){
+			if(entity.name == "tile"){
 				_tilesArray.push(mcc);
 			}
 			/*var quad:Quad = new Quad(2, 2);

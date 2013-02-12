@@ -6,11 +6,13 @@ package view
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	import flash.ui.MouseCursorData;
 	
 	import model.ActionButtonVO;
+	import model.EntityVO;
 	
 	import starling.display.Button;
 	import starling.display.Image;
@@ -18,6 +20,7 @@ package view
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.extensions.ClippedSprite;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
@@ -60,6 +63,9 @@ package view
 		private var _contentArray:Array;
 		private var _contentContainersArray:Array;
 		
+		//visor
+		private var _visorContainer:ClippedSprite;
+		
 		public function setContent(cannonsArray:Array = null, bulletsArray:Array = null, buffsArray:Array = null, shipsArray:Array = null):void {
 			
 			_cannonsArray = cannonsArray;
@@ -73,60 +79,6 @@ package view
 			if(_shipsArray != null)   { _contentArray.push(_shipsArray);   _shipsContainer = new Sprite();   _contentContainersArray.push(_shipsContainer);   }
 			
 			initContent();
-		}
-		
-		public function get enemyHp():int
-		{
-			return _enemyHp;
-		}
-
-		public function set enemyHp(value:int):void
-		{
-			_enemyHp = value;
-			_enemyHpTxt.text = String(value);
-		}
-
-		public function set goldIncome(value:int):void
-		{
-			_goldIncome = value;
-			_goldIncomeTxt.text = String(_goldIncome);
-		}
-
-		public function set time(value:int):void
-		{
-			_time = value;
-		}
-
-		public function set gold(value:int):void {
-			_gold = value;
-			_goldTxt.text = String(_gold);
-		}
-		
-		public function set myHp(value:int):void {
-			_myHp = value;
-			_myHpTxt.text = String(value);
-		}
-		
-		public function ActionBar() {
-			//background
-			var texture:Texture;
-			texture = ResourceManager.getInstance().getTexture("action_bar_bg");
-			var image:Image = new Image(texture);
-			addChild(image);
-			
-			//we store here the buttons, to have acess later when we disable/enable them.
-			_buttonsVector = new Vector.<ExtendedButton>;
-			
-			_contentArray = new Array();
-			_contentContainersArray = new Array();
-			
-			initGold();
-			initGoldIncome();
-			initMyHp();
-			initEnemyHp();
-			initPlusSeparator();
-			initTurnCountdown();
-			initReadyButton();
 		}
 		
 		private function initContent():void {
@@ -175,7 +127,7 @@ package view
 					
 					xpos = localCounter % 2 == 0 ? 0 : newEntityGroup == true ? 0 : 48;
 					ypos = 13 + Math.floor(localCounter / 2) * 48;
-					 
+					
 					if(localCounter % 2 == 0) globalYpos ++;
 					
 					entityBtn.x = xpos;
@@ -187,7 +139,7 @@ package view
 					globalCounter ++;
 					localCounter ++;
 					newEntityGroup = false;
-							
+					
 					
 				}
 				
@@ -197,6 +149,114 @@ package view
 			
 			
 		}
+		
+		
+		public function get enemyHp():int
+		{
+			return _enemyHp;
+		}
+
+		public function set enemyHp(value:int):void
+		{
+			_enemyHp = value;
+			_enemyHpTxt.text = String(value);
+		}
+
+		public function set goldIncome(value:int):void
+		{
+			_goldIncome = value;
+			_goldIncomeTxt.text = String(_goldIncome);
+		}
+
+		public function set time(value:int):void
+		{
+			_time = value;
+		}
+
+		public function set gold(value:int):void {
+			_gold = value;
+			_goldTxt.text = String(_gold);
+		}
+		
+		public function set myHp(value:int):void {
+			_myHp = value;
+			_myHpTxt.text = String(value);
+		}
+		
+		public function ActionBar() {
+			//background
+			var texture:Texture;
+			texture = ResourceManager.getInstance().getTexture("action_bar_bg");
+			var image:Image = new Image(texture);
+			addChild(image);
+			
+			//we store here the buttons, to have acess later when we disable/enable them.
+			_buttonsVector = new Vector.<ExtendedButton>;
+			
+			_contentArray = new Array();
+			_contentContainersArray = new Array();
+			_visorContainer = new ClippedSprite();
+			
+			initGold();
+			initGoldIncome();
+			initMyHp();
+			initEnemyHp();
+			initPlusSeparator();
+			initTurnCountdown();
+			initReadyButton();
+			initVisor();
+		}
+		
+		private function initVisor():void {
+			
+			_visorContainer.y = 539;
+			addChild(_visorContainer);
+			_visorContainer.visible = false;
+		}
+		
+		public function showVisor(entity:EntityVO):void {
+			
+			_visorContainer.visible = true;
+			var posX:int = _visorContainer.localToGlobal(new Point()).x;
+			var posY:int = _visorContainer.localToGlobal(new Point()).y;
+			_visorContainer.clipRect = new Rectangle(posX, posY, 100, 100);
+			var visorBg:Image = new Image(ResourceManager.getInstance().getTexture("visor_bg"));
+			visorBg.pivotX = visorBg.width / 2;
+			visorBg.pivotY = visorBg.height / 2;
+			visorBg.x = 50;
+			visorBg.y = 50;
+			_visorContainer.addChild(visorBg);
+			
+			var entityImage:Image = new Image(ResourceManager.getInstance().getTexture(entity.name));
+			
+			switch(entity.occupiedSlots + " " + entity.entitiesRequired){
+				
+				case "1x1 bullet":
+					entityImage.pivotX = entityImage.width / 2;
+					entityImage.pivotY = entityImage.height / 2;
+					entityImage.x = 50;
+					entityImage.y = 60;
+					entityImage.scaleX = 1.4;
+					entityImage.scaleY = 1.4;
+					_visorContainer.addChild(entityImage);
+					visorBg.scaleX = 1.4;
+					visorBg.scaleY = 1.4;
+					visorBg.y += 10;
+					
+					var bulletImage:Image = new Image(ResourceManager.getInstance().getTexture("bullet_place_holder"));
+					bulletImage.pivotX = bulletImage.width / 2;
+					bulletImage.pivotY = bulletImage.height / 2;
+					bulletImage.x = 50;
+					bulletImage.y = 15;
+					_visorContainer.addChild(bulletImage);
+					break;
+			}
+			
+			
+			
+			
+		}
+		
 		
 		private function initReadyButton():void {
 			var readyButton:ActionButton = new ActionButton(
@@ -211,7 +271,7 @@ package view
 			);
 			
 			readyButton.x = 3;
-			readyButton.y = 429;
+			readyButton.y = 629;
 			addChild(readyButton);
 			readyButton.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onReadyButtonTouched);
 			

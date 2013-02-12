@@ -30,7 +30,7 @@ package model
 			position.x = x, position.y = y;
 			cost = 3;
 			attackable = true;
-			type = "spawner2";
+			name = "spawner2";
 			skinClass = new SkinClass("spawner2", "spawner2", false);
 			skinClass.animationsDic["spawner2"] = true;
 			power = 500;
