@@ -28,9 +28,6 @@ package utils
 		[Embed(source = "../assets/action_bar_bg.png")]
 		private static const ActionBarBg:Class;
 		
-		[Embed(source = "../assets/main_selector_towers.png")]
-		private static const MainSelectorTowers:Class;
-		
 		[Embed(source = "../assets/sell.png")]
 		private static const Sell:Class;
 		
@@ -67,32 +64,8 @@ package utils
 		[Embed(source = "../assets/timon.png")]
 		private static const Timon:Class;
 		
-		[Embed(source = "../assets/good_old_cannon_down_btn.png")]
-		private static const OldGoodCannonDownBtn:Class;
-		
-		[Embed(source = "../assets/good_old_cannon_hover_btn.png")]
-		private static const OldGoodCannonHoverBtn:Class;
-		
-		[Embed(source = "../assets/good_old_cannon_up_btn.png")]
-		private static const OldGoodCannonUpBtn:Class;
-		
-		[Embed(source = "../assets/good_old_cannon_mouse_btn.png")]
-		private static const OldGoodCannonMouseBtn:Class;
-		
-		[Embed(source = "../assets/bullet_down_btn.png")]
-		private static const BulletDownBtn:Class;
-		
-		[Embed(source = "../assets/bullet_hover_btn.png")]
-		private static const BulletHoverBtn:Class;
-		
-		[Embed(source = "../assets/bullet_up_btn.png")]
-		private static const BulletUpBtn:Class;
-		
-		[Embed(source = "../assets/bullet_mouse_btn.png")]
-		private static const BulletMouseBtn:Class;
-		
-		[Embed(source = "../assets/good_old_cannon.png")]
-		private static const OldGoodCannon:Class;
+		[Embed(source = "../assets/entities/good_old_cannon/good_old_cannon.png")]
+		private static const GoodOldCannon:Class;
 		
 		[Embed(source = "../assets/ready_up_btn.png")]
 		private static const ReadyUpBtn:Class;
@@ -111,9 +84,6 @@ package utils
 		
 		[Embed(source = "../assets/play_hover_btn.png")]
 		private static const PlayHoverBtn:Class;
-		
-		[Embed(source = "../assets/cannon_bullet.png")]
-		private static const CannonBullet:Class;
 		
 		[Embed(source = "../assets/placement_slot_up.png")]
 		private static const PlacementSlotUp:Class;
@@ -151,7 +121,7 @@ package utils
 		[Embed(source = "../assets/bullet_place_holder.png")]
 		private static const BulletPlaceHolder:Class;
 		
-		[Embed(source = "../assets/bullet.png")]
+		[Embed(source = "../assets/entities/bullet/bullet.png")]
 		private static const Bullet:Class;
 		
 		// XML //
@@ -162,8 +132,13 @@ package utils
 		[Embed(source="../assets/tile.xml", mimeType="application/octet-stream")]
 		public static const TileXML:Class;
 		
-		[Embed(source="../assets/cannon_bullet.xml", mimeType="application/octet-stream")]
-		public static const CannonBulletXML:Class;
+		[Embed(source="../assets/entities/bullet/bullet.xml", mimeType="application/octet-stream")]
+		public static const BulletXML:Class;
+		
+		[Embed(source="../assets/entities/good_old_cannon/good_old_cannon.xml", mimeType="application/octet-stream")]
+		public static const GoodOldCannonXML:Class;
+		
+		////////////////////////////////////////////////////////////////////////////////////
 		
 		private var TextureAssets:Dictionary = new Dictionary();
 		private var XMLAssets:Dictionary = new Dictionary();
@@ -180,20 +155,11 @@ package utils
 			TextureAssets["action_bar_bg"] = ActionBarBg;
 			TextureAssets["set_rallypoint"] = SetRallypoint;
 			TextureAssets["rallypoint"] = Rallypoint;
-			TextureAssets["main_selector_towers"] = MainSelectorTowers;
 			TextureAssets["sell"] = Sell;
 			TextureAssets["upgrade"] = Upgrade;
 			TextureAssets["tile"] = Tile;
 			TextureAssets["ship"] = Ship;
 			TextureAssets["timon"] = Timon;
-			TextureAssets["good_old_cannon_up_btn"] = OldGoodCannonUpBtn;
-			TextureAssets["good_old_cannon_hover_btn"] = OldGoodCannonHoverBtn;
-			TextureAssets["good_old_cannon_down_btn"] = OldGoodCannonDownBtn;
-			TextureAssets["good_old_cannon_mouse_btn"] = OldGoodCannonMouseBtn;
-			TextureAssets["bullet_up_btn"] = BulletUpBtn;
-			TextureAssets["bullet_hover_btn"] = BulletHoverBtn;
-			TextureAssets["bullet_down_btn"] = BulletDownBtn;
-			TextureAssets["bullet_mouse_btn"] = BulletMouseBtn;
 			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
 			TextureAssets["building_improvement_gold_up_btn"] = buildingImprovementGoldUpBtn;
 			TextureAssets["building_improvement_gold_hover_btn"] = buildingImprovementGoldHoverBtn;
@@ -205,8 +171,7 @@ package utils
 			TextureAssets["play_up_btn"] = PlayUpBtn;
 			TextureAssets["play_down_btn"] = PlayDownBtn;
 			TextureAssets["play_hover_btn"] = PlayHoverBtn;
-			TextureAssets["good_old_cannon"] = OldGoodCannon;
-			TextureAssets["cannon_bullet"] = CannonBullet;
+			TextureAssets["cannon"] = Bullet;
 			TextureAssets["placement_slot_up"] = PlacementSlotUp;
 			TextureAssets["placement_slot_down"] = PlacementSlotDown;
 			TextureAssets["placement_slot_hover"] = PlacementSlotHover;
@@ -220,11 +185,13 @@ package utils
 			TextureAssets["visor_bg"] = VisorBg;
 			TextureAssets["bullet_place_holder"] = BulletPlaceHolder;
 			TextureAssets["bullet"] = Bullet;
+			TextureAssets["good_old_cannon"] = GoodOldCannon;
 			
 			// XMLS
 			XMLAssets["unit"] = BasicUnitXML;
-			XMLAssets["cannon_bullet"] = CannonBulletXML;
+			XMLAssets["bullet"] = BulletXML;
 			XMLAssets["tile"] = TileXML;
+			XMLAssets["good_old_cannon"] = GoodOldCannonXML;
 			
 		}
 		
@@ -251,15 +218,33 @@ package utils
 			return _textures[name + "." + prefix];
 		}
 		
-		public function getTexture(name:String):Texture
+		public function getTexture(name:String, prefix:String = ""):Texture
 		{
 			if (TextureAssets[name] != undefined)
 			{
-				if (_textures[name] == undefined)
-				{
-					var bitmap:Bitmap = new TextureAssets[name]();
-					_textures[name] = Texture.fromBitmap(bitmap);
+				if(prefix == ""){
+					if (_textures[name] == undefined)
+					{
+						var bitmap:Bitmap = new TextureAssets[name]();
+						_textures[name] = Texture.fromBitmap(bitmap);
+					}
+					return _textures[name];
+				} 
+				else {
+					if (_textures[name + "." + prefix] == undefined)
+					{
+						var bitmap2:Bitmap = new TextureAssets[name];
+						var texture:Texture = _textures[name] = Texture.fromBitmap(bitmap2);
+						var frames:Vector.<Texture> = new Vector.<Texture>();
+						
+						var xml:XML = XML(new XMLAssets[name]);
+						var textureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
+						frames = textureAtlas.getTextures(prefix);
+						_textures[name + "." + prefix] = frames[0];
+					}
+					return _textures[name + "." + prefix];
 				}
+				
 				return _textures[name];
 			} 
 			else throw new Error("Resource not defined.");

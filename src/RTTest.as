@@ -29,7 +29,7 @@ package
 		public function RTTest()
 		{
 			
-			var quadBg:Quad = new Quad(700, 700, 0x1d1d1d);
+			var quadBg:Quad = new Quad(1024, 1024, 0x1d1d1d);
 			addChild(quadBg);
 			
 			_quadsArray = new Array();

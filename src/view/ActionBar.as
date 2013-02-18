@@ -115,15 +115,15 @@ package view
 				
 				for each(var entity:String in entitiesArray){
 					var entityBtn:ActionButton = new ActionButton(
-						ResourceManager.getInstance().getTexture(entity + "_up_btn"), 
+						ResourceManager.getInstance().getTexture(entity, "ab_button_up"), 
 						"addEntity", 
 						entity,
 						null,
 						null,
 						"",
-						ResourceManager.getInstance().getTexture(entity + "_down_btn"), 
-						ResourceManager.getInstance().getTexture(entity + "_hover_btn"),
-						ResourceManager.getInstance().getTexture(entity + "_mouse_btn")
+						ResourceManager.getInstance().getTexture(entity, "ab_button_down"), 
+						ResourceManager.getInstance().getTexture(entity, "ab_button_hover"),
+						ResourceManager.getInstance().getTexture(entity, "mouse_ghost")
 					);
 					
 					
@@ -220,17 +220,17 @@ package view
 					_entityImagesRequiredDic = new Dictionary();					
 				}
 
-				for each(var entityTypeRequired:String in entity.entitiesRequired){
-					_entitiesRequiredDic[entityTypeRequired] = false;
-					_entityImagesRequiredDic[entityTypeRequired] = null;
+				for each(var entityTypeRequired1:String in entity.entitiesRequired){
+					_entitiesRequiredDic[entityTypeRequired1] = false;
+					_entityImagesRequiredDic[entityTypeRequired1] = null;
 				}	
 			}
 			else {
-				for (var entityTypeRequired:String in _entitiesRequiredDic){
-					if(entityTypeRequired == entity.type && _entitiesRequiredDic[entityTypeRequired] == false){
-						_entitiesRequiredDic[entityTypeRequired] = true;
+				for (var entityTypeRequired2:String in _entitiesRequiredDic){
+					if(entityTypeRequired2 == entity.type && _entitiesRequiredDic[entityTypeRequired2] == false){
+						_entitiesRequiredDic[entityTypeRequired2] = true;
 						//show image
-						_entityImagesRequiredDic[entityTypeRequired].texture = ResourceManager.getInstance().getTexture(entity.name);
+						_entityImagesRequiredDic[entityTypeRequired2].texture = ResourceManager.getInstance().getTexture(entity.name);
 					}	
 				}
 			}
