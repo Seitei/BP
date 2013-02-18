@@ -249,7 +249,7 @@ package view
 				visorBg.y = 50;
 				_visorContainer.addChild(visorBg);
 				
-				var entityImage:Image = new Image(ResourceManager.getInstance().getTexture(entity.name));
+				var entityImage:Image = new Image(ResourceManager.getInstance().getTexture(entity.name, "placed"));
 				
 				switch(entity.occupiedSlots + " " + entity.entitiesRequired){
 					
