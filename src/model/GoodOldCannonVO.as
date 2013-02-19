@@ -32,7 +32,7 @@ package model
 			attackable = true;
 			type = "cannon";
 			name = "good_old_cannon";
-			skinClass = new SkinClass("good_old_cannon", "good_old_cannon", false);
+			skinClass = new SkinClass("good_old_cannon", "placed", false);
 			skinClass.animationsDic["good_old_cannon"] = true;
 			//set what the entity has to show in the selector panel
 			spawningPoint = new Point(18, -18);

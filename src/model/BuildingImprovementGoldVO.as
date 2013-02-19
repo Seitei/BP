@@ -14,7 +14,7 @@ package model
 		{
 			position.x = x, position.y = y;
 			_cost = 4;
-			name = "buildingImprovementGold";
+			name = "building_improvement_gold";
 			skinClass = new SkinClass("building_improvement_gold", "building_improvement_gold", false);
 			skinClass.animationsDic["building_improvement_gold"] = true;
 			//buff = new GoldBuff("goldIncomeImprovement", 2, "player");

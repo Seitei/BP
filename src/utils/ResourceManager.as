@@ -40,20 +40,8 @@ package utils
 		[Embed(source = "../assets/upgrade.png")]
 		private static const Upgrade:Class;
 				
-		[Embed(source = "../assets/building_improvement_gold.png")]
+		[Embed(source = "../assets/entities/building_improvement_gold/building_improvement_gold.png")]
 		private static const buildingImprovementGold:Class;
-		
-		[Embed(source = "../assets/building_improvement_gold_up_btn.png")]
-		private static const buildingImprovementGoldUpBtn:Class;
-		
-		[Embed(source = "../assets/building_improvement_gold_hover_btn.png")]
-		private static const buildingImprovementGoldHoverBtn:Class;
-		
-		[Embed(source = "../assets/building_improvement_gold_down_btn.png")]
-		private static const buildingImprovementGoldDownBtn:Class;
-		
-		[Embed(source = "../assets/building_improvement_gold_mouse_btn.png")]
-		private static const buildingImprovementGoldMouseBtn:Class;
 		
 		[Embed(source = "../assets/tile.png")]
 		private static const Tile:Class;
@@ -138,6 +126,9 @@ package utils
 		[Embed(source="../assets/entities/good_old_cannon/good_old_cannon.xml", mimeType="application/octet-stream")]
 		public static const GoodOldCannonXML:Class;
 		
+		[Embed(source="../assets/entities/building_improvement_gold/building_improvement_gold.xml", mimeType="application/octet-stream")]
+		public static const BuildingImprovementGoldXML:Class;
+		
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		private var TextureAssets:Dictionary = new Dictionary();
@@ -161,10 +152,6 @@ package utils
 			TextureAssets["ship"] = Ship;
 			TextureAssets["timon"] = Timon;
 			TextureAssets["building_improvement_gold"] = buildingImprovementGold;
-			TextureAssets["building_improvement_gold_up_btn"] = buildingImprovementGoldUpBtn;
-			TextureAssets["building_improvement_gold_hover_btn"] = buildingImprovementGoldHoverBtn;
-			TextureAssets["building_improvement_gold_down_btn"] = buildingImprovementGoldDownBtn;
-			TextureAssets["building_improvement_gold_mouse_btn"] = buildingImprovementGoldMouseBtn;
 			TextureAssets["ready_up_btn"] = ReadyUpBtn;
 			TextureAssets["ready_down_btn"] = ReadyDownBtn;
 			TextureAssets["ready_hover_btn"] = ReadyHoverBtn;
@@ -192,6 +179,7 @@ package utils
 			XMLAssets["bullet"] = BulletXML;
 			XMLAssets["tile"] = TileXML;
 			XMLAssets["good_old_cannon"] = GoodOldCannonXML;
+			XMLAssets["building_improvement_gold"] = BuildingImprovementGoldXML;
 			
 		}
 		

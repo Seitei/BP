@@ -107,9 +107,10 @@ package view
 				
 				//place divisor bar
 				var divisorBarImage:Image = new Image(ResourceManager.getInstance().getTexture("action_bar_divisor"));
+				divisorBarImage.x = -6;
 				_contentContainersArray[newEntityCounter].addChild(divisorBarImage);
-				_contentContainersArray[newEntityCounter].y = 81 + globalYpos * 48 + newEntityCounter * 13;
-				_contentContainersArray[newEntityCounter].x = 3;
+				_contentContainersArray[newEntityCounter].y = 81 + globalYpos * 43 + newEntityCounter * 11;
+				_contentContainersArray[newEntityCounter].x = 9;
 				
 				addChild(_contentContainersArray[newEntityCounter]);
 				
@@ -129,8 +130,8 @@ package view
 					
 					_buttonsVector.push(entityBtn);
 					
-					xpos = localCounter % 2 == 0 ? 0 : newEntityGroup == true ? 0 : 48;
-					ypos = 13 + Math.floor(localCounter / 2) * 48;
+					xpos = localCounter % 2 == 0 ? 5 : newEntityGroup == true ? 5 : 48;
+					ypos = 11 + Math.floor(localCounter / 2) * 43;
 					
 					if(localCounter % 2 == 0) globalYpos ++;
 					
@@ -150,6 +151,11 @@ package view
 				newEntityCounter ++;
 				
 			}
+			
+			var divisorBarImage2:Image = new Image(ResourceManager.getInstance().getTexture("action_bar_divisor"));
+			divisorBarImage2.x = 3;
+			divisorBarImage2.y = 81 + globalYpos * 43 + newEntityCounter * 11;
+			addChild(divisorBarImage2);
 			
 			
 		}
@@ -205,8 +211,8 @@ package view
 			initMyHp();
 			initEnemyHp();
 			initPlusSeparator();
-			initTurnCountdown();
 			initReadyButton();
+			initTurnCountdown();
 		}
 		
 		public function showVisor(entity:EntityVO):Boolean {
@@ -237,11 +243,12 @@ package view
 			
 			if(!_visorContainer){
 				_visorContainer = new ClippedSprite();
-				_visorContainer.y = 539;
+				_visorContainer.y = 523;
+				_visorContainer.x = 3;
 				addChild(_visorContainer);
 				var posX:int = _visorContainer.localToGlobal(new Point()).x;
 				var posY:int = _visorContainer.localToGlobal(new Point()).y;
-				_visorContainer.clipRect = new Rectangle(posX, posY, 100, 100);
+				_visorContainer.clipRect = new Rectangle(posX, posY, 94, 94);
 				var visorBg:Image = new Image(ResourceManager.getInstance().getTexture("visor_bg"));
 				visorBg.pivotX = visorBg.width / 2;
 				visorBg.pivotY = visorBg.height / 2;
@@ -304,7 +311,7 @@ package view
 			);
 			
 			readyButton.x = 3;
-			readyButton.y = 629;
+			readyButton.y = 620;
 			addChild(readyButton);
 			readyButton.addEventListener(ButtonTriggeredEvent.BUTTON_TRIGGERED_EVENT, onReadyButtonTouched);
 			
@@ -344,8 +351,8 @@ package view
 		
 		private function initTurnCountdown():void {
 			_turnCountdownTxt = new TextField(150, 50, "3", "ObelixPro", 16, 0, false);
-			_turnCountdownTxt.x = 3;
-			_turnCountdownTxt.y = 200;
+			_turnCountdownTxt.x = 25;
+			_turnCountdownTxt.y = 620;
 			_turnCountdownTxt.color = 0x00ADEE;
 			_turnCountdownTxt.text = "";
 			_turnCountdownTxt.width = 100;
